@@ -1,0 +1,29 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+30	textures\intro.png	255	255	255
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+# BACKGROUND
+80001	1	1	256	223	30
+80002	259	1	516	223	30
+80003	517	1	774	223	30
+80011	1	226	258	450	30
+80012	259	226	516	450	30
+80013	517	226	774	450	30
+80021	1	451	258	680	30
+80022	259	451	516	680	30
+80023	517	451	774	680	30
+[ANIMATIONS]
+# BACKGROUND
+801	80001	1000	80002	200	80001	200	80002	200	80001	200	80002	200	80001	200	80002	200	80001	200	80002	200	80003	200	80011	200	80012	200	80013	200	80021	200	80022	200	80023	200
+#
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+# ==== BACKGROUND =========
+4	801
+[OBJECTS]
+# type	x	y	ani_set_id	extra_settings per object type
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+#  ========= BACKGROUND =========
+4	0	0	4

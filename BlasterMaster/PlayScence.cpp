@@ -8,6 +8,7 @@
 #include "Portal.h"
 
 #include "Brick.h"
+#include "Intro.h"
 
 using namespace std;
 
@@ -31,6 +32,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 
 #define OBJECT_TYPE_MARIO	0
 #define OBJECT_TYPE_BRICK	1
+#define OBJECT_TYPE_INTRO	4
 
 
 #define OBJECT_TYPE_PORTAL	50
@@ -155,6 +157,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	/*case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -284,6 +287,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	if (mario == NULL) return;		//intro screen.
 	switch (KeyCode)
 	{
 	case DIK_SPACE:
@@ -299,7 +303,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
-
+	if (mario == NULL) return;	//return if intro
 	// disable control key when Mario die 
 	if (mario->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT))
