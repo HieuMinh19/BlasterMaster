@@ -1,0 +1,6 @@
+[SETTINGS]
+start	1
+#scene list
+[SCENES]
+1	scene1.txt
+4	intro.txt
