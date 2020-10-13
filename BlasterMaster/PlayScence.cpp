@@ -290,10 +290,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	if (jason == NULL) return;		//intro screen.
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
-		jason->SetState(STATE_JUMP);
-		break;
-
+		case DIK_SPACE:
+			jason->SetState(STATE_JUMP);
+			break;
+		case DIK_DOWN:
+			jason->SetState(STATE_CRAWL_IDLE);
+			break;
 	}
 }
 
@@ -305,10 +307,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 
 	// disable control key when Mario die 
 	if (jason->GetState() == STATE_DIE) return;
-	if (game->IsKeyDown(DIK_RIGHT))
-		jason->SetState(STATE_WALKING_RIGHT);
+	if (game->IsKeyDown(DIK_RIGHT)) 
+		jason->MoveRight();
 	else if (game->IsKeyDown(DIK_LEFT))
-		jason->SetState(STATE_WALKING_LEFT);
-	else
-		jason->SetState(STATE_IDLE);
+		jason->MoveLeft();
+
 }

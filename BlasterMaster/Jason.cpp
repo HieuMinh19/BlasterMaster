@@ -9,7 +9,7 @@ CJason::CJason(float x, float y) : CGameObject()
 {
 	untouchable = 0;
 	SetState(STATE_IDLE);
-	isDrwal = false;
+	isCrawl = false;
 
 	start_x = x;
 	start_y = y;
@@ -78,7 +78,7 @@ void CJason::Render()
 	if (state == STATE_DIE)
 		ani = ANI_DIE;
 	else
-		if (isDrwal == false)
+		if (isCrawl == false)
 		{
 			if (vx == 0)
 			{
@@ -88,6 +88,17 @@ void CJason::Render()
 			else if (vx > 0)
 				ani = ANI_WALKING_RIGHT;
 			else ani = ANI_WALKING_LEFT;
+		}
+		else
+		{
+			if (vx == 0)
+			{
+				if (nx > 0) ani = ANI_CRAWL_IDLE_RIGHT;
+				else ani = ANI_CRAWL_WALKING_RIGHT;
+			}
+			else if (vx > 0)
+				ani = ANI_CRAWL_IDLE_LEFT;
+			else ani = ANI_CRAWL_WALKING_LEFT;
 		}
 
 
@@ -122,6 +133,27 @@ void CJason::SetState(int state)
 	case STATE_DIE:
 		vy = -DIE_DEFLECT_SPEED;
 		break;
+	case STATE_CRAWL_WALKING_RIGHT:
+		vx = CRAWL_SPEED;
+		nx = 1;
+		break;
+	case STATE_CRAWL_WALKING_LEFT:
+		vx = -CRAWL_SPEED;
+		nx = -1;
+		break;
+	case STATE_CRAWL_IDLE:
+		if (isCrawl) {
+			y -= CRAWL_BBOX_HEIGHT;
+			RenderBoundingBox();
+			isCrawl = false;
+		}
+		else {
+			y += CRAWL_BBOX_HEIGHT;
+			RenderBoundingBox();
+			isCrawl = true;
+		}
+		vx = 0;
+		break;
 	}
 }
 
@@ -130,8 +162,16 @@ void CJason::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	left = x;
 	top = y;
 
-	right = x + BIG_BBOX_WIDTH;
-	bottom = y + BIG_BBOX_HEIGHT;
+	if (!isCrawl)
+	{
+		right = x + BBOX_WIDTH;
+		bottom = y + BBOX_HEIGHT;
+	}
+	else
+	{
+		right = x + CRAWL_BBOX_WIDTH;
+		bottom = y + CRAWL_BBOX_HEIGHT;
+	}
 }
 
 /*
@@ -143,4 +183,21 @@ void CJason::Reset()
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
 }
+
+void CJason::MoveRight()
+{
+	if (isCrawl == false)
+		SetState(STATE_WALKING_RIGHT);
+	else
+		SetState(STATE_CRAWL_WALKING_RIGHT);
+}
+
+void CJason::MoveLeft()
+{
+	if (isCrawl == false)
+		SetState(STATE_WALKING_LEFT);
+	else
+		SetState(STATE_CRAWL_WALKING_LEFT);
+}
+
 
