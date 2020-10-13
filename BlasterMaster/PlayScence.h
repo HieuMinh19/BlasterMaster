@@ -5,12 +5,13 @@
 #include "GameObject.h"
 #include "Brick.h"
 #include "Mario.h"
+#include "Jason.h"
 
 
 class CPlayScene : public CScene
 {
 protected:
-	CMario* player;					// A play scene has to have player, right? 
+	CJason * player;					// A play scene has to have player, right? 
 
 	vector<LPGAMEOBJECT> objects;
 
@@ -29,7 +30,7 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
-	CMario* GetPlayer() { return player; }
+	CJason* GetPlayer() { return player; }
 
 	//friend class CPlayScenceKeyHandler;
 };
