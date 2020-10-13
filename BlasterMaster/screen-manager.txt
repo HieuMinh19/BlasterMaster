@@ -1,6 +1,9 @@
 [SETTINGS]
-start	1
+start	5
 #scene list
 [SCENES]
 1	scene1.txt
+2	scene2.txt
+3	scene-test.txt
 4	intro.txt
+5 	Json.txt
