@@ -311,5 +311,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 		jason->MoveRight();
 	else if (game->IsKeyDown(DIK_LEFT))
 		jason->MoveLeft();
-
+	else
+		jason->SetState(STATE_IDLE);
 }
