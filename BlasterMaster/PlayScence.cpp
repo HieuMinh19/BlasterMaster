@@ -9,6 +9,7 @@
 
 #include "Brick.h"
 #include "Intro.h"
+#include "Worms.h"
 
 using namespace std;
 
@@ -33,6 +34,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_MARIO	0
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_INTRO	4
+
+#define OBJECT_TYPE_WORMS	9
 
 
 #define OBJECT_TYPE_PORTAL	50
@@ -151,13 +154,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x, y);
+		obj = CMario::GetInstance(x, y);
 		player = (CMario*)obj;
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
+	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	/*case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
