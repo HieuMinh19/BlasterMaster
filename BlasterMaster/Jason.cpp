@@ -4,6 +4,7 @@
 
 #include "Jason.h"
 #include "Game.h"
+#include "Bullet.h"
 
 CJason::CJason(float x, float y) : CGameObject()
 {
@@ -201,3 +202,18 @@ void CJason::MoveLeft()
 }
 
 
+void CJason::fire(vector<LPGAMEOBJECT> &objects)
+{
+	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
+
+	CGameObject *obj = NULL;
+	obj = new CBullet(nx);
+
+	// General object setup
+	obj->SetPosition(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(6);
+
+	obj->SetAnimationSet(ani_set);
+	objects.push_back(obj);
+
+}

@@ -29,7 +29,9 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+	virtual void UpdateObjects(vector<LPGAMEOBJECT> objs) { objects = objs; };
 
+	vector<LPGAMEOBJECT> GetObjects() { return objects; }
 	CJason* GetPlayer() { return player; }
 
 	//friend class CPlayScenceKeyHandler;

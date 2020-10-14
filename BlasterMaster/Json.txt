@@ -44,7 +44,9 @@
 40002	318	117	334	133	20
 40003	336	117	352	133	20
 40004	355	117	370	133	20
-						
+
+#BULLET		
+90001	73	38	81	46	0						
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -67,7 +69,8 @@
 503	10031	100	10032	100	10033	100
 #die
 599	10099	100
-
+#==== BULLET==== 
+901	90001	100 
 
 # ==== BRICK =========
 601	20001	100
@@ -86,12 +89,14 @@
 # QUESTION MARK BRICK 
 22	602
 
+6	901
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick
 # MARIO
 0	50.0	0	1
-
+# BULLET
+6	30	124	6
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
 1	0	150	2

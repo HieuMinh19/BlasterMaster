@@ -37,7 +37,7 @@
 #define CRAWL_BBOX_WIDTH  16
 #define CRAWL_BBOX_HEIGHT 8
 
-#define UNTOUCHABLE_TIME 1000
+#define UNTOUCHABLE_TIME 10000
 
 
 class CJason : public CGameObject
@@ -61,4 +61,5 @@ public:
 	void Reset();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void fire(vector<LPGAMEOBJECT> &objects);
 };

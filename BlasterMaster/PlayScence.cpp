@@ -9,6 +9,7 @@
 
 #include "Brick.h"
 #include "Intro.h"
+#include "Bullet.h"
 
 using namespace std;
 
@@ -33,6 +34,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_JASON	0
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_INTRO	4
+#define OBJECT_TYPE_BULLET	6
 
 
 #define OBJECT_TYPE_PORTAL	50
@@ -175,7 +177,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	obj->SetPosition(x, y);
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
 }
@@ -285,7 +286,7 @@ void CPlayScene::Unload()
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-
+	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
 	CJason* jason = ((CPlayScene*)scence)->GetPlayer();
 	if (jason == NULL) return;		//intro screen.
 	switch (KeyCode)
@@ -296,7 +297,12 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		case DIK_DOWN:
 			jason->SetState(STATE_CRAWL_IDLE);
 			break;
+		case DIK_Z:
+			jason->fire(objects);
+			break;
+			
 	}
+	((CPlayScene*)scence)->UpdateObjects(objects);
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE* states)
