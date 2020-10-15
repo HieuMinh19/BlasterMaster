@@ -10,6 +10,7 @@
 #include "Brick.h"
 #include "Intro.h"
 #include "Bullet.h"
+#include "Worms.h"
 
 using namespace std;
 
@@ -35,6 +36,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_INTRO	4
 #define OBJECT_TYPE_BULLET	6
+
+#define OBJECT_TYPE_WORMS	9
 
 
 #define OBJECT_TYPE_PORTAL	50
@@ -155,11 +158,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new CJason(x, y);
 		player = (CJason*)obj;
-
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
+	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	/*case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());

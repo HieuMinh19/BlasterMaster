@@ -40,6 +40,7 @@
 
 class CMario : public CGameObject
 {
+	static CMario* __instance;
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
@@ -58,4 +59,7 @@ public:
 	void Reset();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
+	static CMario* GetInstance(float x, float y);
+	static CMario* GetInstance();
 };
