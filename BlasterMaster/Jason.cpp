@@ -5,6 +5,8 @@
 #include "Jason.h"
 #include "Game.h"
 #include "Bullet.h"
+#include "Worms.h"
+#include "items.h"
 
 CJason::CJason(float x, float y) : CGameObject()
 {
@@ -59,7 +61,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
 		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
+		//	x += nx*abs(rdx);
 
 		// block every object first!
 		x += min_tx * dx + nx * 0.4f;
@@ -67,6 +69,32 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
+		float worm_pos_x, worm_pos_y;
+		//start collision with worm
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CWorms*>(e->obj)) // if e->obj is worm
+			{
+				CWorms* worm = dynamic_cast<CWorms*>(e->obj);
+				CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+				CGameObject* obj = new CItems();
+				// General object setup
+				obj->SetPosition(64, 100);
+				LPANIMATION_SET ani_set = animation_sets->Get(3);
+				DebugOut(L"Animation set %d\n", ani_set->size());
+				obj->SetAnimationSet(ani_set);
+				coObjects->push_back(obj);
+				DebugOut(L"you've just touched worm to the top!! \n");
+			}
+			else {
+
+			}
+		}
+
+
+
 	}
 
 	// clean up collision events
