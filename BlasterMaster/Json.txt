@@ -2,6 +2,8 @@
 [TEXTURES]
 0	textures\SpritesTank.png	255	255	255
 20	textures\misc.png	176	224	248
+90	textures\enemies-1.png	255	0	255
+30	textures\itemsandobjects.png	176	224	248 
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -46,7 +48,19 @@
 40004	355	117	370	133	20
 
 #BULLET		
-90001	73	38	81	46	0						
+90001	73	38	81	46	0
+
+#ITEMS
+60001	104	108	121	125	30
+
+# WORMS
+# walk right
+90001	191	412	207	421	90
+90002	172	412	189	421	90
+# walk left
+90003	46	412	62	421	90
+90004	64	412	81	421	90
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -78,6 +92,15 @@
 # ==== QUESTION MARK BRICK =========
 602	40001	1000	40001	100	40002	100	40003	100	40004	100
 
+# === ITEMS =========
+603	60001	100
+
+# ==== WORMS =========
+#walk right
+900	90001	100	90002	100
+#walk left
+901	90003	100	90004	100
+
 #
 # id	ani1	ani2	ani3
 #
@@ -86,10 +109,14 @@
 1	400	401	402	502	500	501	403	503	599
 # BRICK 
 2	601
+# ITEMS
+3	603
 # QUESTION MARK BRICK 
 22	602
 
-6	901
+# WORMS
+6	900	901
+
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick
@@ -129,6 +156,10 @@
 1	432	150	2
 1	448	150	2
 
+# ---- item Hover -----
+1	480	100	3
+1	64	100	3
+
 # ---- brick group 1 ----
 1	100	74	2
 1	100	90	22
@@ -148,3 +179,5 @@
 # type	l	t	ani_set_id	r	b	scene_id
 #50	300	98	0	316	150	2
 
+# WORMS
+9	110.0	0	6
