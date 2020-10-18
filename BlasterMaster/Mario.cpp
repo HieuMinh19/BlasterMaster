@@ -5,6 +5,8 @@
 #include "Mario.h"
 #include "Game.h"
 
+CMario* CMario::__instance = NULL;
+
 CMario::CMario(float x, float y) : CGameObject()
 {
 	level = MARIO_LEVEL_BIG;
@@ -143,14 +145,26 @@ void CMario::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 	if (level == MARIO_LEVEL_BIG)
 	{
-		right = x + MARIO_BIG_BBOX_WIDTH;
-		bottom = y + MARIO_BIG_BBOX_HEIGHT;
+		right = x + MARIO_BBOX_WIDTH;
+		bottom = y + MARIO_BBOX_HEIGHT;
 	}
 	else
 	{
-		right = x + MARIO_SMALL_BBOX_WIDTH;
-		bottom = y + MARIO_SMALL_BBOX_HEIGHT;
+		right = x + MARIO_CRAWL_BBOX_WIDTH;
+		bottom = y + MARIO_CRAWL_BBOX_HEIGHT;
 	}
+}
+
+CMario* CMario::GetInstance(float x, float y)
+{
+	if (__instance == NULL) __instance = new CMario(x,y);
+	return __instance;
+}
+
+CMario* CMario::GetInstance()
+{
+	if (__instance == NULL) __instance = new CMario();
+	return __instance;
 }
 
 /*

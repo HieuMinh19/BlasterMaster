@@ -6,9 +6,10 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
-
 #include "Brick.h"
 #include "Intro.h"
+#include "Bullet.h"
+#include "Worms.h"
 
 using namespace std;
 
@@ -23,21 +24,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	See scene1.txt, scene2.txt for detail format specification
 */
 
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
-#define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS	6
-
-#define OBJECT_TYPE_MARIO	0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_INTRO	4
-
-
-#define OBJECT_TYPE_PORTAL	50
-
-#define MAX_SCENE_LINE 1024
 
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
@@ -145,19 +131,21 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
+	case OBJECT_TYPE_JASON:
 		if (player != NULL)
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x, y);
-		player = (CMario*)obj;
-
+		obj = CJason::GetInstance(x, y);
+		player = (CJason*)obj;
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
+	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
+	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
+	
 	/*case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -175,7 +163,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	obj->SetPosition(x, y);
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
 }
@@ -238,14 +225,38 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
+	vector<LPGAMEOBJECT> brickObjects;
+	vector<LPGAMEOBJECT> enemyObjects;
+
+
 	for (size_t i = 1; i < objects.size(); i++)
 	{
+		if (dynamic_cast<CBrick*>(objects[i])) {
+			brickObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CWorms*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
+
 		coObjects.push_back(objects[i]);
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		if (dynamic_cast<CJason*>(objects[i])) {
+			vector<LPGAMEOBJECT> playerCoObjects;
+			// player can colli with brick and enemy
+			// so we create a CoObject from brick object
+			// merge with enemy
+			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			objects[i]->Update(dt, &playerCoObjects);
+		}
+		if (dynamic_cast<CWorms*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -282,34 +293,45 @@ void CPlayScene::Unload()
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 
+void CPlayScene::AddObject(LPGAMEOBJECT gameObject)
+{
+	objects.push_back(gameObject);
+}
+
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-
-	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
-	if (mario == NULL) return;		//intro screen.
+	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
+	CJason* jason = ((CPlayScene*)scence)->GetPlayer();
+	if (jason == NULL) return;		//intro screen.
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
-		mario->SetState(MARIO_STATE_JUMP);
-		break;
-	case DIK_A:
-		mario->Reset();
-		break;
+		case DIK_SPACE:
+			jason->SetState(STATE_JUMP);
+			break;
+		case DIK_DOWN:
+			jason->SetState(STATE_CRAWL_IDLE);
+			break;
+		case DIK_Z:
+			jason->fire(objects);
+			break;
+			
 	}
+	((CPlayScene*)scence)->UpdateObjects(objects);
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
 	CGame* game = CGame::GetInstance();
-	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
-	if (mario == NULL) return;	//return if intro
+	CJason* jason = ((CPlayScene*)scence)->GetPlayer();
+	if (jason == NULL) return;	//return if intro
+
 	// disable control key when Mario die 
-	if (mario->GetState() == MARIO_STATE_DIE) return;
-	if (game->IsKeyDown(DIK_RIGHT))
-		mario->SetState(MARIO_STATE_WALKING_RIGHT);
+	if (jason->GetState() == STATE_DIE) return;
+	if (game->IsKeyDown(DIK_RIGHT)) 
+		jason->MoveRight();
 	else if (game->IsKeyDown(DIK_LEFT))
-		mario->SetState(MARIO_STATE_WALKING_LEFT);
+		jason->MoveLeft();
 	else
-		mario->SetState(MARIO_STATE_IDLE);
+		jason->SetState(STATE_IDLE);
 }

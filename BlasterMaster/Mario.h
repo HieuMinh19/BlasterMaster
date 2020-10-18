@@ -29,17 +29,18 @@
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
 
-#define MARIO_BIG_BBOX_WIDTH  15
-#define MARIO_BIG_BBOX_HEIGHT 27
+#define MARIO_BBOX_WIDTH  15
+#define MARIO_BBOX_HEIGHT 27
 
-#define MARIO_SMALL_BBOX_WIDTH  13
-#define MARIO_SMALL_BBOX_HEIGHT 15
+#define MARIO_CRAWL_BBOX_WIDTH  13
+#define MARIO_CRAWL_BBOX_HEIGHT 15
 
 #define MARIO_UNTOUCHABLE_TIME 5000
 
 
 class CMario : public CGameObject
 {
+	static CMario* __instance;
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
@@ -58,4 +59,7 @@ public:
 	void Reset();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
+	static CMario* GetInstance(float x, float y);
+	static CMario* GetInstance();
 };

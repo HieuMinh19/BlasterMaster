@@ -6,17 +6,7 @@
 #include "Game.h"
 #include "GameObject.h"
 #include "Textures.h"
-
 #include "PlayScence.h"
-
-#define WINDOW_CLASS_NAME L"BLASTER_MASTER GAME"
-#define MAIN_WINDOW_TITLE L"SCENCE MANAGER"
-
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 200)
-#define SCREEN_WIDTH 250
-#define SCREEN_HEIGHT 250
-
-#define MAX_FRAME_RATE 120
 
 CGame* game;
 
@@ -162,7 +152,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	game->Init(hWnd);
 	game->InitKeyboard();
 
-	game->Load(L"screen-manager.txt");
+	game->Load(SCREEN_FILE_PATH);
 
 	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
