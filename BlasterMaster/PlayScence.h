@@ -4,7 +4,6 @@
 #include "Scence.h"
 #include "GameObject.h"
 #include "Brick.h"
-#include "Mario.h"
 #include "Jason.h"
 #include "Items.h"
 
@@ -32,6 +31,7 @@ public:
 	virtual void Unload();
 	virtual void UpdateObjects(vector<LPGAMEOBJECT> objs) { objects = objs; };
 
+	void AddObject(LPGAMEOBJECT gameObject);
 	vector<LPGAMEOBJECT> GetObjects() { return objects; }
 	CJason* GetPlayer() { return player; }
 

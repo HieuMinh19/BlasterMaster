@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <algorithm>    // std::merge, std::sort
 
 #include <Windows.h>
 #include <d3d9.h>

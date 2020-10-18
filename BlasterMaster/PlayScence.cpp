@@ -155,7 +155,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CJason(x, y);
+		obj = CJason::GetInstance(x, y);
 		player = (CJason*)obj;
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -243,14 +243,38 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
+	vector<LPGAMEOBJECT> brickObjects;
+	vector<LPGAMEOBJECT> enemyObjects;
+
+
 	for (size_t i = 1; i < objects.size(); i++)
 	{
+		if (dynamic_cast<CBrick*>(objects[i])) {
+			brickObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CWorms*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
+
 		coObjects.push_back(objects[i]);
 	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		objects[i]->Update(dt, &coObjects);
+		if (dynamic_cast<CJason*>(objects[i])) {
+			vector<LPGAMEOBJECT> playerCoObjects;
+			// player can colli with brick and enemy
+			// so we create a CoObject from brick object
+			// merge with enemy
+			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			objects[i]->Update(dt, &playerCoObjects);
+		}
+		if (dynamic_cast<CWorms*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -285,6 +309,12 @@ void CPlayScene::Unload()
 	player = NULL;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
+}
+
+void CPlayScene::AddObject(LPGAMEOBJECT gameObject)
+{
+	objects.push_back(gameObject);
+	objects.erase(objects.begin());
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
