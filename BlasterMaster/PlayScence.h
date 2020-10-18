@@ -6,6 +6,7 @@
 #include "Brick.h"
 #include "Mario.h"
 #include "Jason.h"
+#include "Items.h"
 
 
 class CPlayScene : public CScene

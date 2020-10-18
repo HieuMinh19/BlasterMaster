@@ -6,7 +6,6 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
-
 #include "Brick.h"
 #include "Intro.h"
 #include "Bullet.h"
@@ -36,7 +35,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_INTRO	4
 #define OBJECT_TYPE_BULLET	6
-
+#define OBJECT_TYPE_ITEMS 20
 #define OBJECT_TYPE_WORMS	9
 
 
@@ -163,6 +162,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
+	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
+	
 	/*case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
