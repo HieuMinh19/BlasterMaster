@@ -452,26 +452,30 @@ void CSophia::WalkUp() {
 	}
 }
 void CSophia::Jump() {
-	isJumping = true;
-	jump_start = GetTickCount();
-	if (nx > 0) {
-		if (isStandUp) {
-			SetState(SOPHIA_STATE_JUMP_UP_RIGHT);
+	if (!isJumping) {
+		isJumping = true;
+		jump_start = GetTickCount();
+		if (vx != 0) {
+			isJumpingWhileWalk = TRUE;
 		}
-		else
-			SetState(SOPHIA_STATE_JUMP);
-	}
-	else {
-		if (isStandUp) {
-			SetState(SOPHIA_STATE_JUMP_UP_LEFT);
+		if (nx > 0) {
+			if (isStandUp) {
+				SetState(SOPHIA_STATE_JUMP_UP_RIGHT);
+			}
+			else
+				SetState(SOPHIA_STATE_JUMP);
 		}
-		else
-			SetState(SOPHIA_STATE_JUMP);
+		else {
+			if (isStandUp) {
+				SetState(SOPHIA_STATE_JUMP_UP_LEFT);
+			}
+			else
+				SetState(SOPHIA_STATE_JUMP);
+		}
 	}
 }
 void CSophia::MoveUpKeyDown() {
 	moveup_start = GetTickCount();
-	//SetState(SOPHIA_STATE_MOVE_UP_RIGHT);
 	isMoveUp = TRUE;
 }
 void CSophia::MoveUpKeyUp() {
@@ -479,7 +483,6 @@ void CSophia::MoveUpKeyUp() {
 	isMoveUp = FALSE;
 	ResetAttackUp();
 }
-
 void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 {
 	if (isMoveUp == true && isStandUp != true) {
@@ -504,9 +507,16 @@ void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 	else if (nx < 0) {
 		obj->SetPosition(x, y + 16);
 	}
-
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
+}
+void CSophia::SetWalk() {
+	if (!isJumping) {
+		if (isStandUp) {
+			WalkUp();
+		}
+		else
+			Walk();
+	}
 }

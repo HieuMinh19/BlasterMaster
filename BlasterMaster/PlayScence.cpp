@@ -300,9 +300,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		//sophia->fire(objects);
 		break;
 	case DIK_R:
-		if (sophia->vx != 0) {
-			sophia->isJumpingWhileWalk = TRUE;
-		}
+		sophia->Jump();
 	}
 
 	((CPlayScene*)scence)->UpdateObjects(objects);
@@ -332,43 +330,23 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	if (game->IsKeyDown(DIK_LEFT)) {
 		sophia->SetNx(-1);
 		if (game->IsKeyDown(DIK_R)) {
-			if (!sophia->isJumping) {
-				sophia->isJumpingWhileWalk = true;
-				sophia->Jump();
-			}
+			sophia->Jump();
 		}
 		else {
-			if (!sophia->isJumping) {
-				if (sophia->isStandUp) {
-					sophia->WalkUp();
-				}
-				else
-					sophia->Walk();
-			}
+			sophia->SetWalk();
 		}
 	}
 	else if (game->IsKeyDown(DIK_RIGHT)) {
 		sophia->SetNx(1);
 		if (game->IsKeyDown(DIK_R)) {
-			if (!sophia->isJumping) {
-				sophia->isJumpingWhileWalk = true;
-				sophia->Jump();
-			}
+			sophia->Jump();
 		}
 		else {
-			if (!sophia->isJumping|| !sophia->isJumpingWhileWalk) {
-				if (sophia->isStandUp) {
-					sophia->WalkUp();
-				}
-				else
-					sophia->Walk();
-			}
+			sophia->SetWalk();
 		}
 	}
 	else if (game->IsKeyDown(DIK_R)) {
-		if (!sophia->isJumping) {
-			sophia->Jump();
-		}
+		sophia->Jump();
 	}
 	else {
 		if (!sophia->isWalkAfterJump)

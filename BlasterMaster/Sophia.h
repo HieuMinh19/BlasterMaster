@@ -97,5 +97,6 @@ public:
 	void WalkUp();
 	void MoveUpKeyDown();
 	void MoveUpKeyUp();
+	void SetWalk();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
