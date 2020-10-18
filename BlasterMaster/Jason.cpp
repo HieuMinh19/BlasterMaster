@@ -36,7 +36,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	//if (state != STATE_DIE)
+	if (state != STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
@@ -76,7 +76,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CWorms*>(e->obj)) // if e->obj is worm
 			{
 				spawnItem(e->obj->x, e->obj->y);
-				e->obj->SetPosition(-1000, 0);
+				e->obj->SetPosition(-1000, 0);			//dirty way.
 			}
 		}
 
@@ -226,7 +226,7 @@ void CJason::fire(vector<LPGAMEOBJECT> &objects)
 
 	// General object setup
 	obj->SetPosition(x, y);
-	LPANIMATION_SET ani_set = animation_sets->Get(6);
+	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);

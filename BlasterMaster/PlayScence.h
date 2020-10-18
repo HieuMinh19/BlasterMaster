@@ -6,7 +6,7 @@
 #include "Brick.h"
 #include "Jason.h"
 #include "Items.h"
-
+#include "Config.h"
 
 class CPlayScene : public CScene
 {
