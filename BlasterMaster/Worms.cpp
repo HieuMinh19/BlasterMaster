@@ -26,32 +26,33 @@ void CWorms::SetState(int state)
 
 void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CMario* mario = CMario::GetInstance();
-	vx = x - mario->x > 0 ? -WORMS_WALKING_SPEED : WORMS_WALKING_SPEED;
+	CJason* jason = CJason::GetInstance();
+	vx = (x - jason->x > 0) ? -WORMS_WALKING_SPEED : WORMS_WALKING_SPEED;
 	CGameObject::Update(dt);
 	// Simple fall down
-	vy += WORMS_GRAVITY * dt;
+	vy = (vy >= WORMS_MAX_GRAVITY) 
+		? WORMS_MAX_GRAVITY 
+		: vy + WORMS_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 	CalcPotentialCollisions(coObjects, coEvents);
+	float min_tx, min_ty, nx = 0, ny;
+	float rdx = 0;
+	float rdy = 0;
 
+	// TODO: This is a very ugly designed function!!!!
+	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 	// No collision occured, proceed normally
-	if (coEvents.size() == 0)
+	if (coEventsResult.size() == 0)
 	{
 		x += dx;
 		y += dy;
 	}
 	else
 	{
-		float min_tx, min_ty, nx = 0, ny;
-		float rdx = 0;
-		float rdy = 0;
-
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
 		// block every object first!
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;

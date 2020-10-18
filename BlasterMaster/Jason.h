@@ -42,6 +42,7 @@
 
 class CJason : public CGameObject
 {
+	static CJason* __instance;
 	int untouchable;
 	boolean isCrawl;
 	DWORD untouchable_start;
@@ -62,4 +63,9 @@ public:
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void fire(vector<LPGAMEOBJECT> &objects);
+
+	//
+	void spawnItem(float x, float y);
+	static CJason* GetInstance(float x, float y);
+	static CJason* GetInstance();
 };

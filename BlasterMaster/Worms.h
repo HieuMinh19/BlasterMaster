@@ -2,10 +2,11 @@
 #include "Enemies.h"
 #include "Brick.h"
 #include "Utils.h"
-#include "Mario.h"
+#include "Jason.h"
 
 #define WORMS_WALKING_SPEED		0.03f
-#define WORMS_GRAVITY			0.001f
+#define WORMS_MAX_GRAVITY			0.5f
+#define WORMS_GRAVITY			0.003f
 
 #define WORMS_STATE_WALKING_RIGHT	100
 #define WORMS_STATE_WALKING_LEFT	200

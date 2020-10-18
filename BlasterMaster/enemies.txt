@@ -3,6 +3,7 @@
 0	textures\mario.png	255	255	255
 20	textures\misc.png	176	224	248
 90	textures\enemies-1.png	255	0	255
+30	textures\itemsandobjects.png	176	224	248 
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -40,6 +41,9 @@
 
 #BRICK
 20001	408	225	424	241	20
+
+#ITEMS
+30001	104	108	121	125	30
 
 # WORMS
 # walk right
@@ -81,6 +85,9 @@
 # ==== QUESTION MARK BRICK =========
 602	40001	1000	40001	100	40002	100	40003	100	40004	100
 
+# === ITEMS =========
+603	30001	100
+
 # ==== WORMS =========
 #walk right
 900	90001	100	90002	100
@@ -97,6 +104,8 @@
 1	400	401	402	403	500	501	502	503	599
 # BRICK 
 2	601
+# ITEMS
+3	603
 # QUESTION MARK BRICK 
 22	602
 # WORMS
@@ -139,6 +148,8 @@
 1	416	150	2
 1	432	150	2
 1	448	150	2
+1	480	150	3
+1	64	100	3
 
 # ---- brick group 1 ----
 1	100	74	2

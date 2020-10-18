@@ -5,6 +5,10 @@
 #include "Jason.h"
 #include "Game.h"
 #include "Bullet.h"
+#include "Worms.h"
+#include "PlayScence.h"
+
+CJason* CJason::__instance = NULL;
 
 CJason::CJason(float x, float y) : CGameObject()
 {
@@ -32,41 +36,52 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state != STATE_DIE)
+	//if (state != STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
+	/*
 	if (GetTickCount() - untouchable_start > UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 	}
+	*/
+	float min_tx, min_ty, nx = 0, ny;
+	float rdx = 0;
+	float rdy = 0;
 
+	// TODO: This is a very ugly designed function!!!!
+	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 	// No collision occured, proceed normally
-	if (coEvents.size() == 0)
+	if (coEventsResult.size() == 0)
 	{
 		x += dx;
 		y += dy;
 	}
 	else
 	{
-		float min_tx, min_ty, nx = 0, ny;
-		float rdx = 0;
-		float rdy = 0;
-
-		// TODO: This is a very ugly designed function!!!!
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
-		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-
 		// block every object first!
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
 
 		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
+
+		//start collision with worm
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CWorms*>(e->obj)) // if e->obj is worm
+			{
+				spawnItem(e->obj->x, e->obj->y);
+				e->obj->SetPosition(-1000, 0);
+			}
+		}
+
+
+
 	}
 
 	// clean up collision events
@@ -216,4 +231,32 @@ void CJason::fire(vector<LPGAMEOBJECT> &objects)
 	obj->SetAnimationSet(ani_set);
 	objects.push_back(obj);
 
+}
+
+void CJason::spawnItem(float x, float y)
+{
+	CItems* items = new CItems();
+	// General object setup
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	CGameObject* obj = new CItems(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(3);
+	obj->SetAnimationSet(ani_set);
+	
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
+}
+
+CJason* CJason::GetInstance(float x, float y)
+{
+	if (__instance == NULL) __instance = new CJason(x, y);
+	return __instance;
+}
+
+CJason* CJason::GetInstance()
+{
+	if (__instance == NULL) __instance = new CJason();
+	return __instance;
 }
