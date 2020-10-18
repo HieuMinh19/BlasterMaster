@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 
 #include "PlayScence.h"
@@ -6,9 +6,6 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
-
-#include "Brick.h"
-#include "Intro.h"
 
 using namespace std;
 
@@ -30,10 +27,10 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_MARIO	0
+#define OBJECT_TYPE_sophia	0
 #define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_INTRO	4
-
+#define OBJECT_TYPE_GOOMBA	2
+#define OBJECT_TYPE_KOOPAS	3
 
 #define OBJECT_TYPE_PORTAL	50
 
@@ -145,27 +142,28 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
+	case OBJECT_TYPE_sophia:
 		if (player != NULL)
 		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			DebugOut(L"[ERROR] sophia object was created before!\n");
 			return;
 		}
-		obj = new CMario(x, y);
-		player = (CMario*)obj;
+		obj = new CSophia(x, y);
+		player = (CSophia*)obj;
 
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
+
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
-	/*case OBJECT_TYPE_PORTAL:
+
+	case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
 		float b = atof(tokens[5].c_str());
 		int scene_id = atoi(tokens[6].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
 	}
-	break;*/
+	break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -234,7 +232,7 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
+	// We know that sophia is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
@@ -246,12 +244,15 @@ void CPlayScene::Update(DWORD dt)
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update(dt, &coObjects);
+		if (objects[i]->state == -1) {
+			objects[i]->deleteObject(objects, i);
+		}
 	}
 
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	// skip the rest if scene was already unloaded (sophia::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
-	// Update camera to follow mario
+	// Update camera to follow sophia
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
@@ -284,32 +285,93 @@ void CPlayScene::Unload()
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
-	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-
-	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
-	if (mario == NULL) return;		//intro screen.
+	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
+	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
-		mario->SetState(MARIO_STATE_JUMP);
-		break;
 	case DIK_A:
-		mario->Reset();
+		sophia->Reset();
+		break;
+	case DIK_UP:
+		sophia->MoveUpKeyDown();
+		break;
+	case DIK_Z:
+		//sophia->fire(objects);
+		break;
+	case DIK_R:
+		if (sophia->vx != 0) {
+			sophia->isJumpingWhileWalk = TRUE;
+		}
+	}
+
+	((CPlayScene*)scence)->UpdateObjects(objects);
+}
+
+void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
+{
+	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+
+	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+	switch (KeyCode)
+	{
+	case DIK_UP:
+		sophia->MoveUpKeyUp();
 		break;
 	}
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
+
 	CGame* game = CGame::GetInstance();
-	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
-	if (mario == NULL) return;	//return if intro
-	// disable control key when Mario die 
-	if (mario->GetState() == MARIO_STATE_DIE) return;
-	if (game->IsKeyDown(DIK_RIGHT))
-		mario->SetState(MARIO_STATE_WALKING_RIGHT);
-	else if (game->IsKeyDown(DIK_LEFT))
-		mario->SetState(MARIO_STATE_WALKING_LEFT);
-	else
-		mario->SetState(MARIO_STATE_IDLE);
+	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+
+	// disable control key when sophia die 
+	if (sophia->GetState() == SOPHIA_STATE_DIE) return;
+	if (game->IsKeyDown(DIK_LEFT)) {
+		sophia->SetNx(-1);
+		if (game->IsKeyDown(DIK_R)) {
+			if (!sophia->isJumping) {
+				sophia->isJumpingWhileWalk = true;
+				sophia->Jump();
+			}
+		}
+		else {
+			if (!sophia->isJumping) {
+				if (sophia->isStandUp) {
+					sophia->WalkUp();
+				}
+				else
+					sophia->Walk();
+			}
+		}
+	}
+	else if (game->IsKeyDown(DIK_RIGHT)) {
+		sophia->SetNx(1);
+		if (game->IsKeyDown(DIK_R)) {
+			if (!sophia->isJumping) {
+				sophia->isJumpingWhileWalk = true;
+				sophia->Jump();
+			}
+		}
+		else {
+			if (!sophia->isJumping|| !sophia->isJumpingWhileWalk) {
+				if (sophia->isStandUp) {
+					sophia->WalkUp();
+				}
+				else
+					sophia->Walk();
+			}
+		}
+	}
+	else if (game->IsKeyDown(DIK_R)) {
+		if (!sophia->isJumping) {
+			sophia->Jump();
+		}
+	}
+	else {
+		if (!sophia->isWalkAfterJump)
+			sophia->SetState(SOPHIA_STATE_IDLE);
+	}
 }
