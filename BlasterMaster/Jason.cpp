@@ -1,4 +1,4 @@
-#include <algorithm>
+﻿#include <algorithm>
 #include <assert.h>
 #include "Utils.h"
 
@@ -13,6 +13,8 @@ CJason::CJason(float x, float y) : CGameObject()
 	untouchable = 0;
 	SetState(STATE_IDLE);
 	isCrawl = false;
+	alpha = 255;
+	health = JASON_MAX_HEALTH;
 
 	start_x = x;
 	start_y = y;
@@ -42,6 +44,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+		alpha = 255;
 	}
 
 	// No collision occured, proceed normally
@@ -75,18 +78,17 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CWorms*>(e->obj)) // if e->obj is worm
+			if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
 			{
-				CWorms* worm = dynamic_cast<CWorms*>(e->obj);
-				CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-				CGameObject* obj = new CItems();
-				// General object setup
-				obj->SetPosition(64, 100);
-				LPANIMATION_SET ani_set = animation_sets->Get(3);
-				DebugOut(L"Animation set %d\n", ani_set->size());
-				obj->SetAnimationSet(ani_set);
-				coObjects->push_back(obj);
-				DebugOut(L"you've just touched worm to the top!! \n");
+				if (untouchable == 0)
+				{
+					health--;
+					DebugOut(L"[ERROR] Máu %i \n", health);
+					if (health > 0)
+						StartUntouchable();
+					else
+						SetState(STATE_DIE);
+				}
 			}
 			else {
 
@@ -131,8 +133,13 @@ void CJason::Render()
 		}
 
 
-	int alpha = 255;
-	if (untouchable) alpha = 128;
+	
+	if (untouchable) {
+		if (alpha >= 128)
+			alpha = 50;
+		else 
+			alpha = 128;
+	}
 
 	animation_set->at(ani)->Render(x, y, alpha);
 

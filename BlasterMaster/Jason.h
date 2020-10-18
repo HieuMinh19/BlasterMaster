@@ -38,6 +38,7 @@
 #define CRAWL_BBOX_HEIGHT 8
 
 #define UNTOUCHABLE_TIME 10000
+#define JASON_MAX_HEALTH 8
 
 
 class CJason : public CGameObject
@@ -45,6 +46,8 @@ class CJason : public CGameObject
 	int untouchable;
 	boolean isCrawl;
 	DWORD untouchable_start;
+	int alpha;
+	int health;
 
 	float start_x;			// initial position of Mario at scene
 	float start_y;
