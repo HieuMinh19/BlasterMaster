@@ -7,11 +7,16 @@
 #include "Jason.h"
 #include "Items.h"
 #include "Config.h"
+#include "Sophia.h"
 
 class CPlayScene : public CScene
 {
 protected:
+<<<<<<< HEAD
 	CJason * player;					// A play scene has to have player, right? 
+=======
+	CSophia* player;					// A play scene has to have player, right? 
+>>>>>>> Player/Sophia
 
 	vector<LPGAMEOBJECT> objects;
 
@@ -34,7 +39,8 @@ public:
 	void AddObject(LPGAMEOBJECT gameObject);
 	vector<LPGAMEOBJECT> GetObjects() { return objects; }
 	CJason* GetPlayer() { return player; }
-
+	//CSophia* GetPlayer() { return player; }
+	virtual void UpdateObjects(vector<LPGAMEOBJECT> objs) { objects = objs; };
 	//friend class CPlayScenceKeyHandler;
 };
 
@@ -43,7 +49,7 @@ class CPlayScenceKeyHandler : public CScenceKeyHandler
 public:
 	virtual void KeyState(BYTE* states);
 	virtual void OnKeyDown(int KeyCode);
-	virtual void OnKeyUp(int KeyCode) {};
+	virtual void OnKeyUp(int KeyCode);
 	CPlayScenceKeyHandler(CScene* s) :CScenceKeyHandler(s) {};
 };
 

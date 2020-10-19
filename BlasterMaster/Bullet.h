@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-#define BULLET_WALKING_SPEED 0.215f;
+#define BULLET_WALKING_SPEED 0.25f;
 
 #define BULLET_BBOX_WIDTH 5
 #define BULLET_BBOX_HEIGHT 5

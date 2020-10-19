@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 
 #include "PlayScence.h"
@@ -6,10 +6,13 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+<<<<<<< HEAD
 #include "Brick.h"
 #include "Intro.h"
 #include "Bullet.h"
 #include "Worms.h"
+=======
+>>>>>>> Player/Sophia
 
 using namespace std;
 
@@ -24,6 +27,24 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	See scene1.txt, scene2.txt for detail format specification
 */
 
+<<<<<<< HEAD
+=======
+#define SCENE_SECTION_UNKNOWN -1
+#define SCENE_SECTION_TEXTURES 2
+#define SCENE_SECTION_SPRITES 3
+#define SCENE_SECTION_ANIMATIONS 4
+#define SCENE_SECTION_ANIMATION_SETS	5
+#define SCENE_SECTION_OBJECTS	6
+
+#define OBJECT_TYPE_sophia	0
+#define OBJECT_TYPE_BRICK	1
+#define OBJECT_TYPE_GOOMBA	2
+#define OBJECT_TYPE_KOOPAS	3
+
+#define OBJECT_TYPE_PORTAL	50
+
+#define MAX_SCENE_LINE 1024
+>>>>>>> Player/Sophia
 
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
@@ -132,28 +153,36 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_JASON:
+	case OBJECT_TYPE_sophia:
+
 		if (player != NULL)
 		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			DebugOut(L"[ERROR] sophia object was created before!\n");
 			return;
 		}
+<<<<<<< HEAD
 		obj = CJason::GetInstance(x, y);
 		player = (CJason*)obj;
+=======
+		obj = new CSophia(x, y);
+		player = (CSophia*)obj;
+
+>>>>>>> Player/Sophia
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
+
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
-	
-	/*case OBJECT_TYPE_PORTAL:
-	{
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int scene_id = atoi(tokens[6].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
-	}
-	break;*/
+	// case OBJECT_TYPE_PORTAL:
+	// {
+	// 	float r = atof(tokens[4].c_str());
+	// 	float b = atof(tokens[5].c_str());
+	// 	int scene_id = atoi(tokens[6].c_str());
+	// 	obj = new CPortal(x, y, r, b, scene_id);
+	// }
+	// break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -221,7 +250,7 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
+	// We know that sophia is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
@@ -259,10 +288,10 @@ void CPlayScene::Update(DWORD dt)
 		}
 	}
 
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	// skip the rest if scene was already unloaded (sophia::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
-	// Update camera to follow mario
+	// Update camera to follow sophia
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
@@ -300,7 +329,31 @@ void CPlayScene::AddObject(LPGAMEOBJECT gameObject)
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
+	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
+	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+	switch (KeyCode)
+	{
+	case DIK_A:
+		sophia->Reset();
+		break;
+	case DIK_UP:
+		sophia->MoveUpKeyDown();
+		break;
+	case DIK_Z:
+		//sophia->fire(objects);
+		break;
+	case DIK_R:
+		sophia->Jump();
+	}
+
+	((CPlayScene*)scence)->UpdateObjects(objects);
+}
+
+void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
+{
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+<<<<<<< HEAD
 	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
 	CJason* jason = ((CPlayScene*)scence)->GetPlayer();
 	if (jason == NULL) return;		//intro screen.
@@ -316,13 +369,24 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			jason->fire(objects);
 			break;
 			
+=======
+
+	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+	switch (KeyCode)
+	{
+	case DIK_UP:
+		sophia->MoveUpKeyUp();
+		break;
+>>>>>>> Player/Sophia
 	}
 	((CPlayScene*)scence)->UpdateObjects(objects);
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE* states)
 {
+
 	CGame* game = CGame::GetInstance();
+<<<<<<< HEAD
 	CJason* jason = ((CPlayScene*)scence)->GetPlayer();
 	if (jason == NULL) return;	//return if intro
 
@@ -335,3 +399,35 @@ void CPlayScenceKeyHandler::KeyState(BYTE* states)
 	else
 		jason->SetState(STATE_IDLE);
 }
+=======
+	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+
+	// disable control key when sophia die 
+	if (sophia->GetState() == SOPHIA_STATE_DIE) return;
+	if (game->IsKeyDown(DIK_LEFT)) {
+		sophia->SetNx(-1);
+		if (game->IsKeyDown(DIK_R)) {
+			sophia->Jump();
+		}
+		else {
+			sophia->SetWalk();
+		}
+	}
+	else if (game->IsKeyDown(DIK_RIGHT)) {
+		sophia->SetNx(1);
+		if (game->IsKeyDown(DIK_R)) {
+			sophia->Jump();
+		}
+		else {
+			sophia->SetWalk();
+		}
+	}
+	else if (game->IsKeyDown(DIK_R)) {
+		sophia->Jump();
+	}
+	else {
+		if (!sophia->isWalkAfterJump)
+			sophia->SetState(SOPHIA_STATE_IDLE);
+	}
+}
+>>>>>>> Player/Sophia

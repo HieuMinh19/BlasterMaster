@@ -4,7 +4,6 @@ CBullet::CBullet(float playerNX)
 	nx = playerNX;
 	SetState(BULLET_STATE_FLYING);
 }
-
 void CBullet::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
@@ -47,8 +46,6 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
 
-	
-
 		if (nx != 0 || ny != 0) SetState(BULLET_STATE_DIE);
 	}
 
@@ -68,8 +65,13 @@ void CBullet::SetState(int state)
 	{
 	case BULLET_STATE_FLYING:
 		vx = BULLET_WALKING_SPEED
-		if(nx<0)
+		if (nx < 0)
 			vx = -BULLET_WALKING_SPEED;
+		if (nx == 0)
+		{
+			vx = 0;
+			vy = -BULLET_WALKING_SPEED;
+		}
 		break;
 	case BULLET_STATE_DIE:
 		break;
