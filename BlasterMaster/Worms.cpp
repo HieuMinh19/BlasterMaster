@@ -30,7 +30,7 @@ void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vx = x - mario->x > 0 ? -WORMS_WALKING_SPEED : WORMS_WALKING_SPEED;
 	CGameObject::Update(dt);
 	// Simple fall down
-	vy += WORMS_GRAVITY * dt;
+	vy = WORMS_GRAVITY;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -84,8 +84,8 @@ void CWorms::Render()
 
 void CWorms::CollisionHandleWithBrick(float nx)
 {
-	if (nx != 0)
+	if (nx == 1)
 	{
-		vy = -0.03;
+		vy = -WORMS_WALKING_SPEED;
 	}
 }

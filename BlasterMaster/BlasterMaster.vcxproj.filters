@@ -75,6 +75,9 @@
     <ClCompile Include="Worms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Domes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -135,6 +138,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Worms.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Domes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

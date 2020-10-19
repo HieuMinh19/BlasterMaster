@@ -10,6 +10,7 @@
 #include "Brick.h"
 #include "Intro.h"
 #include "Worms.h"
+#include "Domes.h"
 
 using namespace std;
 
@@ -36,6 +37,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define OBJECT_TYPE_INTRO	4
 
 #define OBJECT_TYPE_WORMS	9
+#define OBJECT_TYPE_DOMES	10
 
 
 #define OBJECT_TYPE_PORTAL	50
@@ -139,7 +141,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
-
+	float _vx = 0;
+	float _vy = 0;
 	int ani_set_id = atoi(tokens[3].c_str());
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -162,6 +165,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
+	case OBJECT_TYPE_DOMES: 
+		_vx = atof(tokens[4].c_str());
+		_vy = atof(tokens[5].c_str());
+		obj = new CDomes(_vx, _vy);
+		break;
 	/*case OBJECT_TYPE_PORTAL:
 	{
 		float r = atof(tokens[4].c_str());
@@ -221,11 +229,11 @@ void CPlayScene::Load()
 		//
 		switch (section)
 		{
-		case SCENE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
-		case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
-		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
-		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
-		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+			case SCENE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
+			case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
+			case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
+			case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
+			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
 

@@ -147,6 +147,7 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Breakable.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Domes.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="Breakable.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="Domes.h" />
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
