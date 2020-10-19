@@ -6,6 +6,7 @@
 
 #include "Sprites.h"
 #include "Animations.h"
+#include "Config.h"
 
 
 using namespace std;
