@@ -12,11 +12,10 @@
 class CPlayScene : public CScene
 {
 protected:
-<<<<<<< HEAD
 	CJason * player;					// A play scene has to have player, right? 
-=======
-	CSophia* player;					// A play scene has to have player, right? 
->>>>>>> Player/Sophia
+//=======
+//	CSophia* player;					// A play scene has to have player, right? 
+//>>>>>>> Player/Sophia
 
 	vector<LPGAMEOBJECT> objects;
 
@@ -40,7 +39,6 @@ public:
 	vector<LPGAMEOBJECT> GetObjects() { return objects; }
 	CJason* GetPlayer() { return player; }
 	//CSophia* GetPlayer() { return player; }
-	virtual void UpdateObjects(vector<LPGAMEOBJECT> objs) { objects = objs; };
 	//friend class CPlayScenceKeyHandler;
 };
 

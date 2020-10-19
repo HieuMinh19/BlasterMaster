@@ -27,6 +27,29 @@ PLAYER_UNTOUCHABLE_TIME		5000
 
 class CPlayer: public CGameObject
 {
+protected:
+	int untouchable;
+	boolean isSpecialAni;
+	DWORD untouchable_start;
+	int health;
+
+	float start_x;			// initial position of Mario at scene
+	float start_y;
+
+public:
+	CPlayer(float x = 0.0f, float y = 0.0f);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL) = 0;
+	virtual void Render() = 0;
+
+	virtual void SetState(int state) = 0;
+	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	virtual void MoveRight() = 0;
+	virtual void MoveLeft() = 0;
+
+	void Reset();
+
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
+	void Fire(vector<LPGAMEOBJECT>& objects);
 
 };
 
