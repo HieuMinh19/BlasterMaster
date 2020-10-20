@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Player.h"
 
 #define WALKING_SPEED		0.15f 
 #define CRAWL_SPEED			0.05f 
@@ -41,11 +42,10 @@
 #define JASON_MAX_HEALTH 8
 
 
-class CJason : public CGameObject
+class CJason : public CPlayer
 {
 	static CJason* __instance;
 	int untouchable;
-	boolean isCrawl;
 	DWORD untouchable_start;
 	int alpha;
 	int health;
@@ -61,6 +61,12 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void MoveRight();
 	void MoveLeft();
+	void KeyDown();
+	void KeyUp();
+	void KeyLeft();
+	void KeyRight();
+	void KeyX();
+
 
 	void Reset();
 

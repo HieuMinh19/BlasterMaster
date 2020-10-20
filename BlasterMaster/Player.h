@@ -25,11 +25,14 @@ PLAYER_UNTOUCHABLE_TIME		5000
 #define PLAYER_ANI_IDLE_RIGHT		0
 #define PLAYER_ANI_IDLE_LEFT		1
 
+#define UNTOUCHABLE_ALPHA 64
+
 class CPlayer: public CGameObject
 {
 protected:
 	int untouchable;
 	boolean isSpecialAni;
+	boolean isJump;
 	DWORD untouchable_start;
 	int health;
 
@@ -37,15 +40,17 @@ protected:
 	float start_y;
 
 public:
-	CPlayer(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL) = 0;
 	virtual void Render() = 0;
 
 	virtual void SetState(int state) = 0;
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
-	virtual void MoveRight() = 0;
-	virtual void MoveLeft() = 0;
-
+	virtual void KeyRight() = 0;
+	virtual void KeyLeft() = 0;
+	virtual void KeyUp() = 0;
+	virtual void KeyDown() = 0;
+	virtual void KeyX() = 0;
+	
 	void Reset();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;

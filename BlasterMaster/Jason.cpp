@@ -1,5 +1,6 @@
 ﻿#include <algorithm>
 #include "Utils.h"
+#include "Player.h"
 
 #include "Jason.h"
 #include "Game.h"
@@ -9,11 +10,11 @@
 
 CJason* CJason::__instance = NULL;
 
-CJason::CJason(float x, float y) : CGameObject()
+CJason::CJason(float x, float y) : CPlayer()
 {
 	untouchable = 0;
 	SetState(STATE_IDLE);
-	isCrawl = false;
+	isSpecialAni = false;
 	alpha = 255;
 	health = JASON_MAX_HEALTH;
 
@@ -103,7 +104,7 @@ void CJason::Render()
 	if (state == STATE_DIE)
 		ani = ANI_DIE;
 	else
-		if (isCrawl == false)
+		if (isSpecialAni == false)
 		{
 			if (vx == 0)
 			{
@@ -129,10 +130,10 @@ void CJason::Render()
 
 	
 	if (untouchable) {
-		if (alpha >= 128)
-			alpha = 50;
+		if (alpha >= UNTOUCHABLE_ALPHA)
+			alpha = UNTOUCHABLE_ALPHA;
 		else 
-			alpha = 128;
+			alpha = UNTOUCHABLE_ALPHA * 2;
 	}
 
 	animation_set->at(ani)->Render(x, y, alpha);
@@ -172,15 +173,15 @@ void CJason::SetState(int state)
 		nx = -1;
 		break;
 	case STATE_CRAWL_IDLE:
-		if (isCrawl) {
+		if (isSpecialAni) {
 			y -= CRAWL_BBOX_HEIGHT;
 			RenderBoundingBox();
-			isCrawl = false;
+			isSpecialAni = false;
 		}
 		else {
 			y += CRAWL_BBOX_HEIGHT;
 			RenderBoundingBox();
-			isCrawl = true;
+			isSpecialAni = true;
 		}
 		vx = 0;
 		break;
@@ -192,7 +193,7 @@ void CJason::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	left = x;
 	top = y;
 
-	if (!isCrawl)
+	if (!isSpecialAni)
 	{
 		right = x + BBOX_WIDTH;
 		bottom = y + BBOX_HEIGHT;
@@ -214,17 +215,17 @@ void CJason::Reset()
 	SetSpeed(0, 0);
 }
 
-void CJason::MoveRight()
+void CJason::KeyRight()
 {
-	if (isCrawl == false)
+	if (isSpecialAni == false)
 		SetState(STATE_WALKING_RIGHT);
 	else
 		SetState(STATE_CRAWL_WALKING_RIGHT);
 }
 
-void CJason::MoveLeft()
+void CJason::KeyLeft()
 {
-	if (isCrawl == false)
+	if (isSpecialAni == false)
 		SetState(STATE_WALKING_LEFT);
 	else
 		SetState(STATE_CRAWL_WALKING_LEFT);
@@ -249,7 +250,6 @@ void CJason::fire(vector<LPGAMEOBJECT> &objects)
 
 void CJason::spawnItem(float x, float y)
 {
-	CItems* items = new CItems();
 	// General object setup
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 	CGameObject* obj = new CItems(x, y);
@@ -273,4 +273,22 @@ CJason* CJason::GetInstance()
 {
 	if (__instance == NULL) __instance = new CJason();
 	return __instance;
+}
+
+void CJason::KeyDown()
+{
+	if (state == STATE_JUMP)
+		return;
+	SetState(STATE_CRAWL_IDLE);
+}
+
+void CJason::KeyUp()
+{
+
+}
+
+void CJason::KeyX()
+{
+	if (isSpecialAni == false)
+		SetState(STATE_JUMP);
 }

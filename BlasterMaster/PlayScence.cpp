@@ -31,7 +31,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 #define SCENE_SECTION_ANIMATION_SETS	5
 #define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_sophia	0
+#define OBJECT_TYPE_SOPHIA	0
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_GOOMBA	2
 #define OBJECT_TYPE_KOOPAS	3
@@ -321,97 +321,76 @@ void CPlayScene::AddObject(LPGAMEOBJECT gameObject)
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
-	DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
-	//CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
-	//switch (KeyCode)
-	//{
-	//case DIK_A:
-	//	sophia->Reset();
-	//	break;
-	//case DIK_UP:
-	//	sophia->MoveUpKeyDown();
-	//	break;
-	//case DIK_Z:
-	//	//sophia->fire(objects);
-	//	break;
-	//case DIK_R:
-	//	sophia->Jump();
-	//}
+	CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
+	switch (KeyCode)
+	{
+		case DIK_A:
+			player->Reset();
+			break;
+		case DIK_UP:
+			player->KeyUp();
+			break;
+		case DIK_DOWN:
+			player->KeyDown();
+			break;
+		case DIK_LEFT:
+			player->KeyLeft();
+			break;	
+		case DIK_RIGHT:
+			player->KeyRight();
+			break;
+		case DIK_Z:
+			//sophia->fire(objects);
+			break;
+		case DIK_X:
+			player->KeyX();
+			break;
+	}
 
-	//((CPlayScene*)scence)->UpdateObjects(objects);
+	((CPlayScene*)scence)->UpdateObjects(objects);
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
-	CJason* jason = ((CPlayScene*)scence)->GetPlayer();
-	if (jason == NULL) return;		//intro screen.
-	switch (KeyCode)
-	{
-	case DIK_SPACE:
-		jason->SetState(STATE_JUMP);
-		break;
-	case DIK_DOWN:
-		jason->SetState(STATE_CRAWL_IDLE);
-		break;
-	case DIK_Z:
-		jason->fire(objects);
-		break;
+	//vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
+	//CPlayer *player = ((CPlayScene*)scence)->GetPlayer();
+	//if (player == NULL) return;		//intro screen.
+	//switch (KeyCode)
+	//{
+	//case DIK_SPACE:
+	//	player->SetState(STATE_JUMP);
+	//	break;
+	//case DIK_DOWN:
+	//	player->SetState(STATE_CRAWL_IDLE);
+	//	break;
+	//case DIK_Z:
+	//	player->fire(objects);
+	//	break;
 
-		//CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
-		//switch (KeyCode)
-		//{
-		//case DIK_UP:
-		//	sophia->MoveUpKeyUp();
-		//	break;
-		//}
-		((CPlayScene*)scence)->UpdateObjects(objects);
-	}
+	//	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+	//	switch (KeyCode)
+	//	{
+	//	case DIK_UP:
+	//		sophia->MoveUpKeyUp();
+	//		break;
+	//	}
+	//}
+	//((CPlayScene*)scence)->UpdateObjects(objects);
+
 }
 void CPlayScenceKeyHandler::KeyState(BYTE * states)
 {
 
 	CGame* game = CGame::GetInstance();
-	CJason* jason = ((CPlayScene*)scence)->GetPlayer();
-	if (jason == NULL) return;	//return if intro
-
-	// disable control key when Mario die 
-	if (jason->GetState() == STATE_DIE) return;
+	CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
+	//if (player->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT))
-		jason->MoveRight();
+		player->KeyRight();
 	else if (game->IsKeyDown(DIK_LEFT))
-		jason->MoveLeft();
+		player->KeyLeft();
 	else
-		jason->SetState(STATE_IDLE);
-	//}
-	//	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
-	//
-	//	// disable control key when sophia die 
-	//	if (sophia->GetState() == SOPHIA_STATE_DIE) return;
-	//	if (game->IsKeyDown(DIK_LEFT)) {
-	//		sophia->SetNx(-1);
-	//		if (game->IsKeyDown(DIK_R)) {
-	//			sophia->Jump();
-	//		}
-	//		else {
-	//			sophia->SetWalk();
-	//		}
-	//	}
-	//	else if (game->IsKeyDown(DIK_RIGHT)) {
-	//		sophia->SetNx(1);
-	//		if (game->IsKeyDown(DIK_R)) {
-	//			sophia->Jump();
-	//		}
-	//		else {
-	//			sophia->SetWalk();
-	//		}
-	//	}
-	//	else if (game->IsKeyDown(DIK_R)) {
-	//		sophia->Jump();
-	//	}
-	//	else {
-	//		if (!sophia->isWalkAfterJump)
-	//			sophia->SetState(SOPHIA_STATE_IDLE);
+		player->SetState(PLAYER_STATE_IDLE);
 }
