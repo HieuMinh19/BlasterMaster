@@ -153,8 +153,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] sophia object was created before!\n");
 			return;
 		}
-		obj = CJason::GetInstance(x, y);
-		player = (CJason*)obj;
+		obj = CSophia::GetInstance(x, y);
+		player = (CSophia*)obj;
 //=======
 //		obj = new CSophia(x, y);
 //		player = (CSophia*)obj;

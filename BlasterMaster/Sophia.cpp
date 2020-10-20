@@ -9,7 +9,9 @@
 #include "Bullet.h"
 #include "Brick.h"
 
-CSophia::CSophia(float x, float y) : CGameObject()
+CSophia* CSophia::__instance = NULL;
+
+CSophia::CSophia(float x, float y) : CPlayer()
 {
 	level = SOPHIA_LEVEL_NORMAL;
 	untouchable = 0;
@@ -92,7 +94,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->ny < 0)
 				{
 					if (isJumping) {
-						ResetJump();
+						Reset();
 					}
 				}
 				else if (e->nx != 0)
@@ -126,13 +128,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			if (GetTickCount() - jump_start > SOPHIA_JUMP_TIME)
 			{
-				ResetJump();
-			}
-		}
-		else {
-			if (GetTickCount() - jump_start > SOPHIA_JUMP_TIME)
-			{
-				ResetJump();
+				Reset();
 			}
 		}
 	}
@@ -272,23 +268,10 @@ void CSophia::Render()
 
 		}
 	}
-	/*else if (level == SOPHIA_LEVEL_SMALL)
-	{
-		if (vx == 0)
-		{
-			if (nx>0) ani = SOPHIA_ANI_SMALL_IDLE_RIGHT;
-			else ani = SOPHIA_ANI_SMALL_IDLE_LEFT;
-		}
-		else if (vx > 0)
-			ani = SOPHIA_ANI_SMALL_WALKING_RIGHT;
-		else ani = SOPHIA_ANI_SMALL_WALKING_LEFT;
-	}*/
 
 	int alpha = 255;
 	if (untouchable) alpha = 128;
-
 	animation_set->at(ani)->Render(x, y, alpha);
-
 	RenderBoundingBox();
 }
 
@@ -338,7 +321,6 @@ void CSophia::SetState(int state)
 		break;
 	case SOPHIA_STATE_JUMP_UP_RIGHT:
 		// TODO: need to check if SOPHIA is *current* on a platform before allowing to jump again
-		//vy = -SOPHIA_JUMP_SPEED_Y;
 		if (isJumpingWhileWalk) {
 			vy = -SOPHIA_JUMP_WHILE_WALK_SPEED_Y;
 			if (nx > 0) {
@@ -397,37 +379,18 @@ void CSophia::GetBoundingBox(float& left, float& top, float& right, float& botto
 */
 void CSophia::Reset()
 {
+	isJumping = FALSE;
+	isJumpingWhileWalk = FALSE;
+	isWalkAfterJump = FALSE;
 	SetState(SOPHIA_STATE_IDLE);
 	SetLevel(SOPHIA_LEVEL_NORMAL);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
 	//reset sate jump
 	animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
-}
-void CSophia::ResetJump()
-{
-	isJumping = FALSE;
-	isJumpingWhileWalk = FALSE;
-	isWalkAfterJump = FALSE;
-	SetState(SOPHIA_STATE_IDLE);
-	SetLevel(SOPHIA_LEVEL_NORMAL);
-	//SetPosition(start_x, start_y);
-	SetSpeed(0, 0);
-	//reset sate jump
-	animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
 	animation_set->at(SOPHIA_ANI_JUMP_LEFT)->Reset();
 	animation_set->at(SOPHIA_ANI_JUMP_UP_RIGHT)->Reset();
 	animation_set->at(SOPHIA_ANI_JUMP_UP_LEFT)->Reset();
-
-}
-
-void CSophia::ResetAttackUp()
-{
-	SetState(SOPHIA_STATE_IDLE);
-	SetLevel(SOPHIA_LEVEL_NORMAL);
-	//SetPosition(start_x, start_y);
-	SetSpeed(0, 0);
-	//reset sate jump
 	animation_set->at(SOPHIA_ANI_MOVE_UP_RIGHT)->Reset();
 }
 
@@ -435,12 +398,6 @@ void CSophia::SetNx(int a) {
 	nx = a;
 }
 void CSophia::Walk() {
-	if (nx > 0) {
-		SetState(SOPHIA_STATE_WALKING_RIGHT);
-	}
-	else {
-		SetState(SOPHIA_STATE_WALKING_LEFT);
-	}
 }
 void CSophia::WalkUp() {
 	if (nx > 0) {
@@ -450,37 +407,13 @@ void CSophia::WalkUp() {
 		SetState(SOPHIA_STATE_WALK_UP_LEFT);
 	}
 }
-void CSophia::Jump() {
-	if (!isJumping) {
-		isJumping = true;
-		jump_start = GetTickCount();
-		if (vx != 0) {
-			isJumpingWhileWalk = TRUE;
-		}
-		if (nx > 0) {
-			if (isStandUp) {
-				SetState(SOPHIA_STATE_JUMP_UP_RIGHT);
-			}
-			else
-				SetState(SOPHIA_STATE_JUMP);
-		}
-		else {
-			if (isStandUp) {
-				SetState(SOPHIA_STATE_JUMP_UP_LEFT);
-			}
-			else
-				SetState(SOPHIA_STATE_JUMP);
-		}
-	}
-}
 void CSophia::MoveUpKeyDown() {
-	moveup_start = GetTickCount();
-	isMoveUp = TRUE;
+	
 }
 void CSophia::MoveUpKeyUp() {
 	isStandUp = FALSE;
 	isMoveUp = FALSE;
-	ResetAttackUp();
+	Reset();
 }
 void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 {
@@ -518,4 +451,66 @@ void CSophia::SetWalk() {
 		else
 			Walk();
 	}
+}
+void CSophia::KeyRight()
+{
+	if (isStandUp) {
+		SetState(SOPHIA_STATE_WALK_UP_RIGHT);
+	}
+	else {
+		SetState(SOPHIA_STATE_WALKING_RIGHT);
+	}
+}
+
+void CSophia::KeyLeft()
+{
+	if (isStandUp) {
+		SetState(SOPHIA_STATE_WALK_UP_LEFT);
+	} else{
+		SetState(SOPHIA_STATE_WALKING_LEFT);
+	}
+}
+
+void CSophia::KeyUp()
+{
+	moveup_start = GetTickCount();
+	isMoveUp = TRUE;
+}
+void CSophia::KeyDown()
+{
+
+}
+
+void CSophia::KeyX() {
+	if (!isJumping) {
+		isJumping = true;
+		jump_start = GetTickCount();
+		if (vx != 0) {
+			isJumpingWhileWalk = TRUE;
+		}
+		if (nx > 0) {
+			if (isStandUp) {
+				SetState(SOPHIA_STATE_JUMP_UP_RIGHT);
+			}
+			else
+				SetState(SOPHIA_STATE_JUMP);
+		}
+		else {
+			if (isStandUp) {
+				SetState(SOPHIA_STATE_JUMP_UP_LEFT);
+			}
+			else
+				SetState(SOPHIA_STATE_JUMP);
+		}
+	}
+}
+CSophia* CSophia::GetInstance(float x, float y)
+{
+	if (__instance == NULL) __instance = new CSophia(x, y);
+	return __instance;
+}
+CSophia* CSophia::GetInstance()
+{
+	if (__instance == NULL) __instance = new CSophia();
+	return __instance;
 }

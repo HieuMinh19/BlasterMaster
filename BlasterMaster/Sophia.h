@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Player.h"
 
 #define SOPHIA_WALKING_SPEED		0.15f 
 //0.1f
@@ -68,8 +69,9 @@
 #define SOPHIA_JUMP_TIME 1000
 #define SOPHIA_MOVEUP_START 450
 
-class CSophia : public CGameObject
+class CSophia :  public CPlayer
 {
+	static CSophia* __instance;
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
@@ -90,13 +92,20 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void fire(vector<LPGAMEOBJECT>& objects);
 	void Reset();
-	void ResetJump();
-	void ResetAttackUp();
 	void Jump();
 	void Walk();
 	void WalkUp();
 	void MoveUpKeyDown();
 	void MoveUpKeyUp();
 	void SetWalk();
+	void MoveRight();
+	void MoveLeft();
+	void KeyDown();
+	void KeyUp();
+	void KeyLeft();
+	void KeyRight();
+	void KeyX();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	static CSophia* GetInstance(float x, float y);
+	static CSophia* GetInstance();
 };
