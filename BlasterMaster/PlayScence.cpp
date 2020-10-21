@@ -24,22 +24,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	See scene1.txt, scene2.txt for detail format specification
 */
 
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
-#define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_JASON	0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
 
-#define OBJECT_TYPE_PORTAL	50
-#define OBJECT_TYPE_SOPHIA	7
-
-#define MAX_SCENE_LINE 1024
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
