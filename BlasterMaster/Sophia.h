@@ -56,8 +56,8 @@
 #define	SOPHIA_LEVEL_NORMAL	1
 #define	SOPHIA_LEVEL_MOVE_UP	2
 
-#define SOPHIA_BIG_BBOX_WIDTH  13
-#define SOPHIA_BIG_BBOX_HEIGHT 20
+#define SOPHIA_BBOX_WIDTH  13
+#define SOPHIA_BBOX_HEIGHT 20
 
 // #define SOPHIA_SMALL_BBOX_WIDTH  13
 // #define SOPHIA_SMALL_BBOX_HEIGHT 15
@@ -87,19 +87,11 @@ public:
 	virtual void Render();
 
 	void SetState(int state);
-	void SetNx(int a);
 	void SetLevel(int l) { level = l; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void fire(vector<LPGAMEOBJECT>& objects);
 	void Reset();
-	void Jump();
-	void Walk();
-	void WalkUp();
-	void MoveUpKeyDown();
-	void MoveUpKeyUp();
-	void SetWalk();
-	void MoveRight();
-	void MoveLeft();
+	void ResetStandUp();
 	void KeyDown();
 	void KeyUp();
 	void KeyLeft();

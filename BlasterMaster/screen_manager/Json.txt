@@ -124,6 +124,9 @@
 90003	46	412	62	421	90
 90004	64	412	81	421	90
 
+#TRAP
+30001	0	0	0	0	0
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -185,6 +188,7 @@
 507	11031	100	11032	100	11033	100
 #die
 599	11099	100
+
 #==== BULLET==== 
 901	90001	100 
 
@@ -203,6 +207,8 @@
 #walk left
 901	90003	100	90004	100
 
+# ==== TRAP =========
+701	30001	100
 #
 # id	ani1	ani2	ani3
 #
@@ -216,11 +222,12 @@
 # QUESTION MARK BRICK 
 22	602
 #SOPHIA
-#Shophia
+#Sophia
 7	400	401	402	403	404	405	406	407	408	409	410	411	412	413	414	415	416	417	499
 # WORMS
 6	900	901
-
+#TRAP
+8	701
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick
@@ -229,7 +236,7 @@
 # BULLET
 6	30	124	6
 # Sophia
-7	30	124	7
+7	30	100	7
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
 1	0	150	2
@@ -286,3 +293,9 @@
 #50	300	98	0	316	150	2
 # WORMS
 9	110.0	0	6
+
+# BRICK 
+# --- platform (hint: I created the list using Excel!) ----
+8	0	100	2
+
+

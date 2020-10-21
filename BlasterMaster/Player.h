@@ -40,9 +40,9 @@ protected:
 	float start_y;
 
 public:
+	int OBJECT_ID;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL) = 0;
 	virtual void Render() = 0;
-
 	virtual void SetState(int state) = 0;
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	virtual void KeyRight() = 0;

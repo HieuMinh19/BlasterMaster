@@ -49,14 +49,12 @@ class CJason : public CPlayer
 	DWORD untouchable_start;
 	int alpha;
 	int health;
-
 	float start_x;			// initial position of Mario at scene
 	float start_y;
 public:
 	CJason(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
-
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void MoveRight();
@@ -66,8 +64,6 @@ public:
 	void KeyLeft();
 	void KeyRight();
 	void KeyX();
-
-
 	void Reset();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

@@ -7,6 +7,7 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "Brick.h"
+#include "Trap.h"
 #include "Intro.h"
 #include "Bullet.h"
 #include "Worms.h"
@@ -141,7 +142,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			return;
 		}
 		obj = CJason::GetInstance(x, y);
-		player = (CJason*)obj;
+		
 //=======
 //		obj = new CSophia(x, y);
 //		player = (CSophia*)obj;
@@ -154,7 +155,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
-	case OBJECT_TYPE_SOPHIA: obj = new CSophia(); DebugOut(L"[INFO] shophia object created!\n"); break;
+	case OBJECT_TYPE_SOPHIA: 
+		obj = new CSophia();  
+		player = (CSophia*)obj; 
+		player->OBJECT_ID = OBJECT_TYPE_SOPHIA;
+		break;
+	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
 	// case OBJECT_TYPE_PORTAL:
 	// {
 	// 	float r = atof(tokens[4].c_str());
@@ -236,6 +242,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> brickObjects;
 	vector<LPGAMEOBJECT> enemyObjects;
+	vector<LPGAMEOBJECT> trapObjects;
 
 
 	for (size_t i = 1; i < objects.size(); i++)
@@ -246,7 +253,9 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
-
+		if (dynamic_cast<CTrap*>(objects[i])) {
+			trapObjects.push_back(objects[i]);
+		}
 		coObjects.push_back(objects[i]);
 	}
 
@@ -265,6 +274,13 @@ void CPlayScene::Update(DWORD dt)
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CSophia*>(objects[i])) {
+			vector<LPGAMEOBJECT> playerCoObjects;
+			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			playerCoObjects.insert(playerCoObjects.begin(), trapObjects.begin(), trapObjects.end());
+			objects[i]->Update(dt, &playerCoObjects);
 		}
 	}
 
@@ -367,6 +383,17 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	//	}
 	//}
 	//((CPlayScene*)scence)->UpdateObjects(objects);
+	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
+	CPlayer *player = ((CPlayScene*)scence)->GetPlayer();
+	
+	switch (KeyCode){
+	case DIK_UP:
+		DebugOut(L"[INFO] ID: %d\n", player->OBJECT_ID);
+		if(player->OBJECT_ID == OBJECT_TYPE_SOPHIA) {
+			player->KeyUp();
+			break;
+		}
+	}
 
 }
 void CPlayScenceKeyHandler::KeyState(BYTE * states)
