@@ -140,7 +140,6 @@ int Run()
 		else
 			Sleep(tickPerFrame - dt);
 	}
-
 	return 1;
 }
 

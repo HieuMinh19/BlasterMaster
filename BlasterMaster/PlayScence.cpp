@@ -10,6 +10,7 @@
 #include "Intro.h"
 #include "Bullet.h"
 #include "Worms.h"
+#include "Domes.h"
 
 using namespace std;
 
@@ -122,7 +123,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
-
+	float _vx = 0;
+	float _vy = 0;
 	int ani_set_id = atoi(tokens[3].c_str());
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -145,6 +147,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
+	case OBJECT_TYPE_DOMES:
+		_vx = atof(tokens[4].c_str());
+		_vy = atof(tokens[5].c_str());
+		obj = new CDomes(_vx, _vy);
+		break;
 	
 	/*case OBJECT_TYPE_PORTAL:
 	{
@@ -237,7 +244,9 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
-
+		//if (dynamic_cast<CDomes*>(objects[i])) {
+		//	enemyObjects.push_back(objects[i]);
+		//}
 		coObjects.push_back(objects[i]);
 	}
 
@@ -253,6 +262,11 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CDomes*>(objects[i])) {
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);
