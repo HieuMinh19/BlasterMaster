@@ -50,6 +50,7 @@ public:
 	virtual void KeyUp() = 0;
 	virtual void KeyDown() = 0;
 	virtual void KeyX() = 0;
+	virtual void KeyZ(vector<LPGAMEOBJECT> &objects) = 0;
 	
 	void Reset();
 

@@ -1,8 +1,14 @@
 #include "Bullet.h"
-CBullet::CBullet(float playerNX)
+#include "Utils.h"
+
+CBullet::CBullet(float playerNX) : CGameObject()
 {
+	DebugOut(L"[RENDER INFO]this is render\n");
 	nx = playerNX;
 	SetState(BULLET_STATE_FLYING);
+	timeDestroy = GetTickCount() + 500;
+	this->x = x;
+	this->y = y;
 }
 void CBullet::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
@@ -14,6 +20,13 @@ void CBullet::GetBoundingBox(float &left, float &top, float &right, float &botto
 
 void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	DebugOut(L"[RENDER INFO]this is render\n");
+	if (timeDestroy < GetTickCount() && state == BULLET_STATE_FLYING) {
+		SetState(BULLET_STATE_DESTROY);
+	}
+	if (timeDestroy + TIME_ANI_DESTROY < GetTickCount() && state == BULLET_STATE_DESTROY) {
+		SetState(STATE_DELETE);
+	}
 	CGameObject::Update(dt, coObjects);
 	//
 	// TO-DO: make sure Goomba can interact with the world and to each of them too!
@@ -23,7 +36,7 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
-	if (state != BULLET_STATE_DIE)
+	if (state != BULLET_STATE_DESTROY)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// No collision occured, proceed normally
@@ -46,7 +59,7 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0 || ny != 0) SetState(BULLET_STATE_DIE);
+		if (nx != 0 || ny != 0) SetState(BULLET_STATE_DESTROY);
 	}
 
 	// clean up collision events
@@ -55,7 +68,14 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CBullet::Render()
 {
-	animation_set->at(0)->Render(x, y);
+	int ani = 0;
+	if (state == BULLET_STATE_FLYING)
+		ani = ANI_FLYING;
+	else
+		ani = ANI_DESTROY;
+
+	animation_set->at(ani)->Render(x, y);
+	RenderBoundingBox();
 }
 
 void CBullet::SetState(int state)
@@ -73,7 +93,9 @@ void CBullet::SetState(int state)
 			vy = -BULLET_WALKING_SPEED;
 		}
 		break;
-	case BULLET_STATE_DIE:
+	case BULLET_STATE_DESTROY:
+		vx = 0;
+		y -= BULLET_BBOX_HEIGHT;
 		break;
 	}
 }

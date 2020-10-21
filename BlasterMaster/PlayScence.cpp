@@ -266,6 +266,12 @@ void CPlayScene::Update(DWORD dt)
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
+		if (dynamic_cast<CBullet*>(objects[i])) {
+			objects[i]->Update(dt, &coObjects);
+		}
+		if (objects[i]->state == STATE_DELETE) {
+			objects[i]->deleteObject(objects, i);
+		}
 	}
 
 	// skip the rest if scene was already unloaded (sophia::Update might trigger PlayScene::Unload)
@@ -331,6 +337,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			break;
 		case DIK_Z:
 			//sophia->fire(objects);
+			player->KeyZ(objects);
 			break;
 		case DIK_X:
 			player->KeyX();

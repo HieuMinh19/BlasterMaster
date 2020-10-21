@@ -504,6 +504,10 @@ void CSophia::KeyX() {
 		}
 	}
 }
+void CSophia::KeyZ(vector<LPGAMEOBJECT> &objects)
+{
+
+}
 CSophia* CSophia::GetInstance(float x, float y)
 {
 	if (__instance == NULL) __instance = new CSophia(x, y);
@@ -514,3 +518,5 @@ CSophia* CSophia::GetInstance()
 	if (__instance == NULL) __instance = new CSophia();
 	return __instance;
 }
+
+

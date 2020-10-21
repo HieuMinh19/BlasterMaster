@@ -42,14 +42,13 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
-	/*
 	if (GetTickCount() - untouchable_start > UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 		alpha = 255;
 	}
-	*/
+	
 	float min_tx, min_ty, nx = 0, ny;
 	float rdx = 0;
 	float rdy = 0;
@@ -127,10 +126,9 @@ void CJason::Render()
 			else ani = ANI_CRAWL_WALKING_LEFT;
 		}
 
-
 	
 	if (untouchable) {
-		if (alpha >= UNTOUCHABLE_ALPHA)
+		if (alpha > UNTOUCHABLE_ALPHA)
 			alpha = UNTOUCHABLE_ALPHA;
 		else 
 			alpha = UNTOUCHABLE_ALPHA * 2;
@@ -232,7 +230,7 @@ void CJason::KeyLeft()
 }
 
 
-void CJason::fire(vector<LPGAMEOBJECT> &objects)
+void CJason::KeyZ(vector<LPGAMEOBJECT> &objects)
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 

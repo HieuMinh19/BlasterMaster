@@ -105,6 +105,8 @@ public:
 	void KeyLeft();
 	void KeyRight();
 	void KeyX();
+	void KeyZ(vector<LPGAMEOBJECT> &objects);
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CSophia* GetInstance(float x, float y);
 	static CSophia* GetInstance();

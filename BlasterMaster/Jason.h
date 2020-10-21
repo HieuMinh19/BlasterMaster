@@ -66,7 +66,7 @@ public:
 	void KeyLeft();
 	void KeyRight();
 	void KeyX();
-
+	void KeyZ(vector<LPGAMEOBJECT> &objects);
 
 	void Reset();
 
