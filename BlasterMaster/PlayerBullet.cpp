@@ -1,4 +1,4 @@
-#include "Bullet.h"
+#include "PlayerBullet.h"
 #include "Utils.h"
 
 CBullet::CBullet(float playerNX) : CGameObject()

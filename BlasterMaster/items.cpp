@@ -3,7 +3,6 @@
 #include <assert.h>
 #include "Utils.h"
 #include "Game.h"
-#include "Bullet.h"
 
 //#define GET_ITEM
 //#define 

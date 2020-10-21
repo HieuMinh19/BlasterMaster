@@ -8,7 +8,7 @@
 #include "Portal.h"
 #include "Brick.h"
 #include "Intro.h"
-#include "Bullet.h"
+#include "PlayerBullet.h"
 #include "Worms.h"
 
 using namespace std;

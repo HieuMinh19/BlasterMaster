@@ -6,7 +6,7 @@
 #include "Game.h"
 
 #include "Portal.h"
-#include "Bullet.h"
+#include "PlayerBullet.h"
 #include "Brick.h"
 
 CSophia* CSophia::__instance = NULL;
