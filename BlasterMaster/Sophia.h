@@ -65,9 +65,10 @@
 #define SOPHIA_MOVE_UP_BBOX_WIDTH  13
 #define SOPHIA_MOVE_UP_BBOX_HEIGHT 50
 
-#define SOPHIA_UNTOUCHABLE_TIME 5000
+#define SOPHIA_UNTOUCHABLE_TIME 1500
 #define SOPHIA_JUMP_TIME 1000
 #define SOPHIA_MOVEUP_START 450
+#define SOPHIA_HEAL 100
 
 class CSophia :  public CPlayer
 {
@@ -80,7 +81,7 @@ class CSophia :  public CPlayer
 	float start_y;
 public:
 	int hover;
-	int heal = 100;
+	int heal;
 	boolean isJumping, isMoveUp, isStandUp, isJumpingWhileWalk, isWalkAfterJump;
 	DWORD jump_start, moveup_start;
 	CSophia(float x = 0.0f, float y = 0.0f);

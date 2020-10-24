@@ -17,7 +17,7 @@ CSophia::CSophia(float x, float y) : CPlayer()
 	level = SOPHIA_LEVEL_NORMAL;
 	untouchable = 0;
 	SetState(SOPHIA_STATE_IDLE);
-
+	heal = SOPHIA_HEAL;
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -281,7 +281,7 @@ void CSophia::Render()
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 	animation_set->at(ani)->Render(x, y, alpha);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CSophia::SetState(int state)
