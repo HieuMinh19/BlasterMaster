@@ -80,6 +80,7 @@ class CSophia :  public CPlayer
 	float start_y;
 public:
 	int hover;
+	int heal = 100;
 	boolean isJumping, isMoveUp, isStandUp, isJumpingWhileWalk, isWalkAfterJump;
 	DWORD jump_start, moveup_start;
 	CSophia(float x = 0.0f, float y = 0.0f);

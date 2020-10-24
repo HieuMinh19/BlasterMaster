@@ -105,6 +105,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CTrap* trap= dynamic_cast<CTrap*>(e->obj);
 				if (!untouchable) {
+					heal--;
 					untouchable = 1;
 					untouchable_start = GetTickCount();
 				}
@@ -120,7 +121,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//Jump checking
 	//DebugOut(L"[INFO] vx: %d\n", isWalkAfterJump);
 	//DebugOut(L"[INFO] jump: %d\n", isJumping);
-	DebugOut(L"[INFO] state: %d\n", state);
+	DebugOut(L"[INFO] heal: %d\n", heal);
 	if (isJumping) {
 		if (isJumpingWhileWalk) {
 			if (GetTickCount() - jump_start < SOPHIA_JUMP_TIME) {

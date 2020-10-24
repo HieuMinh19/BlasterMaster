@@ -294,8 +294,8 @@
 # WORMS
 9	110.0	0	6
 
-# BRICK 
-# --- platform (hint: I created the list using Excel!) ----
-8	0	100	2
+# TRAP
+8	0	150	2
+8	16	150	2
 
 
