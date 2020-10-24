@@ -4,9 +4,12 @@
 20	textures\misc.png	176	224	248
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
+70	textures\Area_2.png	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+#===============BACKGROUND-AREA2==============
+70000	0	0	1024	240	70
 # JASON
 # idle right
 10001	3	98	11	114	0
@@ -63,7 +66,8 @@
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
-
+# ==== BACKGROUND_AREA2 =========
+700	70000	1000
 # ==== MARIO =========
 #idle BIG right
 400	10001	100
@@ -105,6 +109,8 @@
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
+#===== BACKGROUND ==========
+7	700
 # MARIO
 1	400	401	402	502	500	501	403	503	599
 # BRICK 
@@ -119,7 +125,9 @@
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick
+# type: 0 = Mario , 1 = Brick, 7 = BACKGROUND
+#====== BACKGROUND =======
+7	0	0	7
 # MARIO
 0	50.0	0	1
 # BULLET

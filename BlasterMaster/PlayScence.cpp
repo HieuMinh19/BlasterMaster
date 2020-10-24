@@ -167,6 +167,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
+	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	// case OBJECT_TYPE_PORTAL:
 	// {
 	// 	float r = atof(tokens[4].c_str());
@@ -290,6 +291,9 @@ void CPlayScene::Update(DWORD dt)
 	CGame* game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
+	if (cx < 0) cx = 0;
+	DebugOut(L"[INFO] =============CX: %f\n", cx);
+	DebugOut(L"[INFO] =============CY: %f\n", cy);
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }

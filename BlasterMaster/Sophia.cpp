@@ -513,6 +513,7 @@ void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 void CSophia::SetWalk() {
 	if (!isJumping) {
 		if (isStandUp) {
+			if(nx > 0)
 			WalkUp();
 		}
 		else

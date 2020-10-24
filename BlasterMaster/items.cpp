@@ -5,17 +5,21 @@
 #include "Game.h"
 #include "Bullet.h"
 
-//#define GET_ITEM
-//#define 
-
-CItems::CItems(float x, float y) : CGameObject()
+CItems::CItems(float x, float y)
 {
-	//SetState(STATE_IDLE);
-	//isCrawl = false;
-	start_x = x;
-	start_y = y;
 	this->x = x;
 	this->y = y;
+
+	srand((unsigned)time(0));
+	//int randNum = rand()%(max-min + 1) + min; -> random between min -> max
+	this->type = rand() % (5) + 601;
+}
+
+CItems::CItems(int itemType, float x, float y)
+{
+	this->x = x;
+	this->y = y;
+	this->type = itemType;
 }
 
 void CItems::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -66,8 +70,8 @@ void CItems::Render()
 	RenderBoundingBox();
 }
 
-void CItems::getItemType(){
-	this->type = 601 + (std::rand() % (605 - 601 + 1));
+int CItems::getItemType(){
+	return this->type;
 }
 
 void CItems::setItemType(int typeItem){

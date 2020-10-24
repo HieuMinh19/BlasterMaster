@@ -127,8 +127,6 @@ void CJason::Render()
 			else ani = ANI_CRAWL_WALKING_LEFT;
 		}
 
-
-	
 	if (untouchable) {
 		if (alpha >= UNTOUCHABLE_ALPHA)
 			alpha = UNTOUCHABLE_ALPHA;

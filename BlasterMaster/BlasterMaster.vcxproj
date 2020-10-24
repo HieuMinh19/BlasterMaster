@@ -170,6 +170,7 @@
     <ClInclude Include="Breakable.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

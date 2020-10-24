@@ -8,6 +8,7 @@
 #include "Items.h"
 #include "Config.h"
 #include "Sophia.h"
+#include "Background.h"
 
 class CPlayScene : public CScene
 {
