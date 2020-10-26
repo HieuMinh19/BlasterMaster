@@ -1,7 +1,7 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	textures\SpritesTank.png	255	255	255
-20	textures\misc.png	176	224	248
+20	textures\bbox.png	237	38	26
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
 70	textures\Area_2.png	255	255	255
@@ -134,54 +134,8 @@
 6	30	124	6
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
-1	0	150	2
-1	16	150	2
-1	32	150	2
-1	48	150	2
-1	64	150	2
-1	80	150	2
-1	96	150	2
-1	112	150	2
-1	128	150	2
-1	144	150	2
-1	160	150	2
-1	176	150	2
-1	192	150	2
-1	208	150	2
-1	224	150	2
-1	240	150	2
-1	256	150	2
-1	272	150	2
-1	288	150	2
-1	304	150	2
-1	320	150	2
-1	336	150	2
-1	352	150	2
-1	368	150	2
-1	384	150	2
-1	400	150	2
-1	416	150	2
-1	432	150	2
-1	448	150	2
-
-# ---- item Hover -----
-
-1	64	100	3
-
-# ---- brick group 1 ----
-1	100	74	2
-1	100	90	22
-1	84	90	22
-
-# ---- brick group 2 ----
-1	160	74	2
-1	160	90	22
-1	144	90	22
-
-# ---- brick group 3 ----
-1	220	74	2
-1	220	90	22
-1	204	90	22
+# type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
+1	0	160	2	304	16  
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

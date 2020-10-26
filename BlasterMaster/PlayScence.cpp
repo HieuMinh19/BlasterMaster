@@ -163,9 +163,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_BRICK: {
+		DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
+		int width = atof(tokens[4].c_str());
+		int height = atof(tokens[5].c_str());
+		DebugOut(L"[BBOX] width: %d\n", width);
+		obj = new CBrick(height, width); break;
+	}
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
-	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
+	// case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	// case OBJECT_TYPE_PORTAL:
@@ -292,8 +298,6 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 	if (cx < 0) cx = 0;
-	DebugOut(L"[INFO] =============CX: %f\n", cx);
-	DebugOut(L"[INFO] =============CY: %f\n", cy);
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 }
