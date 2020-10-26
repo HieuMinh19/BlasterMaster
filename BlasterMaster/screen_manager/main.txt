@@ -8,3 +8,4 @@ start	5
 4	screen_manager\intro.txt
 5 	screen_manager\Json.txt
 6	screen_manager\enemies.txt
+7   screen_manager\area2_a.txt
