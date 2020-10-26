@@ -84,6 +84,14 @@
 90025	152	499	166	524	90
 90026	170	500	184	524	90
 
+# INSECT
+# walking left
+90027	104	530	121	547	90
+90028	84	533	101	547	90
+# walking right
+90029	132	530	149	547	90
+90030	152	533	169	547	90
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -149,6 +157,12 @@
 # jump right
 913	90025	100
 
+# ==== INSECT =========
+# walking left
+914	90027	100	90028	100
+# walking right
+915	90029	100	90030	100
+
 #
 # id	ani1	ani2	ani3
 #
@@ -164,19 +178,21 @@
 7	902	903	904	905	906	907	908	909
 # JUMPERS
 8	910	911	912	913
+# INSECT
+9	914	915
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 9 = Worms, 10 = DOMES, 11 = JUMPERS
+# type: 0 = Mario , 1 = Brick, 9 = Worms, 10 = DOMES, 11 = JUMPERS, 12 = INSECT
 
 # MARIO
-0	400.0	0	1
+0	50.0	0	1
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
-1	0	144	2
+1	0	200	2
 
-1	448	0	2
+1	-990	5	2
 
 1	0	-990	2
 
@@ -195,4 +211,7 @@
 #10	200	100	7	0.05	0.1
 
 # JUMPERS // 1 -> right // -1 -> left
-11	300	100	8	0.05
+#11	300	100	8	0.05
+
+# INSECT // 1 -> right // -1 -> left
+12	70	120	9	0.05

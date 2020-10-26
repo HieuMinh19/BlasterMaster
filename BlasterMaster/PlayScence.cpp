@@ -12,6 +12,7 @@
 #include "Worms.h"
 #include "Domes.h"
 #include "Jumpers.h"
+#include "Insect.h"
 
 using namespace std;
 
@@ -157,6 +158,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		_vx = atof(tokens[4].c_str());
 		obj = new CJumpers(_vx);
 		break;
+	case OBJECT_TYPE_INSECT:
+		_vx = atof(tokens[4].c_str());
+		obj = new CInsect(_vx);
+		break;
 	
 	/*case OBJECT_TYPE_PORTAL:
 	{
@@ -255,6 +260,9 @@ void CPlayScene::Update(DWORD dt)
 		//if (dynamic_cast<CJumpers*>(objects[i])) {
 		//	enemyObjects.push_back(objects[i]);
 		//}
+		//if (dynamic_cast<CInsect*>(objects[i])) {
+		//	enemyObjects.push_back(objects[i]);
+		//}
 		coObjects.push_back(objects[i]);
 	}
 
@@ -283,6 +291,10 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CJumpers*>(objects[i])) {
+			// enemy can colli with brick only
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CInsect*>(objects[i])) {
 			// enemy can colli with brick only
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
