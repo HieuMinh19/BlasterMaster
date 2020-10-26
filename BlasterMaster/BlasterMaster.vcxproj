@@ -147,6 +147,7 @@
     <ClCompile Include="Intro.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="Jason.cpp" />
+    <ClCompile Include="Jumpers.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="PlayScence.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Intro.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Jason.h" />
+    <ClInclude Include="Jumpers.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="PlayScence.h" />

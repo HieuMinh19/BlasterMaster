@@ -11,6 +11,7 @@
 #include "Bullet.h"
 #include "Worms.h"
 #include "Domes.h"
+#include "Jumpers.h"
 
 using namespace std;
 
@@ -123,9 +124,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
-	float _vx = 0;
-	float _vy = 0;
 	int ani_set_id = atoi(tokens[3].c_str());
+	float _vx;
+	float _vy;
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -151,6 +152,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		_vx = atof(tokens[4].c_str());
 		_vy = atof(tokens[5].c_str());
 		obj = new CDomes(_vx, _vy);
+		break;
+	case OBJECT_TYPE_JUMPERS: 
+		_vx = atof(tokens[4].c_str());
+		obj = new CJumpers(_vx);
 		break;
 	
 	/*case OBJECT_TYPE_PORTAL:
@@ -246,29 +251,39 @@ void CPlayScene::Update(DWORD dt)
 		}
 		//if (dynamic_cast<CDomes*>(objects[i])) {
 		//	enemyObjects.push_back(objects[i]);
+		////}
+		//if (dynamic_cast<CJumpers*>(objects[i])) {
+		//	enemyObjects.push_back(objects[i]);
 		//}
 		coObjects.push_back(objects[i]);
 	}
 
+	vector<LPGAMEOBJECT> playerCoObjects;
+	// player can colli with brick and enemy
+	// so we create a CoObject from brick object
+	// merge with enemy
+	playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+	playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+	//
+	vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+	//
+
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CJason*>(objects[i])) {
-			vector<LPGAMEOBJECT> playerCoObjects;
-			// player can colli with brick and enemy
-			// so we create a CoObject from brick object
-			// merge with enemy
-			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
-			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CDomes*>(objects[i])) {
 			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CJumpers*>(objects[i])) {
+			// enemy can colli with brick only
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
 	}

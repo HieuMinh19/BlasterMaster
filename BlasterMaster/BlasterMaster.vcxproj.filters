@@ -81,6 +81,9 @@
     <ClCompile Include="Domes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Jumpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Jumpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

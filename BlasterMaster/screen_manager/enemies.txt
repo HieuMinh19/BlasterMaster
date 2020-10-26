@@ -74,6 +74,16 @@
 90019	50	461	67	478	90
 90020	51	441	67	458	90
 
+# JUMPERS
+# walking left
+90021	105	500	121	524	90
+90022	87	499	101	524	90
+90023	69	500	83	524	90
+# walking right
+90024	132	500	148	524	90
+90025	152	499	166	524	90
+90026	170	500	184	524	90
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -129,6 +139,16 @@
 # left
 909	90019	100	90020	100
 
+# ==== JUMPERS =========
+# walking left
+910	90021	100	90022	100	90023	100
+# walking right
+911	90024	100	90025	100	90026	100
+# jump left
+912	90022	100
+# jump right
+913	90025	100
+
 #
 # id	ani1	ani2	ani3
 #
@@ -142,13 +162,15 @@
 6	900	901
 # DOMES
 7	902	903	904	905	906	907	908	909
+# JUMPERS
+8	910	911	912	913
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 9 = Worms, 10 = DOMES
+# type: 0 = Mario , 1 = Brick, 9 = Worms, 10 = DOMES, 11 = JUMPERS
 
 # MARIO
-0	50.0	0	1
+0	400.0	0	1
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -160,6 +182,8 @@
 
 1	-990	0	2
 
+1	370	-900	2
+
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 #50	300	98	0	316	150	2
@@ -168,6 +192,7 @@
 #9	110.0	0	6
 
 # DOMES
-10	150	100	7	0.05	0.1
+#10	200	100	7	0.05	0.1
 
-#10	150	90	7	0.05	-0.05
+# JUMPERS // 1 -> right // -1 -> left
+11	300	100	8	0.05

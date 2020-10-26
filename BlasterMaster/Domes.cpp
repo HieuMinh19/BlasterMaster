@@ -22,6 +22,7 @@ void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CDomes::SetState(int state)
 {
+	CGameObject::SetState(state);
 	this->state = state;
 	//DERECTION 1->UP // 2-> LEFT // 3->DOWN // 4->RIGHT
 	switch (state)
@@ -91,8 +92,6 @@ void CDomes::SetState(int state)
 		vy = 0;
 		break;
 	}
-	DebugOut(L"XXXXX2 %d %d %f %f\n", direction, state, vx, vy);
-
 }
 
 void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -279,7 +278,6 @@ void CDomes::SetStateAfterFirstCollision(float nx, float ny)
 
 	if (newState != NULL) {
 		SetState(newState);
-		DebugOut(L"XXXXX %d %d \n", direction, state);
 	}
 }
 
