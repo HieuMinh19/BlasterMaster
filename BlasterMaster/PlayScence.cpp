@@ -135,18 +135,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_JASON:
 	//case OBJECT_TYPE_sophia:
 
-		if (player != NULL)
-		{
-			DebugOut(L"[ERROR] sophia object was created before!\n");
-			return;
-		}
+		
 		obj = CJason::GetInstance(x, y);
-		player = (CJason*)obj;
-//=======
-//		obj = new CSophia(x, y);
-//		player = (CSophia*)obj;
-//
-//>>>>>>> Player/Sophia
+
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 
@@ -154,15 +145,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
-	case OBJECT_TYPE_SOPHIA: obj = new CSophia(); DebugOut(L"[INFO] shophia object created!\n"); break;
-	// case OBJECT_TYPE_PORTAL:
-	// {
-	// 	float r = atof(tokens[4].c_str());
-	// 	float b = atof(tokens[5].c_str());
-	// 	int scene_id = atoi(tokens[6].c_str());
-	// 	obj = new CPortal(x, y, r, b, scene_id);
-	// }
-	// break;
+	case OBJECT_TYPE_SOPHIA: obj = new CSophia();
+		obj = CSophia::GetInstance(x, y);
+		player = (CSophia*)obj;
+	
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -269,7 +256,13 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CBullet*>(objects[i])) {
 			objects[i]->Update(dt, &coObjects);
 		}
-		if (objects[i]->state == STATE_DELETE) {
+		if (dynamic_cast<CSophia*>(objects[i])) {
+			vector<LPGAMEOBJECT> playerCoObjects;
+			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			objects[i]->Update(dt, &playerCoObjects);
+		}
+		if (objects[i]->state == OBJECT_STATE_DELETE) {
 			objects[i]->deleteObject(objects, i);
 		}
 	}
@@ -316,7 +309,6 @@ void CPlayScene::AddObject(LPGAMEOBJECT gameObject)
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
 	CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
@@ -336,15 +328,16 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			player->KeyRight();
 			break;
 		case DIK_Z:
-			//sophia->fire(objects);
-			player->KeyZ(objects);
+			player->KeyZ();
 			break;
 		case DIK_X:
 			player->KeyX();
 			break;
+		case DIK_LSHIFT:
+			player->KeySHIFT();
+			break;
 	}
 
-	((CPlayScene*)scence)->UpdateObjects(objects);
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)

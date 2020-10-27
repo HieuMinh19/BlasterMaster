@@ -1,10 +1,11 @@
 #include "PlayerBullet.h"
 #include "Utils.h"
 
-CBullet::CBullet(float playerNX) : CGameObject()
+CBullet::CBullet(float playerNX, int ani) : CGameObject()
 {
 	DebugOut(L"[RENDER INFO]this is render\n");
 	nx = playerNX;
+	animation = ani;
 	SetState(BULLET_STATE_FLYING);
 	timeDestroy = GetTickCount() + 500;
 	this->x = x;
@@ -25,7 +26,7 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		SetState(BULLET_STATE_DESTROY);
 	}
 	if (timeDestroy + TIME_ANI_DESTROY < GetTickCount() && state == BULLET_STATE_DESTROY) {
-		SetState(STATE_DELETE);
+		SetState(OBJECT_STATE_DELETE);
 	}
 	CGameObject::Update(dt, coObjects);
 	//
@@ -70,7 +71,7 @@ void CBullet::Render()
 {
 	int ani = 0;
 	if (state == BULLET_STATE_FLYING)
-		ani = ANI_FLYING;
+		ani = animation;
 	else
 		ani = ANI_DESTROY;
 

@@ -56,8 +56,8 @@
 #define	SOPHIA_LEVEL_NORMAL	1
 #define	SOPHIA_LEVEL_MOVE_UP	2
 
-#define SOPHIA_BIG_BBOX_WIDTH  13
-#define SOPHIA_BIG_BBOX_HEIGHT 20
+#define SOPHIA_BBOX_WIDTH  13
+#define SOPHIA_BBOX_HEIGHT 20
 
 // #define SOPHIA_SMALL_BBOX_WIDTH  13
 // #define SOPHIA_SMALL_BBOX_HEIGHT 15
@@ -105,7 +105,8 @@ public:
 	void KeyLeft();
 	void KeyRight();
 	void KeyX();
-	void KeyZ(vector<LPGAMEOBJECT> &objects);
+	void KeyZ();
+	void KeySHIFT();
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CSophia* GetInstance(float x, float y);

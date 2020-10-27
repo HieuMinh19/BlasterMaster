@@ -2,8 +2,10 @@
 #include <assert.h>
 #include "Utils.h"
 
-#include "sophia.h"
+#include "Sophia.h"
+#include "Jason.h"
 #include "Game.h"
+#include "PlayScence.h"
 
 #include "Portal.h"
 #include "PlayerBullet.h"
@@ -94,7 +96,6 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->ny < 0)
 				{
 					if (isJumping) {
-						Reset();
 					}
 				}
 				else if (e->nx != 0)
@@ -112,7 +113,6 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//Jump checking
 	//DebugOut(L"[INFO] vx: %d\n", isWalkAfterJump);
 	//DebugOut(L"[INFO] jump: %d\n", isJumping);
-	DebugOut(L"[INFO] state: %d\n", state);
 	if (isJumping) {
 		if (isJumpingWhileWalk) {
 			if (GetTickCount() - jump_start < SOPHIA_JUMP_TIME) {
@@ -128,7 +128,6 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			if (GetTickCount() - jump_start > SOPHIA_JUMP_TIME)
 			{
-				Reset();
 			}
 		}
 	}
@@ -364,8 +363,8 @@ void CSophia::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 	if (level == SOPHIA_LEVEL_NORMAL)
 	{
-		right = x + SOPHIA_BIG_BBOX_WIDTH;
-		bottom = new_y + SOPHIA_BIG_BBOX_HEIGHT;
+		right = x + SOPHIA_BBOX_WIDTH;
+		bottom = new_y + SOPHIA_BBOX_HEIGHT;
 	}
 	else {
 		right = x + SOPHIA_MOVE_UP_BBOX_WIDTH;
@@ -379,19 +378,7 @@ void CSophia::GetBoundingBox(float& left, float& top, float& right, float& botto
 */
 void CSophia::Reset()
 {
-	isJumping = FALSE;
-	isJumpingWhileWalk = FALSE;
-	isWalkAfterJump = FALSE;
-	SetState(SOPHIA_STATE_IDLE);
-	SetLevel(SOPHIA_LEVEL_NORMAL);
-	SetPosition(start_x, start_y);
-	SetSpeed(0, 0);
-	//reset sate jump
-	animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
-	animation_set->at(SOPHIA_ANI_JUMP_LEFT)->Reset();
-	animation_set->at(SOPHIA_ANI_JUMP_UP_RIGHT)->Reset();
-	animation_set->at(SOPHIA_ANI_JUMP_UP_LEFT)->Reset();
-	animation_set->at(SOPHIA_ANI_MOVE_UP_RIGHT)->Reset();
+
 }
 
 void CSophia::SetNx(int a) {
@@ -420,28 +407,21 @@ void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 	if (isMoveUp == true && isStandUp != true) {
 		return;
 	}
-	int ani_set_id = 6;
+	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
-	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-
-	CGameObject* obj = NULL;
-	obj = new CBullet(nx);
+	CGameObject *obj = NULL;
+	obj = new CBullet(nx, ANI_JASON);
 
 	// General object setup
-	if (isStandUp == true) {
-		obj->vx = 0;
-		obj->vy = -BULLET_WALKING_SPEED;
-		obj->SetPosition(x + SOPHIA_BIG_BBOX_WIDTH / 2, y);//code xấu
-	}
-	else if (nx > 0) {
-		obj->SetPosition(x + SOPHIA_BIG_BBOX_WIDTH, y + 16);//code xấu
-	}
-	else if (nx < 0) {
-		obj->SetPosition(x, y + 16);
-	}
-	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+	obj->SetPosition(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
+
 	obj->SetAnimationSet(ani_set);
-	objects.push_back(obj);
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
 }
 void CSophia::SetWalk() {
 	if (!isJumping) {
@@ -504,9 +484,26 @@ void CSophia::KeyX() {
 		}
 	}
 }
-void CSophia::KeyZ(vector<LPGAMEOBJECT> &objects)
+void CSophia::KeyZ()
 {
+	if (isMoveUp == true && isStandUp != true) {
+		return;
+	}
+	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
+	CGameObject *obj = NULL;
+	obj = new CBullet(nx, ANI_SOPHIA_LEFT);
+
+	// General object setup
+	obj->SetPosition(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
+
+	obj->SetAnimationSet(ani_set);
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
 }
 CSophia* CSophia::GetInstance(float x, float y)
 {
@@ -519,4 +516,20 @@ CSophia* CSophia::GetInstance()
 	return __instance;
 }
 
+void CSophia::KeySHIFT()
+{
+	if (this->state != SOPHIA_STATE_IDLE)
+		return;
+	CJason* jason = dynamic_cast<CJason*> (
+		CJason::GetInstance()
+		);
+	jason->x = this->x + (SOPHIA_BBOX_WIDTH + BBOX_WIDTH) / 2;
+	jason->nx = this->nx;
+	jason->y = this->y;
+	jason->GetOut();
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)->SetPlayer(jason);
 
+}

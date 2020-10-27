@@ -17,7 +17,7 @@ CJason::CJason(float x, float y) : CPlayer()
 	isSpecialAni = false;
 	alpha = 255;
 	health = JASON_MAX_HEALTH;
-
+	inTank = true;
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -56,10 +56,13 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// TODO: This is a very ugly designed function!!!!
 	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 	// No collision occured, proceed normally
+
 	if (coEventsResult.size() == 0)
 	{
 		x += dx;
 		y += dy;
+		if (dy == 0)
+			isJump = false;
 	}
 	else
 	{
@@ -105,7 +108,14 @@ void CJason::Render()
 	else
 		if (isSpecialAni == false)
 		{
-			if (vx == 0)
+			if (isJump == true)
+			{
+				if (nx < 0)
+					ani = ANI_JUMP_LEFT;
+				else
+					ani = ANI_JUMP_RIGHT;
+			}
+			else if (vx == 0)
 			{
 				if (nx > 0) ani = ANI_IDLE_RIGHT;
 				else ani = ANI_IDLE_LEFT;
@@ -155,6 +165,7 @@ void CJason::SetState(int state)
 		break;
 	case STATE_JUMP:
 		vy = -JUMP_SPEED_Y;
+		isJump = true;
 		break;
 	case STATE_IDLE:
 		vx = 0;
@@ -230,19 +241,23 @@ void CJason::KeyLeft()
 }
 
 
-void CJason::KeyZ(vector<LPGAMEOBJECT> &objects)
+void CJason::KeyZ()
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
-	obj = new CBullet(nx);
+	obj = new CBullet(nx, ANI_JASON);
 
 	// General object setup
 	obj->SetPosition(x, y);
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 
 	obj->SetAnimationSet(ani_set);
-	objects.push_back(obj);
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
 
 }
 
@@ -287,6 +302,33 @@ void CJason::KeyUp()
 
 void CJason::KeyX()
 {
-	if (isSpecialAni == false)
+	if (isSpecialAni == false && isJump == false)
 		SetState(STATE_JUMP);
+}
+
+void CJason::KeySHIFT()
+{
+	if (this->state != PLAYER_STATE_IDLE)
+		return;
+	CSophia* sophia = dynamic_cast<CSophia*> (
+		CSophia::GetInstance()
+		);
+
+	float x = 0;
+	float y;
+	float z;
+	float t;
+
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)->SetPlayer(sophia);
+
+}
+
+
+void CJason::GetOut()
+{
+	this->vy = -JUMP_CHANGE_PLAYER_SPEED;
+	isJump = true;
 }
