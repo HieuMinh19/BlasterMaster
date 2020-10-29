@@ -40,33 +40,37 @@ void CInsect::SetState(int state)
 	case INSECT_STATE_JUMP_LEFT:
 		vx = -INSECT_WALKING_SPEED;
 		vy = -INSECT_JUMP_SPEED;
+		
+		break;
+	case INSECT_STATE_FALLING_LEFT:
+		vx = -INSECT_WALKING_SPEED;
+		vy = INSECT_GRAVITY;
 		ani = INSECT_ANI_WALKING_LEFT;
 		break;
-	case INSECT_STATE_FALLING:
-		vy = 0;
+	case INSECT_STATE_FALLING_RIGHT:
+		vx = INSECT_WALKING_SPEED;
+		vy = INSECT_GRAVITY;
+		ani = INSECT_ANI_WALKING_RIGHT;
 		break;
 	case INSECT_STATE_JUMP_COLLISION_UP:
-		vx = 0;
+		//direction // 0->right //1->left
+		if (vx > 0.0f)
+		{
+			direction = 0;
+		}
+		else
+		{
+			direction = 1;
+		}
 		vy = INSECT_FALLING_COLLISION_UP;
-		break;
-	case INSECT_STATE_JUMP_COLLISION_RIGHT:
-		vy= 0 ;
-		vx = -INSECT_WALKING_SPEED;
-		ani = INSECT_ANI_WALKING_LEFT;
-		break;
-	case INSECT_STATE_JUMP_COLLISION_LEFT:
-		vy = 0;
-		vx = INSECT_WALKING_SPEED;
-		ani = INSECT_ANI_WALKING_RIGHT;
 		break;
 	}
 }
 
 void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CJason* jason = CJason::GetInstance();
 	CGameObject::Update(dt);
-	vy += INSECT_GRAVITY * dt;
+	//vy += INSECT_GRAVITY * dt;
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -102,7 +106,14 @@ void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
-				
+				if (ny != 0.0f)
+				{
+					CollisionVertical(ny);
+				}
+				if (nx != 0.0f)
+				{
+					CollisionHorizontal(nx);
+				}
 			}
 		}
 	}
@@ -122,28 +133,69 @@ void CInsect::HandleWithoutCollision()
 	int newState = NULL;
 	DWORD now = GetTickCount();
 
-	if (state == INSECT_STATE_JUMP_RIGHT || state == INSECT_STATE_JUMP_LEFT)
+	if (now - jumpStartAt >= 400)
 	{
-		newState = INSECT_STATE_FALLING;
-		jumpStartAt = GetTickCount();
+		if (state == INSECT_STATE_JUMP_RIGHT)
+		{
+			newState = INSECT_STATE_FALLING_RIGHT;
+			jumpStartAt = GetTickCount();
+		}
+		if (state == INSECT_STATE_JUMP_LEFT)
+		{
+			newState = INSECT_STATE_FALLING_LEFT;
+			jumpStartAt = GetTickCount();
+		}
 	}
 	
-	if (now - jumpStartAt >= 1200 && state == INSECT_STATE_FALLING)
+	
+	if (now - jumpStartAt >= 1200)
 	{
-		if (vx > 0.0f)
+		if (state == INSECT_STATE_FALLING_LEFT)
 		{
-			newState = INSECT_STATE_JUMP_RIGHT;
+			newState = INSECT_STATE_JUMP_LEFT;
+			jumpStartAt = GetTickCount();
 		}
-		else
+		if (state == INSECT_STATE_FALLING_RIGHT)
 		{
 			newState = INSECT_STATE_JUMP_RIGHT;
+			jumpStartAt = GetTickCount();
 		}
 	}
-
-	DebugOut(L"sate %d \n", state);
 
 	if (newState != NULL)
 	{
 		SetState(newState);
+	}
+}
+
+void CInsect::CollisionVertical(float ny)
+{
+	DebugOut(L"state: %d \n", state);
+	if (ny > 0.0f)
+	{
+		SetState(INSECT_STATE_JUMP_COLLISION_UP);
+	}
+	else
+	{
+		if (direction == 0)
+		{
+			SetState(INSECT_STATE_JUMP_RIGHT);
+		}
+		if (direction == 1)
+		{ 
+			SetState(INSECT_STATE_JUMP_LEFT);
+		}
+	}
+}
+
+void CInsect::CollisionHorizontal(float nx)
+{
+	if (nx < 0.0f)
+	{
+		SetState(INSECT_STATE_FALLING_LEFT);
+	}
+	else
+	{
+		SetState(INSECT_STATE_FALLING_RIGHT);
 	}
 }
