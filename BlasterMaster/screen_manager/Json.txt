@@ -136,6 +136,10 @@
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
 1	0	160	2	310	16  
+1	380	160	2	130	16
+1	575	160	2	130	16
+1	770	160	2	260	16
+
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
