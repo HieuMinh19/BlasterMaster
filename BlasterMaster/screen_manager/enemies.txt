@@ -92,6 +92,13 @@
 90029	132	530	149	547	90
 90030	152	533	169	547	90
 
+# ORBS
+90031	77	386	96	405	90
+90032	97	386	116	405	90
+90033	117	386	136	405	90
+90034	137	386	156	405	90
+90035	157	386	176	405	90
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -163,6 +170,14 @@
 # walking right
 915	90029	100	90030	100
 
+# ==== ORBS =========
+# walking left
+916	90031	100
+# walking right
+917	90035	100
+# idle
+918	90031	100	90032	100	90033	100	90034	100	90035	100
+
 #
 # id	ani1	ani2	ani3
 #
@@ -180,10 +195,12 @@
 8	910	911	912	913
 # INSECT
 9	914	915
+# ORBS
+10	916	917	918
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 9 = Worms, 10 = DOMES, 11 = JUMPERS, 12 = INSECT
+# type: 0 = Mario , 1 = Brick, 9 = Worms, 10 = DOMES, 11 = JUMPERS, 12 = INSECT, 13 = ORBS
 
 # MARIO
 0	50.0	0	1
@@ -198,7 +215,7 @@
 
 1	-990	0	2
 
-1	370	-900	2
+1	120	-900	2
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
@@ -214,4 +231,8 @@
 #11	300	100	8	0.05
 
 # INSECT // 1 -> right // -1 -> left
-12	70	120	9	0.05
+#12	70	120	9	0.05
+
+# ORBS // 0 -> normal // 1 -> fly to
+13	20	80	10	0.05	0
+#13	200	100	10	0.05    1.0

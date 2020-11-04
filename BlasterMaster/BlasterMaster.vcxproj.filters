@@ -87,6 +87,9 @@
     <ClCompile Include="Insect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Orbs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -162,6 +165,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Insect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Orbs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

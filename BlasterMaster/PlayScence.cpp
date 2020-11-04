@@ -13,6 +13,7 @@
 #include "Domes.h"
 #include "Jumpers.h"
 #include "Insect.h"
+#include "Orbs.h"
 
 using namespace std;
 
@@ -128,6 +129,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int ani_set_id = atoi(tokens[3].c_str());
 	float _vx;
 	float _vy;
+	float _species;
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -161,6 +163,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_INSECT:
 		_vx = atof(tokens[4].c_str());
 		obj = new CInsect(_vx);
+		break;
+	case OBJECT_TYPE_ORBS:
+		_vx = atof(tokens[4].c_str());
+		_species = atof(tokens[5].c_str());
+		obj = new COrbs(_vx, _species);
 		break;
 	
 	/*case OBJECT_TYPE_PORTAL:
@@ -254,15 +261,18 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
-		//if (dynamic_cast<CDomes*>(objects[i])) {
-		//	enemyObjects.push_back(objects[i]);
-		////}
-		//if (dynamic_cast<CJumpers*>(objects[i])) {
-		//	enemyObjects.push_back(objects[i]);
-		//}
-		//if (dynamic_cast<CInsect*>(objects[i])) {
-		//	enemyObjects.push_back(objects[i]);
-		//}
+		if (dynamic_cast<CDomes*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CJumpers*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CInsect*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<COrbs*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
 		coObjects.push_back(objects[i]);
 	}
 
@@ -271,7 +281,7 @@ void CPlayScene::Update(DWORD dt)
 	// so we create a CoObject from brick object
 	// merge with enemy
 	playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
-	playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+	//playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 	//
 	vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 	//
@@ -279,7 +289,6 @@ void CPlayScene::Update(DWORD dt)
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CJason*>(objects[i])) {
-			
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
@@ -295,6 +304,10 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CInsect*>(objects[i])) {
+			// enemy can colli with brick only
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<COrbs*>(objects[i])) {
 			// enemy can colli with brick only
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
