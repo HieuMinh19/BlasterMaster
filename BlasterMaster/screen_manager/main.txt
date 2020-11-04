@@ -1,5 +1,5 @@
 [SETTINGS]
-start	8
+start	9
 #scene list
 [SCENES]
 1	screen_manager\scene1.txt
@@ -10,3 +10,4 @@ start	8
 6	screen_manager\enemies.txt
 7   screen_manager\area2_a.txt
 8	screen_manager\area2_i.txt
+9	screen_manager\section_G.txt   
