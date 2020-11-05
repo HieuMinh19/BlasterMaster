@@ -48,18 +48,39 @@ void COrbs::SetState(int state)
 		vy = 0;
 		ani = ORBS_ANI_WALKING_LEFT;
 		break;
-	case ORBS_STATE_SHAKE:
-		
+	case ORBS_STATE_COLLISON_LEFT:
+		vx = 0;
+		vy = 0;
+		ani = ORBS_ANI_SHAKE_COLLISION_LEFT;
+		break;
+	case ORBS_STATE_COLLISON_RIGHT:
+		vx = 0;
+		vy = 0;
+		ani = ORBS_ANI_SHAKE_COLLISION_RIGHT;
 		break;
 	case ORBS_STATE_SHAKE_WALKING_UP:
 		vx = 0;
 		vy = -ORBS_SPEED_VERTICAL;
-		ani = ORBS_ANI_SHAKE;
+		if (direction_x == 0)
+		{
+			ani = ORBS_ANI_SHAKE_LEFT_TO_RIGHT;
+		}
+		if (direction_x == 1)
+		{
+			ani = ORBS_ANI_SHAKE_RIGHT_TO_LEFT;
+		}
 		break;
 	case ORBS_STATE_SHAKE_WALKING_DOWN:
 		vx = 0;
 		vy = ORBS_SPEED_VERTICAL;
-		ani = ORBS_ANI_SHAKE;
+		if (direction_x == 0)
+		{
+			ani = ORBS_ANI_SHAKE_LEFT_TO_RIGHT;
+		}
+		if (direction_x == 1)
+		{
+			ani = ORBS_ANI_SHAKE_RIGHT_TO_LEFT;
+		}
 		break;
 	}
 }
@@ -68,6 +89,7 @@ void COrbs::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
 	//vy += INSECT_GRAVITY * dt;
+	now = GetTickCount();
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -130,18 +152,18 @@ void COrbs::Render()
 void COrbs::OrbsNormal(float nx, float ny)
 {
 	int newState = NULL;
-
+	shake_at = GetTickCount();
 	if (nx != 0.0f)
 	{
 		if (state == ORBS_STATE_WALKING_RIGHT)
 		{
-			newState = ORBS_STATE_WALKING_LEFT;
+			newState = ORBS_STATE_COLLISON_RIGHT;
 			direction_x = 0;
 			horizontal_counter++;
 		}
 		if (state == ORBS_STATE_WALKING_LEFT)
 		{
-			newState = ORBS_STATE_WALKING_RIGHT;
+			newState = ORBS_STATE_COLLISON_LEFT;
 			direction_x = 1;
 			horizontal_counter++;
 		}
@@ -164,6 +186,18 @@ void COrbs::HandleWithoutCollision()
 
 	if (species == 0)
 	{
+		if (now - shake_at >= 150)
+		{
+			if (state == ORBS_STATE_COLLISON_RIGHT)
+			{
+				newState = ORBS_STATE_WALKING_LEFT;
+			}
+			if (state == ORBS_STATE_COLLISON_LEFT)
+			{
+				newState = ORBS_STATE_WALKING_RIGHT;
+			}
+		}
+
 		if (horizontal_counter >= 4)
 		{
 			if (distance_x >= 10.0f)

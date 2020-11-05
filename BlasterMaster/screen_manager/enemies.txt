@@ -175,8 +175,14 @@
 916	90031	100
 # walking right
 917	90035	100
-# idle
-918	90031	100	90032	100	90033	100	90034	100	90035	100
+# collision left
+918	90033	80	90034	80	90035	80
+# collision right
+919	90033	80	90032	80	90031	80
+# shake left to right
+920	90031	30	90032	30	90033	30	90034	30	90035	30
+# shake right to left
+921	90035	30	90034	30	90033	30	90032	30	90031	30
 
 #
 # id	ani1	ani2	ani3
@@ -196,7 +202,7 @@
 # INSECT
 9	914	915
 # ORBS
-10	916	917	918
+10	916	917	918	919	920	921
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
