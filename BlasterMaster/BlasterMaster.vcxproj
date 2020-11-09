@@ -142,6 +142,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Domes.cpp" />
     <ClCompile Include="Enemies.cpp" />
+    <ClCompile Include="Floaters.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Insect.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Domes.h" />
     <ClInclude Include="Enemies.h" />
+    <ClInclude Include="Floaters.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Insect.h" />

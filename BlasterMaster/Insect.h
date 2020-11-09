@@ -18,7 +18,7 @@
 #define INSECT_ANI_WALKING_LEFT		0
 #define INSECT_ANI_WALKING_RIGHT	1
 
-#define INSECT_BBOX_WIDTH  17
+#define INSECT_BBOX_WIDTH  18
 #define INSECT_BBOX_HEIGHT	17
 
 class CInsect : public CEnemies

@@ -5,12 +5,9 @@
 #include "Utils.h"
 #include "Jason.h"
 
-#define FLOATERS_SPEED_HORIZONTAL		0.05f
-#define FLOATERS_SPEED_VERTICAL		0.02f
-
-#define FLOATERS_STATE_WALKING_RIGHT	100
-#define FLOATERS_STATE_WALKING_LEFT		200
-#define FLOATERS_STATE_GUN_LEFT	300
+#define FLOATERS_STATE_HORIZONTAL	100
+#define FLOATERS_STATE_VERTICAL		200
+#define FLOATERS_STATE_GUN_LEFT		300
 #define FLOATERS_STATE_GUN_RIGHT	400
 
 
@@ -21,7 +18,7 @@
 
 
 #define FLOATERS_BBOX_WIDTH		19
-#define FLOATERS_BBOX_HEIGHT	19
+#define FLOATERS_BBOX_HEIGHT	15
 
 class CFloaters : public CEnemies
 {
@@ -30,11 +27,10 @@ class CFloaters : public CEnemies
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
-	void HandleWithoutCollision();
 
 public:
 	CFloaters();
-	CFloaters(float _vx);
+	CFloaters(float _vx, float _vy);
 	virtual void SetState(int state);
 
 };
