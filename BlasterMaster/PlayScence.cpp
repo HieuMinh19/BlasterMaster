@@ -7,6 +7,7 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "Brick.h"
+#include "Trap.h"
 #include "Intro.h"
 #include "PlayerBullet.h"
 #include "Worms.h"
@@ -137,7 +138,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		
 		obj = CJason::GetInstance(x, y);
-
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 
@@ -150,6 +150,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CSophia*)obj;
 	
 		break;
+	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
+	// case OBJECT_TYPE_PORTAL:
+	// {
+	// 	float r = atof(tokens[4].c_str());
+	// 	float b = atof(tokens[5].c_str());
+	// 	int scene_id = atoi(tokens[6].c_str());
+	// 	obj = new CPortal(x, y, r, b, scene_id);
+	// }
+	// break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -223,6 +232,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> brickObjects;
 	vector<LPGAMEOBJECT> enemyObjects;
+	vector<LPGAMEOBJECT> trapObjects;
 
 
 	for (size_t i = 1; i < objects.size(); i++)
@@ -233,7 +243,9 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
-
+		if (dynamic_cast<CTrap*>(objects[i])) {
+			trapObjects.push_back(objects[i]);
+		}
 		coObjects.push_back(objects[i]);
 	}
 
@@ -367,6 +379,17 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	//	}
 	//}
 	//((CPlayScene*)scence)->UpdateObjects(objects);
+	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
+	CPlayer *player = ((CPlayScene*)scence)->GetPlayer();
+	
+	switch (KeyCode){
+	case DIK_UP:
+		DebugOut(L"[INFO] ID: %d\n", player->OBJECT_ID);
+		if(player->OBJECT_ID == OBJECT_TYPE_SOPHIA) {
+			player->KeyUp();
+			break;
+		}
+	}
 
 }
 void CPlayScenceKeyHandler::KeyState(BYTE * states)

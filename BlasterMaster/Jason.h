@@ -59,7 +59,6 @@ public:
 	CJason(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
-
 	void SetState(int state);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void MoveRight();
@@ -71,7 +70,6 @@ public:
 	void KeyX();
 	void KeyZ();
 	void KeySHIFT();
-
 	void Reset();
 	void GetOut();
 

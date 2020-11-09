@@ -10,6 +10,7 @@
 #include "Portal.h"
 #include "PlayerBullet.h"
 #include "Brick.h"
+#include "Trap.h"
 
 CSophia* CSophia::__instance = NULL;
 
@@ -18,7 +19,7 @@ CSophia::CSophia(float x, float y) : CPlayer()
 	level = SOPHIA_LEVEL_NORMAL;
 	untouchable = 0;
 	SetState(SOPHIA_STATE_IDLE);
-
+	heal = SOPHIA_HEAL;
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -47,12 +48,13 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
-	if (GetTickCount() - untouchable_start > SOPHIA_UNTOUCHABLE_TIME)
-	{
-		untouchable_start = 0;
-		untouchable = 0;
+	if (untouchable) {
+		if (GetTickCount() - untouchable_start > SOPHIA_UNTOUCHABLE_TIME)
+		{
+			untouchable_start = 0;
+			untouchable = 0;
+		}
 	}
-
 	// No collision occured, proceed normally
 	if (coEvents.size() == 0)
 	{
@@ -98,11 +100,18 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (isJumping) {
 					}
 				}
-				else if (e->nx != 0)
-				{
-					return;
-				}
+				
 			} // if Goomba
+			else if (dynamic_cast<CTrap*>(e->obj)) // if e->obj is Goomba 
+			{
+				CTrap* trap= dynamic_cast<CTrap*>(e->obj);
+				if (!untouchable) {
+					heal--;
+					untouchable = 1;
+					untouchable_start = GetTickCount();
+				}
+
+			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
@@ -271,7 +280,7 @@ void CSophia::Render()
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 	animation_set->at(ani)->Render(x, y, alpha);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CSophia::SetState(int state)
@@ -378,29 +387,13 @@ void CSophia::GetBoundingBox(float& left, float& top, float& right, float& botto
 */
 void CSophia::Reset()
 {
-
 }
-
-void CSophia::SetNx(int a) {
-	nx = a;
-}
-void CSophia::Walk() {
-}
-void CSophia::WalkUp() {
-	if (nx > 0) {
-		SetState(SOPHIA_STATE_WALK_UP_RIGHT);
-	}
-	else {
-		SetState(SOPHIA_STATE_WALK_UP_LEFT);
-	}
-}
-void CSophia::MoveUpKeyDown() {
-	
-}
-void CSophia::MoveUpKeyUp() {
-	isStandUp = FALSE;
-	isMoveUp = FALSE;
-	Reset();
+//
+void CSophia::ResetStandUp(){
+		isMoveUp = FALSE;
+		isStandUp = FALSE;
+		animation_set->at(SOPHIA_ANI_MOVE_UP_RIGHT)->Reset();
+		animation_set->at(SOPHIA_ANI_MOVE_UP_LEFT)->Reset();
 }
 void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 {
@@ -416,6 +409,20 @@ void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 	obj->SetPosition(x, y);
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 
+//=======
+//	if (isStandUp == true) {
+//		obj->vx = 0;
+//		obj->vy = -BULLET_WALKING_SPEED;
+//		obj->SetPosition(x + SOPHIA_BBOX_WIDTH / 2, y);//code xấu
+//	}
+//	else if (nx > 0) {
+//		obj->SetPosition(x + SOPHIA_BBOX_WIDTH, y + 16);//code xấu
+//	}
+//	else if (nx < 0) {
+//		obj->SetPosition(x, y + 16);
+//	}
+//	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+//>>>>>>> Player/Sophia_v2
 	obj->SetAnimationSet(ani_set);
 	dynamic_cast<CPlayScene*> (
 		CGame::GetInstance()
@@ -423,38 +430,39 @@ void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 		)
 		->AddObject(obj);
 }
-void CSophia::SetWalk() {
-	if (!isJumping) {
-		if (isStandUp) {
-			WalkUp();
-		}
-		else
-			Walk();
-	}
-}
 void CSophia::KeyRight()
 {
-	if (isStandUp) {
-		SetState(SOPHIA_STATE_WALK_UP_RIGHT);
-	}
-	else {
-		SetState(SOPHIA_STATE_WALKING_RIGHT);
+	if (!isJumping) {
+		if (isStandUp) {
+			SetState(SOPHIA_STATE_WALK_UP_RIGHT);
+		}
+		else {
+			SetState(SOPHIA_STATE_WALKING_RIGHT);
+		}
 	}
 }
 
 void CSophia::KeyLeft()
 {
-	if (isStandUp) {
-		SetState(SOPHIA_STATE_WALK_UP_LEFT);
-	} else{
-		SetState(SOPHIA_STATE_WALKING_LEFT);
+	if (!isJumping) {
+		if (isStandUp) {
+			SetState(SOPHIA_STATE_WALK_UP_LEFT);
+		}
+		else {
+			SetState(SOPHIA_STATE_WALKING_LEFT);
+		}
 	}
 }
 
 void CSophia::KeyUp()
 {
-	moveup_start = GetTickCount();
-	isMoveUp = TRUE;
+	if (!isMoveUp) {
+		moveup_start = GetTickCount();
+		isMoveUp = TRUE;
+	}
+	else {
+		ResetStandUp();	
+	}
 }
 void CSophia::KeyDown()
 {
