@@ -99,6 +99,16 @@
 90034	137	386	156	405	90
 90035	157	386	176	405	90
 
+# FLOATERS
+# walking left
+90036	83	407	102	422	90
+# walking right
+90037	151	407	170	422	90
+# gun left
+90038	103	406	122	422	90
+# gun right
+90039	131	406	150	422	90
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -184,6 +194,16 @@
 # shake right to left
 921	90035	30	90034	30	90033	30	90032	30	90031	30
 
+# ==== FLOATERS =========
+# walking left
+922	90036	100
+# walking right
+923	90037	100
+# gun left
+924	90038	200
+# gun right
+925	90039	200
+
 #
 # id	ani1	ani2	ani3
 #
@@ -203,10 +223,12 @@
 9	914	915
 # ORBS
 10	916	917	918	919	920	921
+# FLOATERS
+11	922	923	924	925
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 9 = Worms, 10 = DOMES, 11 = JUMPERS, 12 = INSECT, 13 = ORBS
+# type: 0 = Mario , 1 = Brick, 9 = Worms, 10 = DOMES, 11 = JUMPERS, 12 = INSECT, 13 = ORBS, 14 = FLOATERS
 
 # MARIO
 0	50.0	0	1
@@ -240,5 +262,7 @@
 #12	70	120	9	0.05
 
 # ORBS // 0 -> normal // 1 -> fly to
-13	20	80	10	0.05	0
-#13	200	100	10	0.05    1.0
+#13	20	80	10	0.05	0
+
+# FLOATERS // 1 -> right // -1 -> left
+14	20	80	10	0.05	

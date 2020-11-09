@@ -14,6 +14,7 @@
 #include "Jumpers.h"
 #include "Insect.h"
 #include "Orbs.h"
+#include "Floaters.h"
 
 using namespace std;
 
@@ -169,6 +170,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		_species = atof(tokens[5].c_str());
 		obj = new COrbs(_vx, _species);
 		break;
+	case OBJECT_TYPE_FLOATERS:
+		_vx = atof(tokens[4].c_str());
+		obj = new CJumpers(_vx);
+		break;
 	
 	/*case OBJECT_TYPE_PORTAL:
 	{
@@ -273,6 +278,9 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<COrbs*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
+		if (dynamic_cast<CFloaters*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
 		coObjects.push_back(objects[i]);
 	}
 
@@ -308,6 +316,10 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<COrbs*>(objects[i])) {
+			// enemy can colli with brick only
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CFloaters*>(objects[i])) {
 			// enemy can colli with brick only
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
