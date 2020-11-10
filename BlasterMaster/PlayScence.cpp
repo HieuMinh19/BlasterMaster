@@ -11,6 +11,11 @@
 #include "Intro.h"
 #include "PlayerBullet.h"
 #include "Worms.h"
+#include "Domes.h"
+#include "Jumpers.h"
+#include "Insect.h"
+#include "Orbs.h"
+#include "Floaters.h"
 
 using namespace std;
 
@@ -124,8 +129,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = atof(tokens[2].c_str());
-
 	int ani_set_id = atoi(tokens[3].c_str());
+	float _vx;
+	float _vy;
+	float _species;
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -154,6 +161,29 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SOPHIA: obj = new CSophia();
 		obj = CSophia::GetInstance(x, y);
 		player = (CSophia*)obj;
+	case OBJECT_TYPE_DOMES:
+		_vx = atof(tokens[4].c_str());
+		_vy = atof(tokens[5].c_str());
+		obj = new CDomes(_vx, _vy);
+		break;
+	case OBJECT_TYPE_JUMPERS: 
+		_vx = atof(tokens[4].c_str());
+		obj = new CJumpers(_vx);
+		break;
+	case OBJECT_TYPE_INSECT:
+		_vx = atof(tokens[4].c_str());
+		obj = new CInsect(_vx);
+		break;
+	case OBJECT_TYPE_ORBS:
+		_vx = atof(tokens[4].c_str());
+		_species = atof(tokens[5].c_str());
+		obj = new COrbs(_vx, _species);
+		break;
+	case OBJECT_TYPE_FLOATERS:
+		_vx = atof(tokens[4].c_str());
+		_vy = atof(tokens[5].c_str());
+		obj = new CFloaters(_vx, _vy);
+		break;
 	
 		break;
 	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
@@ -252,24 +282,61 @@ void CPlayScene::Update(DWORD dt)
 		}
 		if (dynamic_cast<CTrap*>(objects[i])) {
 			trapObjects.push_back(objects[i]);
+		if (dynamic_cast<CDomes*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CJumpers*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CInsect*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<COrbs*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CFloaters*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
 		}
 		coObjects.push_back(objects[i]);
 	}
 
+	vector<LPGAMEOBJECT> playerCoObjects;
+	// player can colli with brick and enemy
+	// so we create a CoObject from brick object
+	// merge with enemy
+	playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+	//playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+	//
+	vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+	//
+
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CJason*>(objects[i])) {
-			vector<LPGAMEOBJECT> playerCoObjects;
-			// player can colli with brick and enemy
-			// so we create a CoObject from brick object
-			// merge with enemy
-			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
-			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CDomes*>(objects[i])) {
+			// enemy can colli with brick only
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CJumpers*>(objects[i])) {
+			// enemy can colli with brick only
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CInsect*>(objects[i])) {
+			// enemy can colli with brick only
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<COrbs*>(objects[i])) {
+			// enemy can colli with brick only
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CFloaters*>(objects[i])) {
+			// enemy can colli with brick only
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CBullet*>(objects[i])) {

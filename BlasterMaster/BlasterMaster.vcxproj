@@ -145,16 +145,25 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Breakable.cpp" />
     <ClCompile Include="Brick.cpp" />
+<<<<<<< HEAD
+=======
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Domes.cpp" />
+>>>>>>> 7fc34120a6f3805e4b39e3985e356ad99be2d8fc
     <ClCompile Include="Enemies.cpp" />
+    <ClCompile Include="Floaters.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Intro.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="Jason.cpp" />
+    <ClCompile Include="Jumpers.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerBullet.cpp" />
+    <ClCompile Include="Orbs.cpp" />
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Scence.cpp" />
@@ -172,16 +181,21 @@
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="Domes.h" />
     <ClInclude Include="Enemies.h" />
+    <ClInclude Include="Floaters.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Insect.h" />
     <ClInclude Include="Intro.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Jason.h" />
+    <ClInclude Include="Jumpers.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerBullet.h" />
+    <ClInclude Include="Orbs.h" />
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="resource.h" />
