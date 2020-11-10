@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 
 #include "PlayScence.h"
@@ -7,8 +7,9 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "Brick.h"
+#include "Trap.h"
 #include "Intro.h"
-#include "Bullet.h"
+#include "PlayerBullet.h"
 #include "Worms.h"
 
 using namespace std;
@@ -23,6 +24,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	Load scene resources from scene file (textures, sprites, animations and objects)
 	See scene1.txt, scene2.txt for detail format specification
 */
+
 
 
 
@@ -132,28 +134,31 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_JASON:
-		if (player != NULL)
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
+	//case OBJECT_TYPE_sophia:
+
+		
 		obj = CJason::GetInstance(x, y);
-		player = (CJason*)obj;
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
+
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
+	case OBJECT_TYPE_SOPHIA: obj = new CSophia();
+		obj = CSophia::GetInstance(x, y);
+		player = (CSophia*)obj;
 	
-	/*case OBJECT_TYPE_PORTAL:
-	{
-		float r = atof(tokens[4].c_str());
-		float b = atof(tokens[5].c_str());
-		int scene_id = atoi(tokens[6].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
-	}
-	break;*/
+		break;
+	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
+	// case OBJECT_TYPE_PORTAL:
+	// {
+	// 	float r = atof(tokens[4].c_str());
+	// 	float b = atof(tokens[5].c_str());
+	// 	int scene_id = atoi(tokens[6].c_str());
+	// 	obj = new CPortal(x, y, r, b, scene_id);
+	// }
+	// break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -221,12 +226,13 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
+	// We know that sophia is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> brickObjects;
 	vector<LPGAMEOBJECT> enemyObjects;
+	vector<LPGAMEOBJECT> trapObjects;
 
 
 	for (size_t i = 1; i < objects.size(); i++)
@@ -237,7 +243,9 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
-
+		if (dynamic_cast<CTrap*>(objects[i])) {
+			trapObjects.push_back(objects[i]);
+		}
 		coObjects.push_back(objects[i]);
 	}
 
@@ -257,12 +265,24 @@ void CPlayScene::Update(DWORD dt)
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
+		if (dynamic_cast<CBullet*>(objects[i])) {
+			objects[i]->Update(dt, &coObjects);
+		}
+		if (dynamic_cast<CSophia*>(objects[i])) {
+			vector<LPGAMEOBJECT> playerCoObjects;
+			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			objects[i]->Update(dt, &playerCoObjects);
+		}
+		if (objects[i]->state == OBJECT_STATE_DELETE) {
+			objects[i]->deleteObject(objects, i);
+		}
 	}
 
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	// skip the rest if scene was already unloaded (sophia::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
-	// Update camera to follow mario
+	// Update camera to follow sophia
 	float cx, cy;
 	player->GetPosition(cx, cy);
 
@@ -301,37 +321,87 @@ void CPlayScene::AddObject(LPGAMEOBJECT gameObject)
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
-	CJason* jason = ((CPlayScene*)scence)->GetPlayer();
-	if (jason == NULL) return;		//intro screen.
+	CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
-		case DIK_SPACE:
-			jason->SetState(STATE_JUMP);
+		case DIK_A:
+			player->Reset();
+			break;
+		case DIK_UP:
+			player->KeyUp();
 			break;
 		case DIK_DOWN:
-			jason->SetState(STATE_CRAWL_IDLE);
+			player->KeyDown();
+			break;
+		case DIK_LEFT:
+			player->KeyLeft();
+			break;	
+		case DIK_RIGHT:
+			player->KeyRight();
 			break;
 		case DIK_Z:
-			jason->fire(objects);
+			player->KeyZ();
 			break;
-			
+		case DIK_X:
+			player->KeyX();
+			break;
+		case DIK_LSHIFT:
+			player->KeySHIFT();
+			break;
 	}
-	((CPlayScene*)scence)->UpdateObjects(objects);
+
 }
 
-void CPlayScenceKeyHandler::KeyState(BYTE* states)
+void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
-	CGame* game = CGame::GetInstance();
-	CJason* jason = ((CPlayScene*)scence)->GetPlayer();
-	if (jason == NULL) return;	//return if intro
+	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	//vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
+	//CPlayer *player = ((CPlayScene*)scence)->GetPlayer();
+	//if (player == NULL) return;		//intro screen.
+	//switch (KeyCode)
+	//{
+	//case DIK_SPACE:
+	//	player->SetState(STATE_JUMP);
+	//	break;
+	//case DIK_DOWN:
+	//	player->SetState(STATE_CRAWL_IDLE);
+	//	break;
+	//case DIK_Z:
+	//	player->fire(objects);
+	//	break;
 
-	// disable control key when Mario die 
-	if (jason->GetState() == STATE_DIE) return;
-	if (game->IsKeyDown(DIK_RIGHT)) 
-		jason->MoveRight();
+	//	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
+	//	switch (KeyCode)
+	//	{
+	//	case DIK_UP:
+	//		sophia->MoveUpKeyUp();
+	//		break;
+	//	}
+	//}
+	//((CPlayScene*)scence)->UpdateObjects(objects);
+	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
+	CPlayer *player = ((CPlayScene*)scence)->GetPlayer();
+	
+	switch (KeyCode){
+	case DIK_UP:
+		DebugOut(L"[INFO] ID: %d\n", player->OBJECT_ID);
+		if(player->OBJECT_ID == OBJECT_TYPE_SOPHIA) {
+			player->KeyUp();
+			break;
+		}
+	}
+
+}
+void CPlayScenceKeyHandler::KeyState(BYTE * states)
+{
+
+	CGame* game = CGame::GetInstance();
+	CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
+	//if (player->GetState() == MARIO_STATE_DIE) return;
+	if (game->IsKeyDown(DIK_RIGHT))
+		player->KeyRight();
 	else if (game->IsKeyDown(DIK_LEFT))
-		jason->MoveLeft();
+		player->KeyLeft();
 	else
-		jason->SetState(STATE_IDLE);
+		player->SetState(PLAYER_STATE_IDLE);
 }

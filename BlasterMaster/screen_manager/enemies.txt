@@ -2,9 +2,12 @@
 [TEXTURES]
 0	textures\mario.png	255	255	255
 20	textures\misc.png	176	224	248
+90	textures\enemies-1.png	255	0	255
+30	textures\itemsandobjects.png	176	224	248 
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+
 # BIG MARIO 
 # idle right
 10001	246	154	260	181	0
@@ -29,20 +32,30 @@
 # walk
 10032	155	0	170	15	0
 10033	125	0	139	15	0
-#BRICK
-20001	408	225	424	241	20
-#GOOMBA
-30001	5	14	21	29	10
-30002	25	14	41	29	10
-#die
-30003	45	21	61	29	10
 
 #brick with question mark animation
 40001	300	117	316	133	20
 40002	318	117	334	133	20
 40003	336	117	352	133	20
 40004	355	117	370	133	20
-						
+
+#BRICK
+20001	408	225	424	241	20
+
+#ITEMS
+30001	104	108	121	125	30
+
+# WORMS
+# walk right
+90001	191	412	207	421	90
+90002	172	412	189	421	90
+# walk left
+90003	46	412	62	421	90
+90004	64	412	81	421	90
+
+
+
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -66,29 +79,43 @@
 #die
 599	10099	100
 
-
 # ==== BRICK =========
 601	20001	100
 
 # ==== QUESTION MARK BRICK =========
 602	40001	1000	40001	100	40002	100	40003	100	40004	100
 
-#
+# === ITEMS =========
+603	30001	100
+
+# ==== WORMS =========
+#walk right
+900	90001	100	90002	100
+#walk left
+901	90003	100	90004	100
+
+
+
+
 # id	ani1	ani2	ani3
-#
 [ANIMATION_SETS]
+
 # MARIO
 1	400	401	402	403	500	501	502	503	599
 # BRICK 
 2	601
+# ITEMS
+3	603
 # QUESTION MARK BRICK 
 22	602
+# WORMS
+6	900	901
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick
+# type: 0 = Mario , 1 = Brick, 9 = Worms
 # MARIO
-0	50.0	0	1
+0	10.0	0	1
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -121,11 +148,16 @@
 1	416	150	2
 1	432	150	2
 1	448	150	2
+1	480	150	3
+1	64	100	3
 
 # ---- brick group 1 ----
 1	100	74	2
 1	100	90	22
 1	84	90	22
+1	68	90	22
+1	52	90	22
+1	52	74	2
 
 # ---- brick group 2 ----
 1	160	74	2
@@ -140,4 +172,8 @@
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 #50	300	98	0	316	150	2
+
+# WORMS
+9	110.0	0	6
+
 

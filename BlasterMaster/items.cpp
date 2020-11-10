@@ -3,7 +3,6 @@
 #include <assert.h>
 #include "Utils.h"
 #include "Game.h"
-#include "Bullet.h"
 
 //#define GET_ITEM
 //#define 
@@ -62,7 +61,6 @@ void CItems::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CItems::Render()
 {
 	animation_set->at(0)->Render(x, y);
-	DebugOut(L"[RENDER INFO]this is render\n");
 	RenderBoundingBox();
 }
 
