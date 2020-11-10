@@ -10,6 +10,7 @@
 #include "Sophia.h"
 #define PLAYER_JASON		1
 #define PLAYER_SOPHIA		2
+#include "Background.h"
 
 class CPlayScene : public CScene
 {

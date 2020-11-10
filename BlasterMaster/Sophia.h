@@ -70,6 +70,7 @@
 #define SOPHIA_MOVEUP_START 450
 #define SOPHIA_HEAL 100
 
+
 class CSophia :  public CPlayer
 {
 	static CSophia* __instance;

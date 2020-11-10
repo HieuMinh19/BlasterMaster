@@ -2,13 +2,15 @@
 [TEXTURES]
 0	textures\SpritesTank.png	0	57	115
 10	textures\tankAndMain.png	0	136	255
-
-20	textures\misc.png	176	224	248
+20	textures\bbox.png	237	38	26
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
+70	textures\Area_2.png	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+#===============BACKGROUND-AREA2==============
+70000	0	0	1024	240	70
 # JASON
 # idle right
 11001	3	98	11	114	0
@@ -138,7 +140,8 @@
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
-
+# ==== BACKGROUND_AREA2 =========
+700	70000	1000
 # ==== MARIO =========
 #idle right
 400	10001	100
@@ -232,7 +235,10 @@
 # id	ani1	ani2	ani3
 #
 [ANIMATION_SETS]
-
+#===== BACKGROUND ==========
+7	700
+# MARIO
+1	400	401	402	502	500	501	403	503	599
 # BRICK 
 2	601
 # ITEMS
@@ -251,7 +257,9 @@
 8	701
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick
+# type: 0 = Mario , 1 = Brick, 7 = BACKGROUND
+#====== BACKGROUND =======
+7	0	0	7
 # MARIO
 7	30	0	7
 0	50.0	0	1
@@ -261,54 +269,12 @@
 7	30	100	7
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
-1	0	150	2
-1	16	150	2
-1	32	150	2
-1	48	150	2
-1	64	150	2
-1	80	150	2
-1	96	150	2
-1	112	150	2
-1	128	150	2
-1	144	150	2
-1	160	150	2
-1	176	150	2
-1	192	150	2
-1	208	150	2
-1	224	150	2
-1	240	150	2
-1	256	150	2
-1	272	150	2
-1	288	150	2
-1	304	150	2
-1	320	150	2
-1	336	150	2
-1	352	150	2
-1	368	150	2
-1	384	150	2
-1	400	150	2
-1	416	150	2
-1	432	150	2
-1	448	150	2
+# type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
+1	0	160	2	310	16  
+1	380	160	2	130	16
+1	575	160	2	130	16
+1	770	160	2	260	16
 
-# ---- item Hover -----
-
-1	64	100	3
-
-# ---- brick group 1 ----
-1	100	74	2
-1	100	90	22
-1	84	90	22
-
-# ---- brick group 2 ----
-1	160	74	2
-1	160	90	22
-1	144	90	22
-
-# ---- brick group 3 ----
-1	220	74	2
-1	220	90	22
-1	204	90	22
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

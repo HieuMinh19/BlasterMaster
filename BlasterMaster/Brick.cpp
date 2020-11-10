@@ -1,15 +1,21 @@
 #include "Brick.h"
 
+CBrick::CBrick(int bboxHeight, int bboxWidth)
+{
+	this->bboxHeight = bboxHeight;
+	this->bboxWidth = bboxWidth;
+}
+
 void CBrick::Render()
 {
 	animation_set->at(0)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
-	r = x + BRICK_BBOX_WIDTH;
-	b = y + BRICK_BBOX_HEIGHT;
+	r = x + this->bboxWidth;
+	b = y + this->bboxHeight;
 }

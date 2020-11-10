@@ -141,9 +141,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_BRICK: {
+		DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
+		int width = atof(tokens[4].c_str());
+		int height = atof(tokens[5].c_str());	
+		DebugOut(L"[BBOX] width: %d\n", width);
+		obj = new CBrick(height, width); break;
+	}
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
-	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
+	// case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
 	case OBJECT_TYPE_SOPHIA: obj = new CSophia();
 		obj = CSophia::GetInstance(x, y);
@@ -151,6 +157,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	
 		break;
 	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
+	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	// case OBJECT_TYPE_PORTAL:
 	// {
 	// 	float r = atof(tokens[4].c_str());
@@ -289,8 +296,9 @@ void CPlayScene::Update(DWORD dt)
 	CGame* game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
+	if (cx < 0) cx = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
 void CPlayScene::Render()
@@ -354,31 +362,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
-	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	//vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
-	//CPlayer *player = ((CPlayScene*)scence)->GetPlayer();
-	//if (player == NULL) return;		//intro screen.
-	//switch (KeyCode)
-	//{
-	//case DIK_SPACE:
-	//	player->SetState(STATE_JUMP);
-	//	break;
-	//case DIK_DOWN:
-	//	player->SetState(STATE_CRAWL_IDLE);
-	//	break;
-	//case DIK_Z:
-	//	player->fire(objects);
-	//	break;
-
-	//	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
-	//	switch (KeyCode)
-	//	{
-	//	case DIK_UP:
-	//		sophia->MoveUpKeyUp();
-	//		break;
-	//	}
-	//}
-	//((CPlayScene*)scence)->UpdateObjects(objects);
 	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
 	CPlayer *player = ((CPlayScene*)scence)->GetPlayer();
 	

@@ -1,5 +1,5 @@
 [SETTINGS]
-start	5
+start	10
 #scene list
 [SCENES]
 1	screen_manager\scene1.txt
@@ -8,3 +8,7 @@ start	5
 4	screen_manager\intro.txt
 5 	screen_manager\Json.txt
 6	screen_manager\enemies.txt
+7   screen_manager\area2_a.txt
+8	screen_manager\area2_i.txt
+9	screen_manager\section_G.txt
+10   screen_manager\area2_b.txt   
