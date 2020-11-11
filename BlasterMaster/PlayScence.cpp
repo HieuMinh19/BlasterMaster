@@ -11,6 +11,10 @@
 #include "Intro.h"
 #include "PlayerBullet.h"
 #include "Worms.h"
+#include "Domes.h"
+#include "Jumpers.h"
+#include "Insect.h"
+
 
 using namespace std;
 
@@ -126,6 +130,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float y = atof(tokens[2].c_str());
 
 	int ani_set_id = atoi(tokens[3].c_str());
+	float _vx;
+	float _vy;
+	float _species;
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -151,6 +158,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	
 		break;
 	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
+	
+	//start merge enemies
+	case OBJECT_TYPE_JUMPERS:
+		_vx = atof(tokens[4].c_str());
+		obj = new CJumpers(_vx);
+		break;
+	case OBJECT_TYPE_INSECT:
+		_vx = atof(tokens[4].c_str());
+		obj = new CInsect(_vx);
+		break;
+	case OBJECT_TYPE_DOMES:
+		_vx = atof(tokens[4].c_str());
+		_vy = atof(tokens[5].c_str());
+		obj = new CDomes(_vx, _vy);
+		break;
+
 	// case OBJECT_TYPE_PORTAL:
 	// {
 	// 	float r = atof(tokens[4].c_str());
