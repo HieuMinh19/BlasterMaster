@@ -98,6 +98,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->ny < 0)
 				{
 					if (isJumping) {
+						ResetJump();
 					}
 				}
 				
@@ -137,6 +138,13 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			if (GetTickCount() - jump_start > SOPHIA_JUMP_TIME)
 			{
+				ResetJump();
+			}
+		}
+		else {
+			if (GetTickCount() - jump_start > SOPHIA_JUMP_TIME)
+			{
+				ResetJump();
 			}
 		}
 	}
@@ -387,6 +395,12 @@ void CSophia::GetBoundingBox(float& left, float& top, float& right, float& botto
 */
 void CSophia::Reset()
 {
+	SetState(SOPHIA_STATE_IDLE);
+	SetLevel(SOPHIA_LEVEL_NORMAL);
+	SetPosition(start_x, start_y);
+	SetSpeed(0, 0);
+	//reset sate jump
+	animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
 }
 //
 void CSophia::ResetStandUp(){
@@ -394,6 +408,22 @@ void CSophia::ResetStandUp(){
 		isStandUp = FALSE;
 		animation_set->at(SOPHIA_ANI_MOVE_UP_RIGHT)->Reset();
 		animation_set->at(SOPHIA_ANI_MOVE_UP_LEFT)->Reset();
+}
+void CSophia::ResetJump()
+{
+	isJumping = FALSE;
+	isJumpingWhileWalk = FALSE;
+	isWalkAfterJump = FALSE;
+	SetState(SOPHIA_STATE_IDLE);
+	SetLevel(SOPHIA_LEVEL_NORMAL);
+	//SetPosition(start_x, start_y);
+	SetSpeed(0, 0);
+	//reset sate jump
+	animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
+	animation_set->at(SOPHIA_ANI_JUMP_LEFT)->Reset();
+	animation_set->at(SOPHIA_ANI_JUMP_UP_RIGHT)->Reset();
+	animation_set->at(SOPHIA_ANI_JUMP_UP_LEFT)->Reset();
+
 }
 void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 {
