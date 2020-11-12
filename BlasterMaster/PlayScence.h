@@ -8,6 +8,7 @@
 #include "Items.h"
 #include "Config.h"
 #include "Sophia.h"
+#include "Breakable.h"
 #define PLAYER_JASON		1
 #define PLAYER_SOPHIA		2
 #include "Background.h"

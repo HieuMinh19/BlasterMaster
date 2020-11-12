@@ -86,7 +86,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (untouchable == 0)
 				{
 					health--;
-					DebugOut(L"[ERROR] Máu %i \n", health);
+					//DebugOut(L"[ERROR] Máu %i \n", health);
 					if (health > 0)
 						StartUntouchable();
 					else

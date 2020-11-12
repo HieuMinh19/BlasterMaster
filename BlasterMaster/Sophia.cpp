@@ -527,15 +527,25 @@ void CSophia::KeyZ()
 	if (isMoveUp == true && isStandUp != true) {
 		return;
 	}
-	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
-	CGameObject *obj = NULL;
-	obj = new CBullet(0, ANI_SOPHIA_LEFT);
 
-	// General object setup
-	obj->SetPosition(x, y);
+	CGameObject* obj = NULL;
+	if (isStandUp){
+		obj = new CBullet(0, ANI_SOPHIA_LEFT);
+		// General object setup
+		obj->SetPosition(x + CANNON_X, y);
+	}
+	else {
+		obj = new CBullet(nx, ANI_SOPHIA_LEFT);
+		// General object setup
+		if (nx>0)
+			obj->SetPosition(x + SOPHIA_BBOX_WIDTH-5 , y + CANNON_Y);
+		else
+			obj->SetPosition(x, y + CANNON_Y);
+	
+	}
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
-
 	obj->SetAnimationSet(ani_set);
 	dynamic_cast<CPlayScene*> (
 		CGame::GetInstance()

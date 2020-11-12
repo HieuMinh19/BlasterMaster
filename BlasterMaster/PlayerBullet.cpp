@@ -1,5 +1,6 @@
 #include "PlayerBullet.h"
 #include "Utils.h"
+#include "PlayScence.h"
 
 CBullet::CBullet(float playerNX, int ani) : CGameObject()
 {
@@ -61,6 +62,17 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		y += min_ty * dy + ny * 0.4f;
 
 		if (nx != 0 || ny != 0) SetState(BULLET_STATE_DESTROY);
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CBreakable*>(e->obj)) // if e->obj is enemies
+			{
+				CBreakable* breakable = dynamic_cast<CBreakable*>(e->obj);
+				breakable->health--;
+
+			}
+		}
 	}
 
 	// clean up collision events
