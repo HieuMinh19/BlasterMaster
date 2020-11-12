@@ -1,6 +1,7 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
 0	textures\SpritesTank.png	255	255	255
+10	textures\tankAndMain.png	0	136	255
 20	textures\bbox.png	237	38	26
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
@@ -36,6 +37,8 @@
 # walk
 11032	20	47	36	55	0
 11033	3	47	19	55	0
+#BRICK
+20001	408	225	424	241	20
 
 # SOPHIA
 # idle right
@@ -178,6 +181,10 @@
 19	700
 # MARIO
 1	400	401	402	502	500	501	403	503	599
+#SOPHIA
+7	400	401	402	403	404	405	406	407	408	409	410	411	412	413	414	415	416	417	499
+# MARIO
+1	500	501	502	506	504	505	503	507	508	509	599
 # BRICK 
 2	601
 
@@ -186,10 +193,13 @@
 # type: 0 = Mario , 1 = Brick, 19 = BACKGROUND
 #====== BACKGROUND =======
 19	0	32	19
-#SOPHIA
-7	400	401	402	403	404	405	406	407	408	409	410	411	412	413	414	415	416	417	499
 # MARIO
-1	500	501	502	506	504	505	503	507	508	509	599
+7	30	0	7
+0	50.0	0	1
+# BULLET
+6	30	124	8
+# Sophia
+7	30	100	7
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
