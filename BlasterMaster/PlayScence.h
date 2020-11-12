@@ -7,7 +7,9 @@
 #include "Jason.h"
 #include "Items.h"
 #include "Config.h"
+#include "Background.h"
 #include "Sophia.h"
+
 #define PLAYER_JASON		1
 #define PLAYER_SOPHIA		2
 

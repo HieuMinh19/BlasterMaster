@@ -144,19 +144,29 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_JASON:
 	//case OBJECT_TYPE_sophia:
 
-		
+		if (player != NULL)
+		{
+			DebugOut(L"[ERROR] sophia object was created before!\n");
+			return;
+		}
 		obj = CJason::GetInstance(x, y);
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_BRICK: {
+		DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
+		int width = atof(tokens[4].c_str());
+		int height = atof(tokens[5].c_str());	
+		DebugOut(L"[BBOX] width: %d\n", width);
+		obj = new CBrick(height, width); break;
+	}
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
-	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
+	// case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
-	case OBJECT_TYPE_SOPHIA: obj = new CSophia();
-		obj = CSophia::GetInstance(x, y);
+	case OBJECT_TYPE_SOPHIA:
+		obj = new CSophia();
 		player = (CSophia*)obj;
-	
+		player->OBJECT_ID = OBJECT_TYPE_SOPHIA;
 		break;
 	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
 	
@@ -185,6 +195,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CFloaters(_vx, _vy);
 		break;
 
+	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	// case OBJECT_TYPE_PORTAL:
 	// {
 	// 	float r = atof(tokens[4].c_str());
@@ -323,8 +334,9 @@ void CPlayScene::Update(DWORD dt)
 	CGame* game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
+	if (cx < 0) cx = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, cy);
 }
 
 void CPlayScene::Render()
