@@ -530,7 +530,7 @@ void CSophia::KeyZ()
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
-	obj = new CBullet(nx, ANI_SOPHIA_LEFT);
+	obj = new CBullet(0, ANI_SOPHIA_LEFT);
 
 	// General object setup
 	obj->SetPosition(x, y);
