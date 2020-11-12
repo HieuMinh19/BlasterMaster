@@ -14,7 +14,8 @@
 #include "Domes.h"
 #include "Jumpers.h"
 #include "Insect.h"
-
+#include "Orbs.h"
+#include "Floaters.h"
 
 using namespace std;
 
@@ -168,10 +169,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		_vx = atof(tokens[4].c_str());
 		obj = new CInsect(_vx);
 		break;
+	case OBJECT_TYPE_ORBS:
+		_vx = atof(tokens[4].c_str());
+		_species = atof(tokens[5].c_str());
+		obj = new COrbs(_vx, _species);
+		break;
 	case OBJECT_TYPE_DOMES:
 		_vx = atof(tokens[4].c_str());
 		_vy = atof(tokens[5].c_str());
 		obj = new CDomes(_vx, _vy);
+		break;
+	case OBJECT_TYPE_FLOATERS:
+		_vx = atof(tokens[4].c_str());
+		_vy = atof(tokens[5].c_str());
+		obj = new CFloaters(_vx, _vy);
 		break;
 
 	// case OBJECT_TYPE_PORTAL:
