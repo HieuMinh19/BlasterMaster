@@ -37,8 +37,34 @@
 # walk
 11032	20	47	36	55	0
 11033	3	47	19	55	0
+
 #BRICK
 20001	408	225	424	241	20
+#GOOMBA
+30001	5	14	21	29	10
+30002	25	14	41	29	10
+#die
+30003	45	21	61	29	10
+
+#brick with question mark animation
+40001	300	117	316	133	20
+40002	318	117	334	133	20
+40003	336	117	352	133	20
+40004	355	117	370	133	20
+
+#BULLET		
+90001	73	38	81	46	0
+
+#ITEMS
+60001	104	108	121	125	30
+
+# WORMS
+# walk right
+90001	191	412	207	421	90
+90002	172	412	189	421	90
+# walk left
+90003	46	412	62	421	90
+90004	64	412	81	421	90
 
 # SOPHIA
 # idle right
@@ -99,9 +125,6 @@
 10131	102	340	130	377	10
 #die
 10099	45	21	61	29	10
-
-#ITEMS
-60001	104	108	121	125	30
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -170,8 +193,25 @@
 #die
 599	11099	100
 
+
+
+#==== BULLET==== 
+901	90001	100 
+
 # ==== BRICK =========
 601	20001	100
+
+# ==== QUESTION MARK BRICK =========
+602	40001	1000	40001	100	40002	100	40003	100	40004	100
+
+# === ITEMS =========
+603	60001	100
+
+# ==== WORMS =========
+#walk right
+900	90001	100	90002	100
+#walk left
+901	90003	100	90004	100
 
 #
 # id	ani1	ani2	ani3
@@ -187,10 +227,18 @@
 1	500	501	502	506	504	505	503	507	508	509	599
 # BRICK 
 2	601
+# ITEMS
+3	603
+# QUESTION MARK BRICK 
+22	602
+19	700
+# WORMS
+6	900	901
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 19 = BACKGROUND
+# type: 0 = Mario , 1 = Brick, 7 = BACKGROUND
+
 #====== BACKGROUND =======
 19	0	32	19
 # MARIO
@@ -200,16 +248,19 @@
 6	30	124	8
 # Sophia
 7	30	100	7
+
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
-1	0	275	2	512	20
-1	0	0	2	64	500 
-1	63	211	2	64	32
-1	63	147	2	64	32
-1	0	99	2	512	16
-1	512	0	2	32	480
+1	0	175	2	500	20 
+1	0	70	2	35	100 
+1	0	77	2	500	20 
+1	480	70	2	35	100
+
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 #50	300	98	0	316	150	2
+
+# WORMS
+9	110.0	0	6
