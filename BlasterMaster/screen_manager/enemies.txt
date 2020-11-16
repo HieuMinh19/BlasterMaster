@@ -108,6 +108,10 @@
 90038	103	406	122	422	90
 # gun right
 90039	131	406	150	422	90
+# bullet left
+90040	31	304	40	313	90
+# buller right
+90041	213	304	222	313	90
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -203,6 +207,10 @@
 924	90038	200
 # gun right
 925	90039	200
+# bullet left
+926	90040	200
+# bullet right
+927	90041	200
 
 #
 # id	ani1	ani2	ani3
@@ -224,7 +232,7 @@
 # ORBS
 10	916	917	918	919	920	921
 # FLOATERS
-11	922	923	924	925
+11	922	923	924	925	926	927
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type

@@ -13,12 +13,17 @@
 
 #define FLOATERS_ANI_WALKING_LEFT	0
 #define FLOATERS_ANI_WALKING_RIGHT	1
-#define FLOATERS_ANI_GUN_LEFT	2
-#define FLOATERS_ANI_GUN_RIGHT	3
+#define FLOATERS_ANI_GUN_LEFT		2
+#define FLOATERS_ANI_GUN_RIGHT		3
+#define FLOATERS_ANI_BULLET_LEFT	4
+#define FLOATERS_ANI_BULLET_RIGHT	5
 
 
 #define FLOATERS_BBOX_WIDTH		19
 #define FLOATERS_BBOX_HEIGHT	15
+#define FLOATERS_BULLET_BBOX_WIDTH	19
+#define FLOATERS_BULLET_BBOX_HEIGHT	15
+
 
 class CFloaters : public CEnemies
 {
@@ -32,6 +37,7 @@ public:
 	CFloaters();
 	CFloaters(float _vx, float _vy);
 	virtual void SetState(int state);
+	void Fire();
 
 };
 
