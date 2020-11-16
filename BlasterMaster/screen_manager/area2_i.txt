@@ -110,7 +110,7 @@
 #
 [ANIMATION_SETS]
 #===== BACKGROUND ==========
-7	700
+11	700
 # MARIO
 1	400	401	402	502	500	501	403	503	599
 # BRICK 
@@ -125,9 +125,9 @@
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 7 = BACKGROUND
+# type: 0 = Mario , 1 = Brick, 11 = BACKGROUND
 #====== BACKGROUND =======
-7	0	0	7
+11	0	0	11
 # MARIO
 0	50.0	0	1
 # BULLET

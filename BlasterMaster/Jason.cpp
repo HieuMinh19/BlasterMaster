@@ -4,7 +4,7 @@
 
 #include "Jason.h"
 #include "Game.h"
-#include "Bullet.h"
+#include "PlayerBullet.h"
 #include "Worms.h"
 #include "PlayScence.h"
 
@@ -17,7 +17,7 @@ CJason::CJason(float x, float y) : CPlayer()
 	isSpecialAni = false;
 	alpha = 255;
 	health = JASON_MAX_HEALTH;
-
+	inTank = true;
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -42,14 +42,13 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
-	/*
 	if (GetTickCount() - untouchable_start > UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 		alpha = 255;
 	}
-	*/
+	
 	float min_tx, min_ty, nx = 0, ny;
 	float rdx = 0;
 	float rdy = 0;
@@ -57,10 +56,13 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// TODO: This is a very ugly designed function!!!!
 	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 	// No collision occured, proceed normally
+
 	if (coEventsResult.size() == 0)
 	{
 		x += dx;
 		y += dy;
+		if (dy == 0)
+			isJump = false;
 	}
 	else
 	{
@@ -84,7 +86,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (untouchable == 0)
 				{
 					health--;
-					DebugOut(L"[ERROR] Máu %i \n", health);
+					//DebugOut(L"[ERROR] Máu %i \n", health);
 					if (health > 0)
 						StartUntouchable();
 					else
@@ -106,7 +108,14 @@ void CJason::Render()
 	else
 		if (isSpecialAni == false)
 		{
-			if (vx == 0)
+			if (isJump == true)
+			{
+				if (nx < 0)
+					ani = ANI_JUMP_LEFT;
+				else
+					ani = ANI_JUMP_RIGHT;
+			}
+			else if (vx == 0)
 			{
 				if (nx > 0) ani = ANI_IDLE_RIGHT;
 				else ani = ANI_IDLE_LEFT;
@@ -126,9 +135,8 @@ void CJason::Render()
 				ani = ANI_CRAWL_IDLE_LEFT;
 			else ani = ANI_CRAWL_WALKING_LEFT;
 		}
-
 	if (untouchable) {
-		if (alpha >= UNTOUCHABLE_ALPHA)
+		if (alpha > UNTOUCHABLE_ALPHA)
 			alpha = UNTOUCHABLE_ALPHA;
 		else 
 			alpha = UNTOUCHABLE_ALPHA * 2;
@@ -155,6 +163,7 @@ void CJason::SetState(int state)
 		break;
 	case STATE_JUMP:
 		vy = -JUMP_SPEED_Y;
+		isJump = true;
 		break;
 	case STATE_IDLE:
 		vx = 0;
@@ -230,19 +239,23 @@ void CJason::KeyLeft()
 }
 
 
-void CJason::fire(vector<LPGAMEOBJECT> &objects)
+void CJason::KeyZ()
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
-	obj = new CBullet(nx);
+	obj = new CBullet(nx, ANI_JASON);
 
 	// General object setup
 	obj->SetPosition(x, y);
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 
 	obj->SetAnimationSet(ani_set);
-	objects.push_back(obj);
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
 
 }
 
@@ -287,6 +300,33 @@ void CJason::KeyUp()
 
 void CJason::KeyX()
 {
-	if (isSpecialAni == false)
+	if (isSpecialAni == false && isJump == false)
 		SetState(STATE_JUMP);
+}
+
+void CJason::KeySHIFT()
+{
+	if (this->state != PLAYER_STATE_IDLE)
+		return;
+	CSophia* sophia = dynamic_cast<CSophia*> (
+		CSophia::GetInstance()
+		);
+
+	float x = 0;
+	float y;
+	float z;
+	float t;
+
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)->SetPlayer(sophia);
+
+}
+
+
+void CJason::GetOut()
+{
+	this->vy = -JUMP_CHANGE_PLAYER_SPEED;
+	isJump = true;
 }

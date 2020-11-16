@@ -1,5 +1,9 @@
 [SETTINGS]
+<<<<<<< HEAD
 start	8
+=======
+start	5
+>>>>>>> pharse_merge
 #scene list
 [SCENES]
 1	screen_manager\scene1.txt
@@ -19,3 +23,4 @@ start	8
 15	screen_manager\section_J.txt
 16	screen_manager\section_L.txt
 17	screen_manager\section_M.txt
+18	screen_manager\area2_b.txt  

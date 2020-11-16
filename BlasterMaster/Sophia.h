@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Player.h"
 
 #define SOPHIA_WALKING_SPEED		0.15f 
 //0.1f
@@ -9,6 +10,8 @@
 #define SOPHIA_DIE_DEFLECT_SPEED	 0.5f
 #define SOPHIA_JUMP_WHILE_WALK_SPEED_Y		0.25f
 #define SOPHIA_JUMP_WHILE_WALK_SPEED_X		0.05f
+#define CANNON_X 10
+#define CANNON_Y 18
 #define JUMP_GRAVITY			0.0005f
 
 #define SOPHIA_STATE_IDLE			0
@@ -55,8 +58,8 @@
 #define	SOPHIA_LEVEL_NORMAL	1
 #define	SOPHIA_LEVEL_MOVE_UP	2
 
-#define SOPHIA_BIG_BBOX_WIDTH  13
-#define SOPHIA_BIG_BBOX_HEIGHT 20
+#define SOPHIA_BBOX_WIDTH  26
+#define SOPHIA_BBOX_HEIGHT 20
 
 // #define SOPHIA_SMALL_BBOX_WIDTH  13
 // #define SOPHIA_SMALL_BBOX_HEIGHT 15
@@ -64,12 +67,15 @@
 #define SOPHIA_MOVE_UP_BBOX_WIDTH  13
 #define SOPHIA_MOVE_UP_BBOX_HEIGHT 50
 
-#define SOPHIA_UNTOUCHABLE_TIME 5000
-#define SOPHIA_JUMP_TIME		1000
-#define SOPHIA_MOVEUP_START		450
+#define SOPHIA_UNTOUCHABLE_TIME 1500
+#define SOPHIA_JUMP_TIME 1000
+#define SOPHIA_MOVEUP_START 450
+#define SOPHIA_HEAL 100
 
-class CSophia : public CGameObject
+
+class CSophia :  public CPlayer
 {
+	static CSophia* __instance;
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
@@ -78,6 +84,7 @@ class CSophia : public CGameObject
 	float start_y;
 public:
 	int hover;
+	int heal;
 	boolean isJumping, isMoveUp, isStandUp, isJumpingWhileWalk, isWalkAfterJump;
 	DWORD jump_start, moveup_start;
 	CSophia(float x = 0.0f, float y = 0.0f);
@@ -85,18 +92,21 @@ public:
 	virtual void Render();
 
 	void SetState(int state);
-	void SetNx(int a);
 	void SetLevel(int l) { level = l; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void fire(vector<LPGAMEOBJECT>& objects);
 	void Reset();
+	void ResetStandUp();
 	void ResetJump();
-	void ResetAttackUp();
-	void Jump();
-	void Walk();
-	void WalkUp();
-	void MoveUpKeyDown();
-	void MoveUpKeyUp();
-	void SetWalk();
+	void KeyDown();
+	void KeyUp();
+	void KeyLeft();
+	void KeyRight();
+	void KeyX();
+	void KeyZ();
+	void KeySHIFT();
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	static CSophia* GetInstance(float x, float y);
+	static CSophia* GetInstance();
 };

@@ -8,6 +8,9 @@
 #include "Items.h"
 #include "Config.h"
 #include "Sophia.h"
+#include "Breakable.h"
+#define PLAYER_JASON		1
+#define PLAYER_SOPHIA		2
 #include "Background.h"
 
 class CPlayScene : public CScene
@@ -15,7 +18,9 @@ class CPlayScene : public CScene
 protected:
 	CPlayer * player;					// A play scene has to have player, right? 
 //=======
-//	CSophia* player;					// A play scene has to have player, right? 
+	//CPlayer* sophia;				
+	//CPlayer* jason;
+	int state;
 //>>>>>>> Player/Sophia
 
 	vector<LPGAMEOBJECT> objects;
@@ -39,6 +44,7 @@ public:
 	void AddObject(LPGAMEOBJECT gameObject);
 	vector<LPGAMEOBJECT> GetObjects() { return objects; }
 	CPlayer* GetPlayer() { return player; }
+	void SetPlayer(CPlayer * main) { player = main; }
 	//CSophia* GetPlayer() { return player; }
 	//friend class CPlayScenceKeyHandler;
 };

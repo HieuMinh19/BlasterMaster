@@ -145,7 +145,6 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Breakable.cpp" />
     <ClCompile Include="Brick.cpp" />
-    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -155,12 +154,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerBullet.cpp" />
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Scence.cpp" />
     <ClCompile Include="Sophia.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Trap.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Worms.cpp" />
   </ItemGroup>
@@ -169,7 +170,6 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="Breakable.h" />
     <ClInclude Include="Brick.h" />
-    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="Game.h" />
@@ -180,14 +180,20 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerBullet.h" />
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scence.h" />
     <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
+    <ClInclude Include="Trap.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Worms.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BlasterMaster.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

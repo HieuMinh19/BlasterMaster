@@ -7,9 +7,11 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "Brick.h"
+#include "Trap.h"
 #include "Intro.h"
-#include "Bullet.h"
+#include "PlayerBullet.h"
 #include "Worms.h"
+#include "Breakable.h"
 
 using namespace std;
 
@@ -24,21 +26,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	See scene1.txt, scene2.txt for detail format specification
 */
 
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
-#define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS	6
 
-#define OBJECT_TYPE_SOPHIA	0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
 
-#define OBJECT_TYPE_PORTAL	50
-
-#define MAX_SCENE_LINE 1024
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
@@ -148,18 +137,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_JASON:
 	//case OBJECT_TYPE_sophia:
 
-		if (player != NULL)
-		{
-			DebugOut(L"[ERROR] sophia object was created before!\n");
-			return;
-		}
+		
 		obj = CJason::GetInstance(x, y);
-		player = (CJason*)obj;
-//=======
-//		obj = new CSophia(x, y);
-//		player = (CSophia*)obj;
-//
-//>>>>>>> Player/Sophia
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 
@@ -173,7 +152,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	// case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
+	case OBJECT_TYPE_SOPHIA: obj = new CSophia();
+		obj = CSophia::GetInstance(x, y);
+		player = (CSophia*)obj;
+	
+		break;
+	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
+	case OBJECT_TYPE_BREAKABLE: obj = new CBreakable(); break;
 	// case OBJECT_TYPE_PORTAL:
 	// {
 	// 	float r = atof(tokens[4].c_str());
@@ -255,6 +241,9 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> brickObjects;
 	vector<LPGAMEOBJECT> enemyObjects;
+	vector<LPGAMEOBJECT> trapObjects;
+	vector<LPGAMEOBJECT> bulltetObjects;
+	vector<LPGAMEOBJECT> breakableObjects;
 
 
 	for (size_t i = 1; i < objects.size(); i++)
@@ -265,7 +254,15 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
-
+		if (dynamic_cast<CTrap*>(objects[i])) {
+			trapObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CBreakable*>(objects[i])) {
+			breakableObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CBullet*>(objects[i])) {
+			bulltetObjects.push_back(objects[i]);
+		}
 		coObjects.push_back(objects[i]);
 	}
 
@@ -278,12 +275,36 @@ void CPlayScene::Update(DWORD dt)
 			// merge with enemy
 			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CBreakable*>(objects[i])) {
+			// enemy can colli with brick only
+			
+			objects[i]->Update(dt, &coObjects);
+		}
+		if (dynamic_cast<CBullet*>(objects[i])) {
+			vector<LPGAMEOBJECT> bulltetCoObjects;
+
+			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			bulltetCoObjects.insert(bulltetCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			objects[i]->Update(dt, &bulltetCoObjects);
+		}
+		if (dynamic_cast<CSophia*>(objects[i])) {
+			vector<LPGAMEOBJECT> playerCoObjects;
+			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			objects[i]->Update(dt, &playerCoObjects);
+		}
+		if (objects[i]->state == OBJECT_STATE_DELETE) {
+			objects[i]->deleteObject(objects, i);
 		}
 	}
 
@@ -330,7 +351,6 @@ void CPlayScene::AddObject(LPGAMEOBJECT gameObject)
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
 	CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
 	switch (KeyCode)
 	{
@@ -350,43 +370,31 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			player->KeyRight();
 			break;
 		case DIK_Z:
-			//sophia->fire(objects);
+			player->KeyZ();
 			break;
 		case DIK_X:
 			player->KeyX();
 			break;
+		case DIK_LSHIFT:
+			player->KeySHIFT();
+			break;
 	}
 
-	((CPlayScene*)scence)->UpdateObjects(objects);
 }
 
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
-	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-	//vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
-	//CPlayer *player = ((CPlayScene*)scence)->GetPlayer();
-	//if (player == NULL) return;		//intro screen.
-	//switch (KeyCode)
-	//{
-	//case DIK_SPACE:
-	//	player->SetState(STATE_JUMP);
-	//	break;
-	//case DIK_DOWN:
-	//	player->SetState(STATE_CRAWL_IDLE);
-	//	break;
-	//case DIK_Z:
-	//	player->fire(objects);
-	//	break;
-
-	//	CSophia* sophia = ((CPlayScene*)scence)->GetPlayer();
-	//	switch (KeyCode)
-	//	{
-	//	case DIK_UP:
-	//		sophia->MoveUpKeyUp();
-	//		break;
-	//	}
-	//}
-	//((CPlayScene*)scence)->UpdateObjects(objects);
+	vector<LPGAMEOBJECT> objects = ((CPlayScene*)scence)->GetObjects();
+	CPlayer *player = ((CPlayScene*)scence)->GetPlayer();
+	
+	switch (KeyCode){
+	case DIK_UP:
+		DebugOut(L"[INFO] ID: %d\n", player->OBJECT_ID);
+		if(player->OBJECT_ID == OBJECT_TYPE_SOPHIA) {
+			player->KeyUp();
+			break;
+		}
+	}
 
 }
 void CPlayScenceKeyHandler::KeyState(BYTE * states)
