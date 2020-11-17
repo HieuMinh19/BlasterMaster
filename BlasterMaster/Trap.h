@@ -10,7 +10,7 @@ public:
 	int btrapWidth = TRAP_BBOX_WIDTH;
 	int btrapHeight = TRAP_BBOX_HEIGHT;
 public:
-	CBrick(int btrapHeight, int btrapWidth);
+	CTrap(int btrapHeight, int btrapWidth);
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 	void SetBBox(int width, int height);
