@@ -1,5 +1,5 @@
 [SETTINGS]
-start	5
+start	99
 #scene list
 [SCENES]
 1	screen_manager\scene1.txt
@@ -12,3 +12,4 @@ start	5
 8	screen_manager\area2_i.txt
 9	screen_manager\section_G.txt
 10   screen_manager\area2_b.txt   
+99 screen_manager\over_world.txt   

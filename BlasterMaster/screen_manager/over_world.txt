@@ -1,0 +1,91 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+0	textures\SpritesTank.png	255	255	255
+20	textures\bbox.png	237	38	26
+90	textures\enemies-1.png	255	0	255
+30	textures\itemsandobjects.png	176	224	248 
+79	textures\Area_2.png	255	255	255
+
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#===============BACKGROUND-AREA2==============
+70000	0	0	1024	240	79
+# JASON
+# idle right
+10001	3	98	11	114	0
+# walk
+10002	12	98	20	114	0	
+10003	21	98	29	114	0
+10004	30	98	38	114	0
+# idle left
+10011	3	30	11	46	0
+#walk
+10012	12	30	20	46	0
+10013	21	30	29	46	0
+10014	30	30	38	46	0
+# die 
+10099	215	120	231	135	0
+# CRAWL JASON
+# idle right
+10021	37	89	53	97	0
+# walk
+10022	54	89	70	97	0
+10023	37	89	53	97	0
+# idle left
+10031	3	47	19	55	0
+# walk
+10032	20	47	36	55	0
+10033	3	47	19	55	0
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+# ==== BACKGROUND_AREA2 =========
+700	70000	1000
+
+#==== BULLET==== 
+901	90001	100 
+
+# ==== WORMS =========
+#walk right
+900	90001	100	90002	100
+#walk left
+901	90003	100	90004	100
+
+#
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+#===== BACKGROUND ==========
+7	700
+# MARIO
+1	400	401	402	502	500	501	403	503	599
+# BRICK 
+2	601
+# ITEMS
+3	603
+# QUESTION MARK BRICK 
+22	602
+
+# WORMS
+6	900	901
+
+[OBJECTS]
+# type	x	y	ani_set_id	extra_settings per object type
+# type: 0 = Mario , 1 = Brick, 7 = BACKGROUND
+#====== BACKGROUND =======
+7	0	0	7
+# MARIO
+0	50.0	0	1
+# BULLET
+6	30	124	6
+# BRICK 
+# --- platform (hint: I created the list using Excel!) ----
+# type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
+1	0	160	2	304	16  
+
+# --- SCENE PORTAL ----
+# type	l	t	ani_set_id	r	b	scene_id
+#50	300	98	0	316	150	2
+
+# WORMS
+9	110.0	0	6
