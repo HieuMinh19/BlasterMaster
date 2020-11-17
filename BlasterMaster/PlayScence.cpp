@@ -157,12 +157,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CSophia*)obj;
 	
 		break;
-	case OBJECT_TYPE_TRAP: DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
-		int width = atof(tokens[4].c_str());
-		int height = atof(tokens[5].c_str());	
-		DebugOut(L"[BBOX] width: %d\n", width);
-		
-		obj = new CTrap(height, width); 
+	case OBJECT_TYPE_TRAP: {
+			int width = atof(tokens[4].c_str());
+			int height = atof(tokens[5].c_str());	
+			DebugOut(L"[BBOX] width: %d\n", width);
+			obj = new CTrap(height, width); 
+		}
 		break;
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_BREAKABLE: obj = new CBreakable(); break;
