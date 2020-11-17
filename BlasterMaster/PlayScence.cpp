@@ -160,7 +160,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_TRAP: {
 			int width = atof(tokens[4].c_str());
 			int height = atof(tokens[5].c_str());	
-			DebugOut(L"[BBOX] width: %d\n", width);
 			obj = new CTrap(height, width); 
 		}
 		break;
@@ -281,6 +280,7 @@ void CPlayScene::Update(DWORD dt)
 			// merge with enemy
 			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
@@ -306,6 +306,7 @@ void CPlayScene::Update(DWORD dt)
 			vector<LPGAMEOBJECT> playerCoObjects;
 			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
