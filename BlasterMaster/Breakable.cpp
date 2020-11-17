@@ -24,7 +24,6 @@ void CBreakable::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CBreakable::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"[ERROR] Máu %i \n", health);
 	if (health == 0) {
 		state = OBJECT_STATE_DELETE;
 	}
