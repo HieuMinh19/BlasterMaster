@@ -571,7 +571,7 @@ void CSophia::KeySHIFT()
 	CJason* jason = dynamic_cast<CJason*> (
 		CJason::GetInstance()
 		);
-	jason->x = this->x + (SOPHIA_BBOX_WIDTH + BBOX_WIDTH) / 2;
+	jason->x = this->x + (SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
 	jason->nx = this->nx;
 	jason->y = this->y;
 	jason->GetOut();

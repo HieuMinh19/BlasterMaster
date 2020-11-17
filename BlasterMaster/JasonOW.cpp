@@ -2,29 +2,28 @@
 #include "Utils.h"
 #include "Player.h"
 
-#include "Jason.h"
+#include "JasonOW.h"
 #include "Game.h"
 #include "PlayerBullet.h"
 #include "Worms.h"
 #include "PlayScence.h"
 
-CJason* CJason::__instance = NULL;
+CJasonOW* CJasonOW::__instance = NULL;
 
-CJason::CJason(float x, float y) : CPlayer()
+CJasonOW::CJasonOW(float x, float y) : CPlayer()
 {
 	untouchable = 0;
 	SetState(STATE_IDLE);
 	isSpecialAni = false;
 	alpha = 255;
 	health = JASON_MAX_HEALTH;
-	inTank = true;
 	start_x = x;
 	start_y = y;
 	this->x = x;
 	this->y = y;
 }
 
-void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
@@ -99,7 +98,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-void CJason::Render()
+void CJasonOW::Render()
 {
 	int ani = 0;
 	if (state == STATE_DIE)
@@ -146,7 +145,7 @@ void CJason::Render()
 	RenderBoundingBox();
 }
 
-void CJason::SetState(int state)
+void CJasonOW::SetState(int state)
 {
 	CGameObject::SetState(state);
 
@@ -194,7 +193,7 @@ void CJason::SetState(int state)
 	}
 }
 
-void CJason::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void CJasonOW::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
@@ -209,19 +208,23 @@ void CJason::GetBoundingBox(float& left, float& top, float& right, float& bottom
 		right = x + CRAWL_BBOX_WIDTH;
 		bottom = y + CRAWL_BBOX_HEIGHT;
 	}
+	DebugOut(L"[ERROR] Máu %i \n", top);
+
+	DebugOut(L"[ERROR] Máu %i \n", bottom);
+
 }
 
 /*
 Reset Mario status to the beginning state of a scene
 */
-void CJason::Reset()
+void CJasonOW::Reset()
 {
 	SetState(STATE_IDLE);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
 }
 
-void CJason::KeyRight()
+void CJasonOW::KeyRight()
 {
 	if (isSpecialAni == false)
 		SetState(STATE_WALKING_RIGHT);
@@ -229,7 +232,7 @@ void CJason::KeyRight()
 		SetState(STATE_CRAWL_WALKING_RIGHT);
 }
 
-void CJason::KeyLeft()
+void CJasonOW::KeyLeft()
 {
 	if (isSpecialAni == false)
 		SetState(STATE_WALKING_LEFT);
@@ -238,7 +241,7 @@ void CJason::KeyLeft()
 }
 
 
-void CJason::KeyZ()
+void CJasonOW::KeyZ()
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
@@ -258,7 +261,7 @@ void CJason::KeyZ()
 
 }
 
-void CJason::spawnItem(float x, float y)
+void CJasonOW::spawnItem(float x, float y)
 {
 	// General object setup
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -273,37 +276,37 @@ void CJason::spawnItem(float x, float y)
 		->AddObject(obj);
 }
 
-CJason* CJason::GetInstance(float x, float y)
+CJasonOW* CJasonOW::GetInstance(float x, float y)
 {
 	if (__instance == NULL) __instance = new CJason(x, y);
 	return __instance;
 }
 
-CJason* CJason::GetInstance()
+CJasonOW* CJasonOW::GetInstance()
 {
 	if (__instance == NULL) __instance = new CJason();
 	return __instance;
 }
 
-void CJason::KeyDown()
+void CJasonOW::KeyDown()
 {
 	if (state == STATE_JUMP)
 		return;
 	SetState(STATE_CRAWL_IDLE);
 }
 
-void CJason::KeyUp()
+void CJasonOW::KeyUp()
 {
 
 }
 
-void CJason::KeyX()
+void CJasonOW::KeyX()
 {
 	if (isSpecialAni == false && isJump == false)
 		SetState(STATE_JUMP);
 }
 
-void CJason::KeySHIFT()
+void CJasonOW::KeySHIFT()
 {
 	if (this->state != PLAYER_STATE_IDLE || isSpecialAni == true || isJump == true)
 		return;
@@ -325,7 +328,7 @@ void CJason::KeySHIFT()
 }
 
 
-void CJason::GetOut()
+void CJasonOW::GetOut()
 {
 	this->vy = -JUMP_CHANGE_PLAYER_SPEED;
 	isJump = true;
