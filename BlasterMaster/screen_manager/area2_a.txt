@@ -6,12 +6,12 @@
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
 90	textures\enemies-1.png	255	0	255
-70	textures\area_2.png	255	255	255
+70	textures\area2.png	255	255	255
 
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #===============BACKGROUND-AREA2==============
-70000	0	0	1024	240	70
+70000	0	2798	1024	3038	70
 # JASON
 # idle right
 11001	3	98	11	114	0
@@ -107,7 +107,7 @@
 #die
 30003	45	21	61	29	10
 
-#=============== WORMS =========
+    #=============== WORMS =========
 # walk right
 90001	191	412	207	421	90
 90002	172	412	189	421	90
@@ -222,7 +222,7 @@
 806	80008	100
 807	80009	100
 
-# ==== WORMS =========
+# ======== WORMS =========
 #walk right
 900	90001	100	90002	100
 #walk left
@@ -269,8 +269,9 @@
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 19 = BACKGROUND, 9 = WORMS
+# type	x	y	ani_set_id	BG_MAX_WITH   BG_MAX_HEIGHT  
 #====== BACKGROUND =======
-19	0	0	19
+19	0	0	19	1024	240
 # MARIO
 7	30	0	7
 0	50.0	0	1

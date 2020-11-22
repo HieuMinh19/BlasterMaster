@@ -41,6 +41,8 @@ class CGame
 
 	int screen_width;
 	int screen_height;
+	int max_screen_width;
+	int max_screen_height;
 
 	unordered_map<int, LPSCENE> scenes;
 	int current_scene;
@@ -63,6 +65,11 @@ public:
 
 	int GetScreenWidth() { return screen_width; }
 	int GetScreenHeight() { return screen_height; }
+	
+	int GetMaxScreenWidth() { return max_screen_width; }
+	int GetMaxScreenHeight() { return max_screen_height; }
+	void SetMaxScreenWidth(int max_width) { this->max_screen_width = max_width; }
+	void SetMaxScreenHeight(int max_height) { this->max_screen_height = max_height; }
 
 	static void SweptAABB(
 		float ml,			// move left 

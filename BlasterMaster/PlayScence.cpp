@@ -143,10 +143,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 
 	case OBJECT_TYPE_BRICK: {
-		DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
 		int width = atof(tokens[4].c_str());
-		int height = atof(tokens[5].c_str());	
-		DebugOut(L"[BBOX] width: %d\n", width);
+		int height = atof(tokens[5].c_str());
 		obj = new CBrick(height, width); break;
 	}
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
@@ -163,7 +161,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CTrap(height, width); 
 		}
 		break;
-	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
+	case OBJECT_TYPE_BACKGROUND: {
+		int maxScreenWidth = atof(tokens[4].c_str());
+		int maxScreenHeight = atof(tokens[5].c_str());
+		
+		CGame* game = CGame::GetInstance();
+		game->SetMaxScreenWidth(maxScreenWidth);
+		game->SetMaxScreenHeight(maxScreenHeight);
+
+		obj = new CBackground();
+	} 
+	break;
+	
 	case OBJECT_TYPE_BREAKABLE: obj = new CBreakable(); break;
 	case OBJECT_TYPE_PORTAL:
 	{
@@ -223,11 +232,11 @@ void CPlayScene::Load()
 		//
 		switch (section)
 		{
-		case SCENE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
-		case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
-		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
-		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
-		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+			case SCENE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
+			case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
+			case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
+			case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
+			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
 
@@ -331,7 +340,15 @@ void CPlayScene::Update(DWORD dt)
 	CGame* game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
+
+	//prevent x_camera move out of map.
 	if (cx < 0) cx = 0;
+	if (cx > (game->GetMaxScreenWidth() - game->GetScreenWidth()))
+		cx = game->GetMaxScreenWidth() - game->GetScreenWidth();
+	
+	DebugOut(L"[MAX WIDTH] max %d\n", game->GetMaxScreenWidth());
+	DebugOut(L"[SCREEN WIDTH] screen %d\n", game->GetScreenWidth());
+	DebugOut(L"[MAX WIDTH] cx %f\n", cx);
 
 	CGame::GetInstance()->SetCamPos(cx, cy);
 }
