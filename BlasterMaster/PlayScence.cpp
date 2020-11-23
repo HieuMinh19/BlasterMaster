@@ -426,7 +426,6 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 }
 void CPlayScenceKeyHandler::KeyState(BYTE * states)
 {
-
 	CGame* game = CGame::GetInstance();
 	CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
 	//if (player->GetState() == MARIO_STATE_DIE) return;
