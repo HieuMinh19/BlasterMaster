@@ -12,6 +12,7 @@
 #include "PlayerBullet.h"
 #include "Worms.h"
 #include "Breakable.h"
+#include "JasonOW.h"
 
 using namespace std;
 
@@ -142,6 +143,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 
+	case OBJECT_TYPE_SOPHIA: obj = new CSophia();
+		obj = CSophia::GetInstance(x, y);
+		player = (CSophia*)obj;
+	
+		break;
+		
+	case OBJECT_TYPE_JASON_OW:
+		obj = CJasonOW::GetInstance(x, y);
+		DebugOut(L"[INFO] Player object created!\n");
+		player = (CJasonOW*)obj;
+
+		break;
 	case OBJECT_TYPE_BRICK: {
 		DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
 		int width = atof(tokens[4].c_str());
@@ -152,11 +165,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
 	// case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
-	case OBJECT_TYPE_SOPHIA: obj = new CSophia();
-		obj = CSophia::GetInstance(x, y);
-		player = (CSophia*)obj;
-	
-		break;
 	case OBJECT_TYPE_TRAP: {
 			int width = atof(tokens[4].c_str());
 			int height = atof(tokens[5].c_str());	
@@ -284,6 +292,11 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
+		if (dynamic_cast<CJasonOW*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
@@ -396,7 +409,6 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	
 	switch (KeyCode){
 	case DIK_UP:
-		DebugOut(L"[INFO] ID: %d\n", player->OBJECT_ID);
 		if(player->OBJECT_ID == OBJECT_TYPE_SOPHIA) {
 			player->KeyUp();
 			break;
@@ -414,6 +426,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE * states)
 		player->KeyRight();
 	else if (game->IsKeyDown(DIK_LEFT))
 		player->KeyLeft();
+	else if (game->IsKeyDown(DIK_UP))
+		player->KeyUp();
+	else if (game->IsKeyDown(DIK_DOWN))
+		player->KeyDown();
 	else
 		player->SetState(PLAYER_STATE_IDLE);
 }

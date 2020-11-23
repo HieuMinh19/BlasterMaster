@@ -19,6 +19,7 @@ CJasonOW::CJasonOW(float x, float y) : CPlayer()
 	health = JASON_MAX_HEALTH;
 	start_x = x;
 	start_y = y;
+	ny = -1;
 	this->x = x;
 	this->y = y;
 }
@@ -27,10 +28,6 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
-
-	// Simple fall down
-	vy += GRAVITY * dt;
-
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -47,7 +44,6 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 		alpha = 255;
 	}
-	
 	float min_tx, min_ty, nx = 0, ny;
 	float rdx = 0;
 	float rdy = 0;
@@ -55,13 +51,12 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// TODO: This is a very ugly designed function!!!!
 	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 	// No collision occured, proceed normally
+	DebugOut(L"[INFO] Player %i object created!\n", dy);
 
 	if (coEventsResult.size() == 0)
 	{
 		x += dx;
 		y += dy;
-		if (dy == 0)
-			isJump = false;
 	}
 	else
 	{
@@ -101,38 +96,30 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CJasonOW::Render()
 {
 	int ani = 0;
-	if (state == STATE_DIE)
-		ani = ANI_DIE;
+
+	if (vx == 0)
+	{
+		if (ny == 0) {
+			if (nx > 0)
+				ani = JASON_OW_ANI_IDLE_RIGHT;
+			else
+				ani = JASON_OW_ANI_IDLE_LEFT;
+		}
+		else if (vy == 0) 
+		{
+			if(ny > 0) ani = JASON_OW_ANI_IDLE_DOWN;
+			else if (ny < 0) ani = JASON_OW_ANI_IDLE_TOP;
+		}
+		else if (ny > 0) 
+			ani = JASON_OW_ANI_WALKING_DOWN;
+		else 
+			ani = JASON_OW_ANI_WALKING_TOP;
+	}
+	else if (vx > 0)
+		ani = JASON_OW_ANI_WALKING_RIGHT;
 	else
-		if (isSpecialAni == false)
-		{
-			if (isJump == true)
-			{
-				if (nx < 0)
-					ani = ANI_JUMP_LEFT;
-				else
-					ani = ANI_JUMP_RIGHT;
-			}
-			else if (vx == 0)
-			{
-				if (nx > 0) ani = ANI_IDLE_RIGHT;
-				else ani = ANI_IDLE_LEFT;
-			}
-			else if (vx > 0)
-				ani = ANI_WALKING_RIGHT;
-			else ani = ANI_WALKING_LEFT;
-		}
-		else
-		{
-			if (vx == 0)
-			{
-				if (nx > 0) ani = ANI_CRAWL_IDLE_RIGHT;
-				else ani = ANI_CRAWL_WALKING_RIGHT;
-			}
-			else if (vx > 0)
-				ani = ANI_CRAWL_IDLE_LEFT;
-			else ani = ANI_CRAWL_WALKING_LEFT;
-		}
+		ani = JASON_OW_ANI_WALKING_LEFT;
+	
 	if (untouchable) {
 		if (alpha > UNTOUCHABLE_ALPHA)
 			alpha = UNTOUCHABLE_ALPHA;
@@ -151,44 +138,33 @@ void CJasonOW::SetState(int state)
 
 	switch (state)
 	{
-	case STATE_WALKING_RIGHT:
+	case JASON_OW_STATE_WALKING_RIGHT:
 		vx = WALKING_SPEED;
+		vy = 0;
 		nx = 1;
+		ny = 0;
 		break;
-	case STATE_WALKING_LEFT:
+	case JASON_OW_STATE_WALKING_LEFT:
 		vx = -WALKING_SPEED;
+		vy = 0;
 		nx = -1;
+		ny = 0;
 		break;
-	case STATE_JUMP:
-		vy = -JUMP_SPEED_Y;
-		isJump = true;
+	case JASON_OW_STATE_WALKING_TOP:
+		vy = -WALKING_SPEED;
+		vx = 0;
+		ny = -1;
+		nx = 0;
+		break;
+	case JASON_OW_STATE_WALKING_DOWN:
+		vy = WALKING_SPEED;
+		vx = 0;
+		ny = 1;
+		nx = 0;
 		break;
 	case STATE_IDLE:
 		vx = 0;
-		break;
-	case STATE_DIE:
-		vy = -DIE_DEFLECT_SPEED;
-		break;
-	case STATE_CRAWL_WALKING_RIGHT:
-		vx = CRAWL_SPEED;
-		nx = 1;
-		break;
-	case STATE_CRAWL_WALKING_LEFT:
-		vx = -CRAWL_SPEED;
-		nx = -1;
-		break;
-	case STATE_CRAWL_IDLE:
-		if (isSpecialAni) {
-			y -= CRAWL_BBOX_HEIGHT;
-			RenderBoundingBox();
-			isSpecialAni = false;
-		}
-		else {
-			y += CRAWL_BBOX_HEIGHT;
-			RenderBoundingBox();
-			isSpecialAni = true;
-		}
-		vx = 0;
+		vy = 0;
 		break;
 	}
 }
@@ -197,21 +173,8 @@ void CJasonOW::GetBoundingBox(float& left, float& top, float& right, float& bott
 {
 	left = x;
 	top = y;
-
-	if (!isSpecialAni)
-	{
-		right = x + BBOX_WIDTH;
-		bottom = y + BBOX_HEIGHT;
-	}
-	else
-	{
-		right = x + CRAWL_BBOX_WIDTH;
-		bottom = y + CRAWL_BBOX_HEIGHT;
-	}
-	DebugOut(L"[ERROR] Máu %i \n", top);
-
-	DebugOut(L"[ERROR] Máu %i \n", bottom);
-
+	right = x + JASON_OW_BBOX_WIDTH;
+	bottom = y + JASON_OW_BBOX_HEIGHT;
 }
 
 /*
@@ -219,27 +182,32 @@ Reset Mario status to the beginning state of a scene
 */
 void CJasonOW::Reset()
 {
-	SetState(STATE_IDLE);
-	SetPosition(start_x, start_y);
-	SetSpeed(0, 0);
+
 }
 
 void CJasonOW::KeyRight()
 {
-	if (isSpecialAni == false)
-		SetState(STATE_WALKING_RIGHT);
-	else
-		SetState(STATE_CRAWL_WALKING_RIGHT);
+	if (vy != 0) return;
+	SetState(JASON_OW_STATE_WALKING_RIGHT);
 }
 
 void CJasonOW::KeyLeft()
 {
-	if (isSpecialAni == false)
-		SetState(STATE_WALKING_LEFT);
-	else
-		SetState(STATE_CRAWL_WALKING_LEFT);
+	if (vy != 0) return;
+	SetState(JASON_OW_STATE_WALKING_LEFT);
 }
 
+void CJasonOW::KeyDown()
+{
+	if (vx != 0) return;
+	SetState(JASON_OW_STATE_WALKING_DOWN);
+}
+
+void CJasonOW::KeyUp()
+{
+	if (vx != 0) return;
+	SetState(JASON_OW_STATE_WALKING_TOP);
+}
 
 void CJasonOW::KeyZ()
 {
@@ -278,27 +246,16 @@ void CJasonOW::spawnItem(float x, float y)
 
 CJasonOW* CJasonOW::GetInstance(float x, float y)
 {
-	if (__instance == NULL) __instance = new CJason(x, y);
+	if (__instance == NULL) __instance = new CJasonOW(x, y);
 	return __instance;
 }
 
 CJasonOW* CJasonOW::GetInstance()
 {
-	if (__instance == NULL) __instance = new CJason();
+	if (__instance == NULL) __instance = new CJasonOW();
 	return __instance;
 }
 
-void CJasonOW::KeyDown()
-{
-	if (state == STATE_JUMP)
-		return;
-	SetState(STATE_CRAWL_IDLE);
-}
-
-void CJasonOW::KeyUp()
-{
-
-}
 
 void CJasonOW::KeyX()
 {
@@ -308,28 +265,11 @@ void CJasonOW::KeyX()
 
 void CJasonOW::KeySHIFT()
 {
-	if (this->state != PLAYER_STATE_IDLE || isSpecialAni == true || isJump == true)
-		return;
-	CSophia* sophia = dynamic_cast<CSophia*> (
-		CSophia::GetInstance()
-		);
-
-	if (this->x < sophia->x || this->x > sophia->x + SOPHIA_BBOX_WIDTH - BBOX_WIDTH || this->y < sophia->y || this->y > sophia->y + SOPHIA_BBOX_HEIGHT)
-		return;
-
-	x = sophia->x +(SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
-	vy = -JUMP_SPEED_Y;
-
-	dynamic_cast<CPlayScene*> (
-		CGame::GetInstance()
-		->GetCurrentScene()
-		)->SetPlayer(sophia);
-
+	return;
 }
 
 
 void CJasonOW::GetOut()
 {
-	this->vy = -JUMP_CHANGE_PLAYER_SPEED;
-	isJump = true;
+
 }
