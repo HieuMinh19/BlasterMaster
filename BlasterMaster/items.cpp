@@ -94,5 +94,9 @@ void CItems::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	right = x + ITEMS_BBOX_WIDTH;
 	bottom = y + ITEMS_BBOX_HEIGHT;
 }
+void CItems::hasTaken()
+{
+	x = ITEMS_HAS_TAKEN_X;
+}
 
 

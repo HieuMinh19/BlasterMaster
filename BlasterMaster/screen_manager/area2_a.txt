@@ -272,13 +272,13 @@
 #====== BACKGROUND =======
 19	0	0	19
 # MARIO
-7	30	0	7
+7	200	0	7
 0	50.0	0	1
 # BULLET
 #6	30	124	8
 
 #========== WORMS ==============
-9	70	0	9
+9	100	0	9
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----

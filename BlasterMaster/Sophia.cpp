@@ -19,7 +19,7 @@ CSophia::CSophia(float x, float y) : CPlayer()
 	level = SOPHIA_LEVEL_NORMAL;
 	untouchable = 0;
 	SetState(SOPHIA_STATE_IDLE);
-	heal = SOPHIA_HEAL;
+	health = SOPHIA_HEAL;
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -107,11 +107,17 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CTrap* trap= dynamic_cast<CTrap*>(e->obj);
 				if (!untouchable) {
-					heal--;
+					health--;
 					untouchable = 1;
 					untouchable_start = GetTickCount();
 				}
 
+			}
+			else if (dynamic_cast<CItems*>(e->obj))
+			{
+				CItems* items = dynamic_cast<CItems*>(e->obj);
+				items->hasTaken();
+				health++;
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
