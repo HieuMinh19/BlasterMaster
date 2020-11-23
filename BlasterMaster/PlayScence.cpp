@@ -255,6 +255,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> brickObjects;
 	vector<LPGAMEOBJECT> enemyObjects;
 	vector<LPGAMEOBJECT> trapObjects;
+	vector<LPGAMEOBJECT> itemObjects;
 	vector<LPGAMEOBJECT> bulltetObjects;
 	vector<LPGAMEOBJECT> breakableObjects;
 	vector<LPGAMEOBJECT> portalObjects;
@@ -267,6 +268,9 @@ void CPlayScene::Update(DWORD dt)
 		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CItems*>(objects[i])) {
+			itemObjects.push_back(objects[i]);
 		}
 		if (dynamic_cast<CTrap*>(objects[i])) {
 			trapObjects.push_back(objects[i]);
@@ -295,6 +299,7 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (dynamic_cast<CJasonOW*>(objects[i])) {
@@ -327,6 +332,7 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (objects[i]->state == OBJECT_STATE_DELETE) {

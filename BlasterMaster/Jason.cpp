@@ -92,6 +92,12 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						SetState(STATE_DIE);
 				}
 			}
+			else if (dynamic_cast<CItems*>(e->obj))
+			{
+				CItems* items = dynamic_cast<CItems*>(e->obj);
+				items->hasTaken();
+				health++;
+			}
 		}
 	}
 
