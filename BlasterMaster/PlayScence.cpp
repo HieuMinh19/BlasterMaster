@@ -163,7 +163,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBrick(height, width); break;
 	}
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
-	// case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
+	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
 	case OBJECT_TYPE_TRAP: {
 			int width = atof(tokens[4].c_str());
@@ -173,14 +173,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_BREAKABLE: obj = new CBreakable(); break;
-	// case OBJECT_TYPE_PORTAL:
-	// {
-	// 	float r = atof(tokens[4].c_str());
-	// 	float b = atof(tokens[5].c_str());
-	// 	int scene_id = atoi(tokens[6].c_str());
-	// 	obj = new CPortal(x, y, r, b, scene_id);
-	// }
-	// break;
+	case OBJECT_TYPE_PORTAL:
+	{
+	 	float r = atof(tokens[4].c_str());
+	 	float b = atof(tokens[5].c_str());
+	 	int scene_id = atoi(tokens[6].c_str());
+	 	obj = new CPortal(x, y, r, b, scene_id);
+	}
+	break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -257,6 +257,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> trapObjects;
 	vector<LPGAMEOBJECT> bulltetObjects;
 	vector<LPGAMEOBJECT> breakableObjects;
+	vector<LPGAMEOBJECT> portalObjects;
 
 
 	for (size_t i = 1; i < objects.size(); i++)
@@ -276,6 +277,9 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CBullet*>(objects[i])) {
 			bulltetObjects.push_back(objects[i]);
 		}
+		if (dynamic_cast<CPortal*>(objects[i])) {
+			portalObjects.push_back(objects[i]);
+		}
 		coObjects.push_back(objects[i]);
 	}
 
@@ -290,6 +294,7 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (dynamic_cast<CJasonOW*>(objects[i])) {
@@ -321,6 +326,7 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (objects[i]->state == OBJECT_STATE_DELETE) {
@@ -354,8 +360,10 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < objects.size(); i++) {
+		//DebugOut(L"[INDEX] object index %d\n", i);
 		delete objects[i];
+	}
 
 	objects.clear();
 	player = NULL;

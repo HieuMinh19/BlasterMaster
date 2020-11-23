@@ -102,8 +102,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 				
-			} // if Goomba
-			else if (dynamic_cast<CTrap*>(e->obj)) // if e->obj is Goomba 
+			} // if Player
+			else if (dynamic_cast<CTrap*>(e->obj)) 
 			{
 				CTrap* trap= dynamic_cast<CTrap*>(e->obj);
 				if (!untouchable) {
