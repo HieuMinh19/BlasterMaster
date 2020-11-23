@@ -6,12 +6,11 @@
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
 90	textures\enemies-1.png	255	0	255
-70	textures\area_2.png	255	255	255
-
+70	textures\area2.png	255	255	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #===============BACKGROUND-AREA2==============
-70000	0	0	1024	240	70
+70000	0	2799	1024	3039	70
 # JASON
 # idle right
 11001	3	98	11	114	0
@@ -284,10 +283,12 @@
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
 1	0	160	2	316	16
+1	-16	0	2	16	240
+1	1024	0	2	16	240
 1	380	160	2	130	16
 1	575	160	2	130	16
-1	770	160	2	260	16
-1	1020	160	2	500	
+1	768	160	2	256	16
+8	0	224	2	1008	16
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id

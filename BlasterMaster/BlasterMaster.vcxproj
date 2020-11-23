@@ -151,6 +151,7 @@
     <ClCompile Include="Intro.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="Jason.cpp" />
+    <ClCompile Include="JasonOW.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Intro.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Jason.h" />
+    <ClInclude Include="JasonOW.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Player.h" />

@@ -127,7 +127,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 	//Jump checking
-	//DebugOut(L"[INFO] vx: %d\n", isWalkAfterJump);
+	//DebugOut(L"[INFO] y: %d\n", y);
 	//DebugOut(L"[INFO] jump: %d\n", isJumping);
 	if (isJumping) {
 		if (isJumpingWhileWalk) {
