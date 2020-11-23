@@ -13,6 +13,11 @@
 #include "Worms.h"
 #include "Breakable.h"
 #include "JasonOW.h"
+#include "Domes.h"
+#include "Jumpers.h"
+#include "Insect.h"
+#include "Orbs.h"
+#include "Floaters.h"
 
 using namespace std;
 
@@ -128,6 +133,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float y = atof(tokens[2].c_str());
 
 	int ani_set_id = atoi(tokens[3].c_str());
+	float _vx;
+	float _vy;
+	float _species;
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -181,6 +189,41 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	 	obj = new CPortal(x, y, r, b, scene_id);
 	}
 	break;
+	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
+	
+	//start merge enemies
+	case OBJECT_TYPE_JUMPERS:
+		_vx = atof(tokens[4].c_str());
+		obj = new CJumpers(_vx);
+		break;
+	case OBJECT_TYPE_INSECT:
+		_vx = atof(tokens[4].c_str());
+		obj = new CInsect(_vx);
+		break;
+	case OBJECT_TYPE_ORBS:
+		_vx = atof(tokens[4].c_str());
+		_species = atof(tokens[5].c_str());
+		obj = new COrbs(_vx, _species);
+		break;
+	case OBJECT_TYPE_DOMES:
+		_vx = atof(tokens[4].c_str());
+		_vy = atof(tokens[5].c_str());
+		obj = new CDomes(_vx, _vy);
+		break;
+	case OBJECT_TYPE_FLOATERS:
+		_vx = atof(tokens[4].c_str());
+		_vy = atof(tokens[5].c_str());
+		obj = new CFloaters(_vx, _vy);
+		break;
+
+	// case OBJECT_TYPE_PORTAL:
+	// {
+	// 	float r = atof(tokens[4].c_str());
+	// 	float b = atof(tokens[5].c_str());
+	// 	int scene_id = atoi(tokens[6].c_str());
+	// 	obj = new CPortal(x, y, r, b, scene_id);
+	// }
+	// break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
