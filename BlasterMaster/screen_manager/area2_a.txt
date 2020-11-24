@@ -5,12 +5,12 @@
 20	textures\bbox.png	237	38	26
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
-70	textures\area_2.png	255	255	255
-
+90	textures\enemies-1.png	255	0	255
+70	textures\area2.png	255	255	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #===============BACKGROUND-AREA2==============
-70000	0	0	1024	240	70
+70000	0	2799	1024	3039	70
 # JASON
 # idle right
 11001	3	98	11	114	0
@@ -105,6 +105,14 @@
 30002	25	14	41	29	10
 #die
 30003	45	21	61	29	10
+
+#=============== WORMS =========
+# walk right
+90001	191	412	207	421	90
+90002	172	412	189	421	90
+# walk left
+90003	46	412	62	421	90
+90004	64	412	81	421	90
 
 #brick with question mark animation
 40001	300	117	316	133	20
@@ -213,6 +221,12 @@
 806	80008	100
 807	80009	100
 
+# ==== WORMS =========
+#walk right
+900	90001	100	90002	100
+#walk left
+901	90003	100	90004	100
+
 # ==== BRICK =========
 601	20001	100
 
@@ -257,24 +271,25 @@
 #====== BACKGROUND =======
 19	0	0	19
 # MARIO
-0	50.0	0	1
-# MARIO
-7	30	0	7
+7	200	0	7
 0	50.0	0	1
 # BULLET
 #6	30	124	8
+
+#========== WORMS ==============
+9	100	0	9
+
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
-1	0	160	2	304	16
+1	0	160	2	316	16
+1	-16	0	2	16	240
+1	1024	0	2	16	240
 1	380	160	2	130	16
 1	575	160	2	130	16
-1	770	160	2	260	16
-1	1020	160	2	500	
+1	768	160	2	256	16
+8	0	224	2	1008	16
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-#50	300	98	0	316	150	2
-
-# WORMS
-9	110.0	0	6
+#50	300	98	0	316	150	18

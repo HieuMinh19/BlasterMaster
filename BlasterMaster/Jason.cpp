@@ -86,12 +86,17 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (untouchable == 0)
 				{
 					health--;
-					//DebugOut(L"[ERROR] Máu %i \n", health);
 					if (health > 0)
 						StartUntouchable();
 					else
 						SetState(STATE_DIE);
 				}
+			}
+			else if (dynamic_cast<CItems*>(e->obj))
+			{
+				CItems* items = dynamic_cast<CItems*>(e->obj);
+				items->hasTaken();
+				health++;
 			}
 		}
 	}
@@ -306,16 +311,17 @@ void CJason::KeyX()
 
 void CJason::KeySHIFT()
 {
-	if (this->state != PLAYER_STATE_IDLE)
+	if (this->state != PLAYER_STATE_IDLE || isSpecialAni == true || isJump == true)
 		return;
 	CSophia* sophia = dynamic_cast<CSophia*> (
 		CSophia::GetInstance()
 		);
 
-	float x = 0;
-	float y;
-	float z;
-	float t;
+	if (this->x < sophia->x || this->x > sophia->x + SOPHIA_BBOX_WIDTH - BBOX_WIDTH || this->y < sophia->y || this->y > sophia->y + SOPHIA_BBOX_HEIGHT)
+		return;
+
+	x = sophia->x +(SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
+	vy = -JUMP_SPEED_Y;
 
 	dynamic_cast<CPlayScene*> (
 		CGame::GetInstance()

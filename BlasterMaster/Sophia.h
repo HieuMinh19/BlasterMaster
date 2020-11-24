@@ -13,6 +13,7 @@
 #define CANNON_X 10
 #define CANNON_Y 18
 #define JUMP_GRAVITY			0.0005f
+#define GRAVITY_SPEED_MAX			0.5f
 
 #define SOPHIA_STATE_IDLE			0
 #define SOPHIA_STATE_WALKING_RIGHT	100
@@ -84,7 +85,7 @@ class CSophia :  public CPlayer
 	float start_y;
 public:
 	int hover;
-	int heal;
+	int health;
 	boolean isJumping, isMoveUp, isStandUp, isJumpingWhileWalk, isWalkAfterJump;
 	DWORD jump_start, moveup_start;
 	CSophia(float x = 0.0f, float y = 0.0f);

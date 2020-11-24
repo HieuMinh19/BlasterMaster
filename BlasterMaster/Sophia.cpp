@@ -19,7 +19,7 @@ CSophia::CSophia(float x, float y) : CPlayer()
 	level = SOPHIA_LEVEL_NORMAL;
 	untouchable = 0;
 	SetState(SOPHIA_STATE_IDLE);
-	heal = SOPHIA_HEAL;
+	health = SOPHIA_HEAL;
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -102,16 +102,22 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 				
-			} // if Goomba
-			else if (dynamic_cast<CTrap*>(e->obj)) // if e->obj is Goomba 
+			} // if Player
+			else if (dynamic_cast<CTrap*>(e->obj)) 
 			{
 				CTrap* trap= dynamic_cast<CTrap*>(e->obj);
 				if (!untouchable) {
-					heal--;
+					health--;
 					untouchable = 1;
 					untouchable_start = GetTickCount();
 				}
 
+			}
+			else if (dynamic_cast<CItems*>(e->obj))
+			{
+				CItems* items = dynamic_cast<CItems*>(e->obj);
+				items->hasTaken();
+				health++;
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
@@ -121,7 +127,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 	//Jump checking
-	//DebugOut(L"[INFO] vx: %d\n", isWalkAfterJump);
+	//DebugOut(L"[INFO] y: %d\n", y);
 	//DebugOut(L"[INFO] jump: %d\n", isJumping);
 	if (isJumping) {
 		if (isJumpingWhileWalk) {
@@ -571,7 +577,7 @@ void CSophia::KeySHIFT()
 	CJason* jason = dynamic_cast<CJason*> (
 		CJason::GetInstance()
 		);
-	jason->x = this->x + (SOPHIA_BBOX_WIDTH + BBOX_WIDTH) / 2;
+	jason->x = this->x + (SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
 	jason->nx = this->nx;
 	jason->y = this->y;
 	jason->GetOut();

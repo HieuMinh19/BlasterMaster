@@ -11,6 +11,7 @@
 #define ITEMS_TYPE_GUN				603
 #define ITEMS_TYPE_THUNDER_BREAK	604
 #define ITEMS_TYPE_CRUSHER_BEAM		605
+#define ITEMS_HAS_TAKEN_X			1000
 
 class CItems : public CGameObject
 {
@@ -26,6 +27,7 @@ class CItems : public CGameObject
 		virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 		void setItemType(int type);
 		void countDownTime(int time);
+		void hasTaken();
 		int getItemType();
 		~CItems();
 };

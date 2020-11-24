@@ -12,6 +12,12 @@
 #include "PlayerBullet.h"
 #include "Worms.h"
 #include "Breakable.h"
+#include "JasonOW.h"
+#include "Domes.h"
+#include "Jumpers.h"
+#include "Insect.h"
+#include "Orbs.h"
+#include "Floaters.h"
 
 using namespace std;
 
@@ -127,6 +133,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float y = atof(tokens[2].c_str());
 
 	int ani_set_id = atoi(tokens[3].c_str());
+	float _vx;
+	float _vy;
+	float _species;
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
@@ -142,6 +151,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
 
+	case OBJECT_TYPE_SOPHIA: obj = new CSophia();
+		obj = CSophia::GetInstance(x, y);
+		player = (CSophia*)obj;
+	
+		break;
+		
+	case OBJECT_TYPE_JASON_OW:
+		obj = CJasonOW::GetInstance(x, y);
+		DebugOut(L"[INFO] Player object created!\n");
+		player = (CJasonOW*)obj;
+
+		break;
 	case OBJECT_TYPE_BRICK: {
 		DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
 		int width = atof(tokens[4].c_str());
@@ -150,13 +171,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBrick(height, width); break;
 	}
 	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
-	// case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
+	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
-	case OBJECT_TYPE_SOPHIA: obj = new CSophia();
-		obj = CSophia::GetInstance(x, y);
-		player = (CSophia*)obj;
-	
-		break;
 	case OBJECT_TYPE_TRAP: {
 			int width = atof(tokens[4].c_str());
 			int height = atof(tokens[5].c_str());	
@@ -165,6 +181,39 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_BREAKABLE: obj = new CBreakable(); break;
+	case OBJECT_TYPE_PORTAL:
+	{
+	 	float r = atof(tokens[4].c_str());
+	 	float b = atof(tokens[5].c_str());
+	 	int scene_id = atoi(tokens[6].c_str());
+	 	obj = new CPortal(x, y, r, b, scene_id);
+	}
+	break;	
+	//start merge enemies
+	case OBJECT_TYPE_JUMPERS:
+		_vx = atof(tokens[4].c_str());
+		obj = new CJumpers(_vx);
+		break;
+	case OBJECT_TYPE_INSECT:
+		_vx = atof(tokens[4].c_str());
+		obj = new CInsect(_vx);
+		break;
+	case OBJECT_TYPE_ORBS:
+		_vx = atof(tokens[4].c_str());
+		_species = atof(tokens[5].c_str());
+		obj = new COrbs(_vx, _species);
+		break;
+	case OBJECT_TYPE_DOMES:
+		_vx = atof(tokens[4].c_str());
+		_vy = atof(tokens[5].c_str());
+		obj = new CDomes(_vx, _vy);
+		break;
+	case OBJECT_TYPE_FLOATERS:
+		_vx = atof(tokens[4].c_str());
+		_vy = atof(tokens[5].c_str());
+		obj = new CFloaters(_vx, _vy);
+		break;
+
 	// case OBJECT_TYPE_PORTAL:
 	// {
 	// 	float r = atof(tokens[4].c_str());
@@ -247,8 +296,10 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> brickObjects;
 	vector<LPGAMEOBJECT> enemyObjects;
 	vector<LPGAMEOBJECT> trapObjects;
+	vector<LPGAMEOBJECT> itemObjects;
 	vector<LPGAMEOBJECT> bulltetObjects;
 	vector<LPGAMEOBJECT> breakableObjects;
+	vector<LPGAMEOBJECT> portalObjects;
 
 
 	for (size_t i = 1; i < objects.size(); i++)
@@ -259,6 +310,9 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
+		if (dynamic_cast<CItems*>(objects[i])) {
+			itemObjects.push_back(objects[i]);
+		}
 		if (dynamic_cast<CTrap*>(objects[i])) {
 			trapObjects.push_back(objects[i]);
 		}
@@ -267,6 +321,9 @@ void CPlayScene::Update(DWORD dt)
 		}
 		if (dynamic_cast<CBullet*>(objects[i])) {
 			bulltetObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CPortal*>(objects[i])) {
+			portalObjects.push_back(objects[i]);
 		}
 		coObjects.push_back(objects[i]);
 	}
@@ -282,7 +339,14 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
+		}
+		if (dynamic_cast<CJasonOW*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			// enemy can colli with brick only
@@ -308,6 +372,8 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (objects[i]->state == OBJECT_STATE_DELETE) {
@@ -341,8 +407,10 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < objects.size(); i++) {
+		//DebugOut(L"[INDEX] object index %d\n", i);
 		delete objects[i];
+	}
 
 	objects.clear();
 	player = NULL;
@@ -396,7 +464,6 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	
 	switch (KeyCode){
 	case DIK_UP:
-		DebugOut(L"[INFO] ID: %d\n", player->OBJECT_ID);
 		if(player->OBJECT_ID == OBJECT_TYPE_SOPHIA) {
 			player->KeyUp();
 			break;
@@ -406,7 +473,6 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 }
 void CPlayScenceKeyHandler::KeyState(BYTE * states)
 {
-
 	CGame* game = CGame::GetInstance();
 	CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
 	//if (player->GetState() == MARIO_STATE_DIE) return;
@@ -414,6 +480,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE * states)
 		player->KeyRight();
 	else if (game->IsKeyDown(DIK_LEFT))
 		player->KeyLeft();
+	else if (game->IsKeyDown(DIK_UP))
+		player->KeyUp();
+	else if (game->IsKeyDown(DIK_DOWN))
+		player->KeyDown();
 	else
 		player->SetState(PLAYER_STATE_IDLE);
 }
