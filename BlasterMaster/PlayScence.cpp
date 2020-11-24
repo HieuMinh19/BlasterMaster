@@ -188,9 +188,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	 	int scene_id = atoi(tokens[6].c_str());
 	 	obj = new CPortal(x, y, r, b, scene_id);
 	}
-	break;
-	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
-	
+	break;	
 	//start merge enemies
 	case OBJECT_TYPE_JUMPERS:
 		_vx = atof(tokens[4].c_str());

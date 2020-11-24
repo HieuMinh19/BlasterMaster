@@ -236,7 +236,7 @@
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 9 = Worms, 10 = DOMES, 11 = JUMPERS, 12 = INSECT, 13 = ORBS, 14 = FLOATERS
+# type: 0 = Mario , 1 = Brick, 9 = Worms, 31 = DOMES, 30 = JUMPERS, 12 = INSECT, 13 = ORBS, 14 = FLOATERS
 
 # MARIO
 0	50.0	0	1
@@ -261,10 +261,10 @@
 #9	110.0	0	6
 
 # DOMES
-#10	200	100	7	0.05	0.1
+#31	200	100	7	0.05	0.1
 
 # JUMPERS // 1 -> right // -1 -> left
-#11	300	100	8	0.05
+#30	300	100	8	0.05
 
 # INSECT // 1 -> right // -1 -> left
 #12	50	120	9	0.05
