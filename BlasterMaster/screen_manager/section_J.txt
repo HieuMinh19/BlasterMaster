@@ -6,13 +6,11 @@
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
 72	textures\Section_J.png	255	255	255
-90	textures\enemies-1.png	255	0	255
-70	textures\area2.png	255	255	255
+
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #===============BACKGROUND-AREA2==============
 70000	0	0	495	230	72
-#70000	0	2799	1024	3039	70
 # JASON
 # idle right
 11001	3	98	11	114	0
@@ -269,18 +267,14 @@
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 19 = BACKGROUND, 9 = WORMS
+# type: 0 = Mario , 1 = Brick, 7 = BACKGROUND
 #====== BACKGROUND =======
-19	0	0	19
+19	0	-1088	19
 # MARIO
-7	30	0	7
-0	50.0	0	1
+0	150.0	-1000	1
+7	200.0	-1000	7
 # BULLET
-#6	30	124	8
-
-#========== WORMS ==============
-9	70	0	9
-
+6	30	124	6
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
@@ -289,7 +283,9 @@
 1	0	-1062	2	500	20
 1	415	-935	2	85	50
 1	478	-1090	2	33	200
-
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-#50	300	98	0	316	150	18
+#50	300	98	0	316	150	2
+
+# WORMS
+9	110.0	0	6
