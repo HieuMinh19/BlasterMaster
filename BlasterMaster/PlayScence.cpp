@@ -181,6 +181,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BACKGROUND: obj = new CBackground(); break;
 	case OBJECT_TYPE_BREAKABLE: obj = new CBreakable(); break;
+	case OBJECT_TYPE_UI: 
+		
+		obj = new CUI(); 
+		break;
 	case OBJECT_TYPE_PORTAL:
 	{
 	 	float r = atof(tokens[4].c_str());
@@ -300,6 +304,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> bulltetObjects;
 	vector<LPGAMEOBJECT> breakableObjects;
 	vector<LPGAMEOBJECT> portalObjects;
+	vector<LPGAMEOBJECT> uiObjects;
 
 
 	for (size_t i = 1; i < objects.size(); i++)
@@ -325,6 +330,9 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CPortal*>(objects[i])) {
 			portalObjects.push_back(objects[i]);
 		}
+		if (dynamic_cast<CUI*>(objects[i])) {
+			uiObjects.push_back(objects[i]);
+		}
 		coObjects.push_back(objects[i]);
 	}
 
@@ -347,6 +355,11 @@ void CPlayScene::Update(DWORD dt)
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CUI*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = uiObjects;
+			objects[i]->Update(dt, &coObjects);
 		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			// enemy can colli with brick only

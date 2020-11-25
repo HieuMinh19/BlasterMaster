@@ -11,6 +11,7 @@
 #include "Breakable.h"
 #include "Background.h"
 #include "Portal.h"
+#include "UI.h"
 
 #define PLAYER_JASON		1
 #define PLAYER_SOPHIA		2
