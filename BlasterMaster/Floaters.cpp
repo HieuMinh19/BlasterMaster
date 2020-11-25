@@ -110,16 +110,16 @@ void CFloaters::Render()
 	RenderBoundingBox();
 }
 
-void CFloaters::Fire()
-{
-	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-	CGameObject* obj = NULL;
-	obj = new CBullet();
-	// General object setup
-	obj->SetPosition(x, y + BULLET_POSITION_Y);
-	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
-	obj->SetAnimationSet(ani_set);
-	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(obj);
-	//objects.push_back(obj);
-
-}
+//void CFloaters::Fire()
+//{
+//	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+//	CGameObject* obj = NULL;
+//	obj = new CBullet();
+//	// General object setup
+//	obj->SetPosition(x, y + BULLET_POSITION_Y);
+//	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
+//	obj->SetAnimationSet(ani_set);
+//	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(obj);
+//	//objects.push_back(obj);
+//
+//}
