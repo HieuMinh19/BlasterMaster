@@ -66,7 +66,7 @@
     <ClCompile Include="Jason.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Intro.cpp">
+    <ClCompile Include="Shophia.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Worms.cpp">
@@ -74,21 +74,6 @@
     </ClCompile>
     <ClCompile Include="Enemies.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sophia.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Trap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerBullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JasonOW.cpp">
-     <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Domes.cpp">
       <Filter>Source Files</Filter>
@@ -105,7 +90,22 @@
     <ClCompile Include="Floaters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EnemiesBullet.cpp">
+    <ClCompile Include="Skulls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sophia.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JasonOW.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,7 +161,7 @@
     <ClInclude Include="Jason.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Intro.h">
+    <ClInclude Include="Shophia.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Worms.h">
@@ -170,28 +170,10 @@
     <ClInclude Include="Enemies.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sophia.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="Domes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Trap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerBullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="JasonOW.h">
-     <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Domes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Jumpers.h">
@@ -206,13 +188,23 @@
     <ClInclude Include="Floaters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EnemiesBullet.h">
+    <ClInclude Include="Skulls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="BlasterMaster.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <ClInclude Include="PlayerBullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sophia.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JasonOW.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

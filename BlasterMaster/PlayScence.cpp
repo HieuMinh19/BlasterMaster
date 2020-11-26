@@ -188,9 +188,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	 	int scene_id = atoi(tokens[6].c_str());
 	 	obj = new CPortal(x, y, r, b, scene_id);
 	}
-	break;
-	case OBJECT_TYPE_TRAP: obj = new CTrap(); break;
-	
+	break;	
 	//start merge enemies
 	case OBJECT_TYPE_JUMPERS:
 		_vx = atof(tokens[4].c_str());
@@ -312,6 +310,9 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
+		if (dynamic_cast<CDomes*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
 		if (dynamic_cast<CItems*>(objects[i])) {
 			itemObjects.push_back(objects[i]);
 		}
@@ -351,6 +352,11 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CDomes*>(objects[i])) {
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);
@@ -473,6 +479,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	}
 
 }
+
 void CPlayScenceKeyHandler::KeyState(BYTE * states)
 {
 	CGame* game = CGame::GetInstance();
