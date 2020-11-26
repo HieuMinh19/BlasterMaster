@@ -25,6 +25,8 @@ protected:
 	int state;
 //>>>>>>> Player/Sophia
 
+	static CPlayScene* __instance;
+
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_TEXTURES(string line);

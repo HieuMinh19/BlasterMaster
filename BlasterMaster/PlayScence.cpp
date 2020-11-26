@@ -312,6 +312,9 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CWorms*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
+		if (dynamic_cast<CDomes*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
 		if (dynamic_cast<CItems*>(objects[i])) {
 			itemObjects.push_back(objects[i]);
 		}
@@ -354,6 +357,11 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CWorms*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CDomes*>(objects[i])) {
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);
@@ -483,6 +491,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	}
 
 }
+
 void CPlayScenceKeyHandler::KeyState(BYTE * states)
 {
 	CGame* game = CGame::GetInstance();
