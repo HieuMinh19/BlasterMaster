@@ -5,8 +5,8 @@
 #define WALKING_SPEED		0.15f 
 #define CRAWL_SPEED			0.05f 
 
-//0.1f
-#define JUMP_SPEED_Y		0.3f
+
+#define JUMP_SPEED_Y		0.5f
 #define JUMP_DEFLECT_SPEED 0.2f
 #define JUMP_CHANGE_PLAYER_SPEED 0.1f
 #define GRAVITY			0.002f

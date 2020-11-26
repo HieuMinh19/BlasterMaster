@@ -88,7 +88,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JasonOW.cpp">
-     <Filter>Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Domes.cpp">
       <Filter>Source Files</Filter>
@@ -106,6 +106,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EnemiesBullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterBullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -189,7 +192,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JasonOW.h">
-     <Filter>Header Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Domes.h">
       <Filter>Header Files</Filter>
@@ -207,6 +210,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EnemiesBullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterBullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

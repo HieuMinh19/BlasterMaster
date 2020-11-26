@@ -21,5 +21,6 @@ start	15
 17	screen_manager\section_M.txt
 18	screen_manager\area2_b.txt  
 19	screen_manager\area2_d.txt  
-20 	screen_manager\over_world.txt   
+20 	screen_manager\over_world.txt  
+21	screen_manager\area2.txt  
 

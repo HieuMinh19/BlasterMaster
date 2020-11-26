@@ -18,6 +18,7 @@
 #include "Insect.h"
 #include "Orbs.h"
 #include "Floaters.h"
+#include "MonsterBullet.h"
 
 using namespace std;
 
@@ -295,6 +296,7 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> brickObjects;
 	vector<LPGAMEOBJECT> enemyObjects;
+	vector<LPGAMEOBJECT> enemyBulletObjects;
 	vector<LPGAMEOBJECT> trapObjects;
 	vector<LPGAMEOBJECT> itemObjects;
 	vector<LPGAMEOBJECT> bulltetObjects;
@@ -324,6 +326,9 @@ void CPlayScene::Update(DWORD dt)
 		}
 		if (dynamic_cast<CPortal*>(objects[i])) {
 			portalObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CMonsterBullet*>(objects[i])) {
+			enemyBulletObjects.push_back(objects[i]);
 		}
 		coObjects.push_back(objects[i]);
 	}
@@ -363,6 +368,13 @@ void CPlayScene::Update(DWORD dt)
 
 			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
+			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			objects[i]->Update(dt, &bulltetCoObjects);
+		}
+		if (dynamic_cast<CMonsterBullet*>(objects[i])) {
+			vector<LPGAMEOBJECT> bulltetCoObjects;
+
+			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			objects[i]->Update(dt, &bulltetCoObjects);
 		}
