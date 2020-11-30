@@ -20,6 +20,7 @@
 #define STATE_CRAWL_IDLE			500
 #define STATE_CRAWL_WALKING_RIGHT	600
 #define STATE_CRAWL_WALKING_LEFT	700
+#define STATE_CRAWL_IN_TANK	800
 
 #define ANI_IDLE_RIGHT				0
 #define ANI_IDLE_LEFT				1
@@ -52,10 +53,11 @@ class CJason : public CPlayer
 	DWORD untouchable_start;
 	int alpha;
 	int health;
-	boolean inTank;
+	
 	float start_x;			// initial position of Mario at scene
 	float start_y;
 public:
+	boolean inTank;
 	CJason(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();

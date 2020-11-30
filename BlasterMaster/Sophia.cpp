@@ -95,12 +95,11 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
 				// jump on top >> kill Goomba and deflect a bit 
-				if (e->ny < 0)
-				{
+				
 					if (isJumping) {
 						ResetJump();
 					}
-				}
+				
 				
 			} // if Player
 			else if (dynamic_cast<CTrap*>(e->obj)) 
@@ -294,7 +293,7 @@ void CSophia::Render()
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 	animation_set->at(ani)->Render(x, y, alpha);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CSophia::SetState(int state)
@@ -580,6 +579,7 @@ void CSophia::KeySHIFT()
 	jason->x = this->x + (SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
 	jason->nx = this->nx;
 	jason->y = this->y;
+	jason->inTank = false;
 	jason->GetOut();
 	dynamic_cast<CPlayScene*> (
 		CGame::GetInstance()

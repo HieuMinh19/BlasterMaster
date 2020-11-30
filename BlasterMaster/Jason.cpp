@@ -17,7 +17,7 @@ CJason::CJason(float x, float y) : CPlayer()
 	isSpecialAni = false;
 	alpha = 255;
 	health = JASON_MAX_HEALTH;
-	inTank = true;
+	
 	start_x = x;
 	start_y = y;
 	this->x = x;
@@ -26,12 +26,17 @@ CJason::CJason(float x, float y) : CPlayer()
 
 void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	DebugOut(L"[INFO] JasonX: %d\n", x);
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	vy += GRAVITY * dt;
-
+	if (!inTank) {
+		vy += GRAVITY * dt;
+	}
+	else {
+		SetState(STATE_CRAWL_IN_TANK);
+	}
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -197,6 +202,9 @@ void CJason::SetState(int state)
 		}
 		vx = 0;
 		break;
+	case STATE_CRAWL_IN_TANK:
+		y = 100000;
+		vy = 0;
 	}
 }
 
@@ -322,7 +330,7 @@ void CJason::KeySHIFT()
 
 	x = sophia->x +(SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
 	vy = -JUMP_SPEED_Y;
-
+	inTank = true;
 	dynamic_cast<CPlayScene*> (
 		CGame::GetInstance()
 		->GetCurrentScene()

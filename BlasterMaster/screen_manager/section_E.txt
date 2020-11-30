@@ -267,14 +267,14 @@
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
 1	0	145	2	500	20 
-1	0	30	2	40	120 
+1	0	30	2	40	150
 1	0	37	2	500	20 
 1	488	30	2	35	120
 
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-#50	300	98	0	316	150	2
+#50	100	0	0	316	150	2
 
 # WORMS
 9	110.0	0	6

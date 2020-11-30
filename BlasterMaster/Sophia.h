@@ -74,12 +74,13 @@
 #define SOPHIA_HEAL 100
 
 
-class CSophia :  public CPlayer
+class CSophia : public CPlayer
 {
 	static CSophia* __instance;
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
+	int istouch;
 
 	float start_x;			// initial position of SOPHIA at scene
 	float start_y;
