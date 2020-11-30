@@ -145,9 +145,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_JASON:
-	//case OBJECT_TYPE_sophia:
 
-		
 		obj = CJason::GetInstance(x, y);
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
@@ -443,6 +441,7 @@ void CPlayScene::AddObject(LPGAMEOBJECT gameObject)
 	objects.push_back(gameObject);
 }
 
+
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
@@ -496,7 +495,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE * states)
 {
 	CGame* game = CGame::GetInstance();
 	CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
-	//if (player->GetState() == MARIO_STATE_DIE) return;
 	if (game->IsKeyDown(DIK_RIGHT))
 		player->KeyRight();
 	else if (game->IsKeyDown(DIK_LEFT))

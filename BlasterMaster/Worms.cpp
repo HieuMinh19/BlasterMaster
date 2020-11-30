@@ -26,8 +26,11 @@ void CWorms::SetState(int state)
 
 void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CJason* jason = CJason::GetInstance();
-	vx = (x - jason->x > 0) ? -WORMS_WALKING_SPEED : WORMS_WALKING_SPEED;
+	//CJason* jason = CJason::GetInstance();
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
+
+	vx = (x - player->x > 0) ? -WORMS_WALKING_SPEED : WORMS_WALKING_SPEED;
 	CGameObject::Update(dt);
 	// Simple fall down
 	vy = (vy >= WORMS_MAX_GRAVITY) 

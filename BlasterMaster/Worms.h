@@ -3,6 +3,8 @@
 #include "Brick.h"
 #include "Utils.h"
 #include "Jason.h"
+#include "PlayScence.h"
+#include "StaticHelpers.h"
 
 #define WORMS_WALKING_SPEED		0.03f
 #define WORMS_MAX_GRAVITY			0.5f

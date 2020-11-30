@@ -159,10 +159,10 @@
     <ClCompile Include="PlayScence.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Scence.cpp" />
-    <ClCompile Include="Shophia.cpp" />
     <ClCompile Include="Skulls.cpp" />
     <ClCompile Include="Sophia.cpp" />
     <ClCompile Include="Sprites.cpp" />
+    <ClCompile Include="StaticHelpers.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Trap.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -194,10 +194,10 @@
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scence.h" />
-    <ClInclude Include="Shophia.h" />
     <ClInclude Include="Skulls.h" />
     <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />
+    <ClInclude Include="StaticHelpers.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Trap.h" />
     <ClInclude Include="Utils.h" />

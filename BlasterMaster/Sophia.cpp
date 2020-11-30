@@ -83,6 +83,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (ny != 0) vy = 0;
 
 
+
 		//
 		// Collision logic with other objects
 		//
@@ -445,20 +446,6 @@ void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 	obj->SetPosition(x, y);
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 
-//=======
-//	if (isStandUp == true) {
-//		obj->vx = 0;
-//		obj->vy = -BULLET_WALKING_SPEED;
-//		obj->SetPosition(x + SOPHIA_BBOX_WIDTH / 2, y);//code xấu
-//	}
-//	else if (nx > 0) {
-//		obj->SetPosition(x + SOPHIA_BBOX_WIDTH, y + 16);//code xấu
-//	}
-//	else if (nx < 0) {
-//		obj->SetPosition(x, y + 16);
-//	}
-//	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
-//>>>>>>> Player/Sophia_v2
 	obj->SetAnimationSet(ani_set);
 	dynamic_cast<CPlayScene*> (
 		CGame::GetInstance()
