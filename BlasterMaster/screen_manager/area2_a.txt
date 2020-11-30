@@ -7,8 +7,19 @@
 30	textures\itemsandobjects.png	176	224	248 
 90	textures\enemies-1.png	255	0	255
 70	textures\area2.png	255	255	255
+80	textures\UI.png	255	255	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+#UI
+10200	359	6	369	56	80
+10201	347	6	357	56	80
+10202	335	6	345	56	80
+10203	323	6	333	56	80
+10204	311	6	321	56	80
+10205	298	6	308	56	80
+10206	286	6	296	56	80
+10207	275	6	285	56	80
+10208	263	6	273	56	80
 #===============BACKGROUND-AREA2==============
 70000	0	2799	1024	3039	70
 # JASON
@@ -293,6 +304,16 @@
 901	90003	100	90004	100
 # ==== TRAP =========
 701	30001	100
+# ==== UI =========
+1000	10200	100
+1001	10201	100
+1002	10202	100
+1003	10203	100
+1004	10204	100
+1005	10205	100
+1006	10206	100
+1007	10207	100
+1008	10208	100
 #
 # id	ani1	ani2	ani3
 #
@@ -316,7 +337,8 @@
 6	800	801	802	803	804	805	806	807
 #TRAP
 8	701
-
+#UI
+99	1000	1001	1002	1003	1004	1005	1006	1007	1008
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 19 = BACKGROUND, 9 = WORMS, 31 = DOMES
@@ -333,6 +355,7 @@
 
 # DOMES
 31	90	32	10	0.05	0.1
+
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
@@ -365,3 +388,6 @@
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 #50	300	98	0	316	150	18
+
+# UI
+40	0	100	99
