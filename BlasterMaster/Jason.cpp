@@ -17,7 +17,7 @@ CJason::CJason(float x, float y) : CPlayer()
 	isSpecialAni = false;
 	alpha = 255;
 	health = JASON_MAX_HEALTH;
-	
+	inTank = true;
 	start_x = x;
 	start_y = y;
 	this->x = x;

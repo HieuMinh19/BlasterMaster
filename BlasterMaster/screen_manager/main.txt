@@ -1,5 +1,5 @@
 [SETTINGS]
-start	10
+start	7
 #scene list
 [SCENES]
 1	screen_manager\scene1.txt
