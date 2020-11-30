@@ -66,9 +66,6 @@
     <ClCompile Include="Jason.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shophia.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Worms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -87,7 +84,7 @@
     <ClCompile Include="Orbs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-     <ClCompile Include="JasonOW.cpp">
+    <ClCompile Include="JasonOW.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Floaters.cpp">
@@ -112,6 +109,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MonsterBullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -167,9 +170,6 @@
     <ClInclude Include="Jason.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shophia.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Worms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -218,5 +218,16 @@
     <ClInclude Include="MonsterBullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StaticHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BlasterMaster.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

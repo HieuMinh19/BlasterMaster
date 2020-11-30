@@ -71,7 +71,7 @@
 #define SOPHIA_UNTOUCHABLE_TIME 1500
 #define SOPHIA_JUMP_TIME 1000
 #define SOPHIA_MOVEUP_START 450
-#define SOPHIA_HEAL 100
+#define SOPHIA_HEAL 8
 
 
 class CSophia : public CPlayer
@@ -86,7 +86,6 @@ class CSophia : public CPlayer
 	float start_y;
 public:
 	int hover;
-	int health;
 	boolean isJumping, isMoveUp, isStandUp, isJumpingWhileWalk, isWalkAfterJump;
 	DWORD jump_start, moveup_start;
 	CSophia(float x = 0.0f, float y = 0.0f);
@@ -108,7 +107,9 @@ public:
 	void KeyZ();
 	void KeySHIFT();
 
+	
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CSophia* GetInstance(float x, float y);
 	static CSophia* GetInstance();
+
 };
