@@ -172,6 +172,20 @@
 80008	91	72	115	80	0
 80009	116	20	124	44	0
 
+# FLOATERS
+# walking left
+90036	83	407	102	422	90
+# walking right
+90037	151	407	170	422	90
+# gun left
+90038	103	406	122	422	90
+# gun right
+90039	131	406	150	422	90
+# bullet left
+90040	31	304	40	313	90
+# buller right
+90041	213	304	222	313	90
+
 #ITEMS
 60001	104	108	121	125	30
 
@@ -226,6 +240,20 @@
 417	10130	50	10131	50
 #die
 499	10099	100
+
+# ==== FLOATERS =========
+# walking left
+922	90036	100
+# walking right
+923	90037	100
+# gun left
+924	90038	200
+# gun right
+925	90039	200
+# bullet left
+926	90040	200
+# bullet right
+927	90041	200
 
 # ======== JASON ===============
 #idle BIG right
@@ -335,13 +363,15 @@
 10	902	903	904	905	906	907	908	909
 # Bullet
 6	800	801	802	803	804	805	806	807
+# FLOATERS
+11	922	923	924	925	926	927
 #TRAP
 8	701
 #UI
 99	1000	1001	1002	1003	1004	1005	1006	1007	1008
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 19 = BACKGROUND, 9 = WORMS, 31 = DOMES
+# type: 0 = Mario , 1 = Brick, 9 = Worms, 31 = DOMES, 30 = JUMPERS, 12 = INSECT, 13 = ORBS, 14 = FLOATERS
 #====== BACKGROUND =======
 19	0	0	19
 # MARIO
@@ -351,11 +381,20 @@
 #6	30	124	8
 
 #========== WORMS ==============
+9	160	48	9
+9	208	48	9
+9	100	0	9
+9	100	0	9
 9	100	0	9
 
 # DOMES
 31	90	32	10	0.05	0.1
+31	90	32	10	0.05	0.1
 
+# FLOATERS 
+14	200	80	11	0.03	0.05
+14	200	80	11	0.03	0.05
+14	200	80	11	0.03	0.05
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
