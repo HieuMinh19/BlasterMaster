@@ -1,6 +1,6 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
-0	textures\SpritesTank.png	255	255	255
+0	textures\SpritesTank.png	0	136	255
 10	textures\tankAndMain.png	0	136	255
 20	textures\bbox.png	237	38	26
 90	textures\enemies-1.png	255	0	255
@@ -237,9 +237,9 @@
 #idle small left
 503	11031	100
 #walk right big
-504	11001	100	11002	100	11003	100	11004	100
+504	11002	75	11003	75	11004	75	11003	75
 #walk left big
-505	11011	100	11012	100	11013	100	11014	100
+505	11012	75	11013	75	11014	75	11013	75
 #walk right small
 506	11021	100	11022	100	11023	100
 #walk left small
