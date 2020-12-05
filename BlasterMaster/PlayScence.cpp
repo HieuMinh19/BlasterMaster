@@ -18,6 +18,8 @@
 #include "Insect.h"
 #include "Orbs.h"
 #include "Floaters.h"
+#include "Skulls.h"
+#include "Mines.h"
 
 using namespace std;
 
@@ -213,6 +215,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		_vy = atof(tokens[5].c_str());
 		obj = new CFloaters(_vx, _vy);
 		break;
+	case OBJECT_TYPE_SKULLS:
+		_vx = atof(tokens[4].c_str());
+		obj = new CSkulls(_vx);
+		break;
+	case OBJECT_TYPE_MINES: obj = new CMines(); break;
 
 	// case OBJECT_TYPE_PORTAL:
 	// {
@@ -313,6 +320,12 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CDomes*>(objects[i])) {
 			enemyObjects.push_back(objects[i]);
 		}
+		if (dynamic_cast<CSkulls*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CMines*>(objects[i])) {
+			enemyObjects.push_back(objects[i]);
+		}
 		if (dynamic_cast<CItems*>(objects[i])) {
 			itemObjects.push_back(objects[i]);
 		}
@@ -357,6 +370,16 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CDomes*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CSkulls*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CMines*>(objects[i])) {
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);

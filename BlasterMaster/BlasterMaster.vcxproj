@@ -152,6 +152,7 @@
     <ClCompile Include="Jumpers.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="Mines.cpp" />
     <ClCompile Include="Orbs.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerBullet.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Jumpers.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="Mines.h" />
     <ClInclude Include="Orbs.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerBullet.h" />
