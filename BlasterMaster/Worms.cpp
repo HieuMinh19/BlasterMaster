@@ -33,10 +33,10 @@ void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vx = (x - player->x > 0) ? -WORMS_WALKING_SPEED : WORMS_WALKING_SPEED;
 	CGameObject::Update(dt);
 	// Simple fall down
-	/*vy = (vy >= WORMS_MAX_GRAVITY) 
+	vy = (vy >= WORMS_MAX_GRAVITY) 
 		? WORMS_MAX_GRAVITY 
-		: vy + WORMS_GRAVITY * dt;*/
-	vy = 0;
+		: vy + WORMS_GRAVITY * dt;
+	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 

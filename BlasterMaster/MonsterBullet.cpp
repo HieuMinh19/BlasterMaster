@@ -5,9 +5,20 @@ CMonsterBullet::CMonsterBullet(float state, int ani) : CGameObject()
 {
 	animation = ani;
 	SetState(state);
-	timeDestroy = GetTickCount() + 1000;
+	timeDestroy = GetTickCount() + 2500;
 	this->x = x;
 	this->y = y;
+}
+
+CMonsterBullet::CMonsterBullet(float state, int ani, float VX,float VY) : CGameObject()
+{
+	animation = ani;
+	SetState(state);
+	timeDestroy = GetTickCount() + 2500;
+	this->x = x;
+	this->y = y;
+	this->vx = VX;
+	this->vy = VY;
 }
 void CMonsterBullet::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
@@ -19,7 +30,6 @@ void CMonsterBullet::GetBoundingBox(float &left, float &top, float &right, float
 
 void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	DebugOut(L"[RENDER INFO]this is render\n");
 	if (timeDestroy < GetTickCount() && state != OBJECT_STATE_DELETE) {
 		SetState(OBJECT_STATE_DELETE);
 	}
@@ -28,7 +38,9 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//
 	// TO-DO: make sure Goomba can interact with the world and to each of them too!
 	// 
-
+	if (state == BULLET_MINE) {
+		vy += BULLET_DOWN_SPEED;
+	}
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 

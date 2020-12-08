@@ -1,12 +1,12 @@
 ﻿#include <algorithm>
 #include "Utils.h"
 #include "Player.h"
-
 #include "JasonOW.h"
 #include "Game.h"
 #include "PlayerBullet.h"
 #include "Worms.h"
 #include "PlayScence.h"
+#include "MonsterBullet.h"
 
 CJasonOW* CJasonOW::__instance = NULL;
 
@@ -27,10 +27,12 @@ CJasonOW::CJasonOW(float x, float y) : CPlayer()
 void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// Calculate dx, dy 
+
 	CGameObject::Update(dt);
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
+	DebugOut(L"[INFO] bt %i object created!\n", dy);
 	coEvents.clear();
 
 	// turn off collision when die 
@@ -49,9 +51,9 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float rdy = 0;
 
 	// TODO: This is a very ugly designed function!!!!
+
 	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 	// No collision occured, proceed normally
-	DebugOut(L"[INFO] Player %i object created!\n", dy);
 
 	if (coEventsResult.size() == 0)
 	{

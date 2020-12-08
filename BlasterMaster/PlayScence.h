@@ -8,6 +8,7 @@
 #include "Items.h"
 #include "Config.h"
 #include "Sophia.h"
+#include "JasonOW.h"
 #include "Breakable.h"
 #include "Background.h"
 #include "Portal.h"
