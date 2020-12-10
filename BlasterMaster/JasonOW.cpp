@@ -32,7 +32,6 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
-	DebugOut(L"[INFO] bt %i object created!\n", dy);
 	coEvents.clear();
 
 	// turn off collision when die 

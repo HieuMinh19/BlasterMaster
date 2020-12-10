@@ -1,4 +1,7 @@
 #include "Mines.h"
+#include "MonsterBullet.h"
+#include "PlayScence.h"
+#include "MonsterBullet.h"
 
 CMines::CMines()
 {
@@ -82,4 +85,32 @@ void CMines::Render()
 {
 	animation_set->at(ani)->Render(x, y);
 	RenderBoundingBox();
+}
+
+void CMines::Explosive()
+{
+	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
+	float fastSpeed = BULLET_MINE_SPEED_FAST;
+	float slowSpeed = BULLET_MINE_SPEED_SLOW
+	AddBullet(fastSpeed, animation_sets);
+	AddBullet(-fastSpeed, animation_sets);
+	AddBullet(slowSpeed, animation_sets);
+	AddBullet(-slowSpeed, animation_sets);
+	
+}
+
+void CMines::AddBullet(float fastSpeed, CAnimationSets * animation_sets) {
+	CGameObject *obj = NULL;
+	obj = new CMonsterBullet(BULLET_MINE, 0, fastSpeed, fastSpeed);
+
+	// General object setup
+	obj->SetPosition(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
+
+	obj->SetAnimationSet(ani_set);
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
 }

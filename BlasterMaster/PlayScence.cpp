@@ -572,7 +572,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	vector<LPGAMEOBJECT> objects = ((CPlayScene *)scence)->GetObjects();
 	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
-
+	player->SetState(PLAYER_STATE_IDLE);
 	switch (KeyCode)
 	{
 	case DIK_UP:
