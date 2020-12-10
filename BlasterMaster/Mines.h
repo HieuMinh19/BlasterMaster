@@ -23,6 +23,8 @@ class CMines : public CEnemies
 public:
 	CMines();
 	virtual void SetState(int state);
+	void Explosive();
+	void AddBullet(float fastSpeed, CAnimationSets * animation_sets);
 };
 
 

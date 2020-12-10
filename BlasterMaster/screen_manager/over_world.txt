@@ -6,10 +6,11 @@
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
 70	textures\area2.png	255	255	255
+80	textures\over_word.png	255	255	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #===============BACKGROUND-AREA2==============
-70000	2048	1024	2560	2032	70
+70000	0	0	1536	2022	80
 # JASON
 # idle right
 11001	3	98	11	114	0
@@ -291,5 +292,9 @@
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
 #1	0	64	2	512	32  
-11	50	64	11
-
+11	64	64	11
+#brick
+#1	0	0	2	1024	24  
+1	32	184	2	512	96
+#1	0	0	2	512	24  
+#1	0	0	2	32	2000
