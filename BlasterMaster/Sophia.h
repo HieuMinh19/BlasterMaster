@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Enemies.h"
 #include "Player.h"
 
 #define SOPHIA_WALKING_SPEED		0.15f 

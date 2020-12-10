@@ -26,7 +26,6 @@ void CWorms::SetState(int state)
 
 void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	//CJason* jason = CJason::GetInstance();
 	CStaticHelpers* helpers = new CStaticHelpers();
 	CPlayer* player = helpers->GetPlayer();
 

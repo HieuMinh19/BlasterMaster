@@ -26,7 +26,6 @@ CJason::CJason(float x, float y) : CPlayer()
 
 void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"[INFO] JasonX: %d\n", x);
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
@@ -85,9 +84,9 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
 			{
-				spawnItem(e->obj->x, e->obj->y);
-				e->obj->SetPosition(-1000, 0);			//dirty way.
-				
+				//spawnItem(e->obj->x, e->obj->y);
+				//e->obj->SetPosition(-1000, 0);			//dirty way.
+
 				if (untouchable == 0)
 				{
 					health--;

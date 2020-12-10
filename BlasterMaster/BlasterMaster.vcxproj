@@ -151,7 +151,6 @@
     <ClCompile Include="JasonOW.cpp" />
     <ClCompile Include="Jumpers.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Mario.cpp" />
     <ClCompile Include="MonsterBullet.cpp" />
     <ClCompile Include="Mines.cpp" />
     <ClCompile Include="Orbs.cpp" />
@@ -188,7 +187,6 @@
     <ClInclude Include="JasonOW.h" />
     <ClInclude Include="Jumpers.h" />
     <ClInclude Include="KeyEventHandler.h" />
-    <ClInclude Include="Mario.h" />
     <ClInclude Include="MonsterBullet.h" />
     <ClInclude Include="Mines.h" />
     <ClInclude Include="Orbs.h" />

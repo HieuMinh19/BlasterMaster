@@ -123,6 +123,19 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+			} else if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
+			{
+				//spawnItem(e->obj->x, e->obj->y);
+				//e->obj->SetPosition(-1000, 0);			//dirty way.
+
+				if (untouchable == 0)
+				{
+					health--;
+					if (health > 0)
+						StartUntouchable();
+					else
+						SetState(STATE_DIE);
+				}
 			}
 		}
 	}
@@ -421,6 +434,7 @@ void CSophia::ResetJump()
 	isJumpingWhileWalk = FALSE;
 	isWalkAfterJump = FALSE;
 	SetState(SOPHIA_STATE_IDLE);
+	//bug this -> can't add object
 	SetLevel(SOPHIA_LEVEL_NORMAL);
 	//SetPosition(start_x, start_y);
 	SetSpeed(0, 0);

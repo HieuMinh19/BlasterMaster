@@ -267,7 +267,6 @@ void CPlayScene::Load()
 	while (f.getline(str, MAX_SCENE_LINE))
 	{
 		string line(str);
-
 		if (line[0] == '#')
 			continue; // skip comment lines
 
@@ -335,7 +334,6 @@ void CPlayScene::Load()
 void CPlayScene::Update(DWORD dt)
 {
 	// We know that sophia is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way
 
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> brickObjects;

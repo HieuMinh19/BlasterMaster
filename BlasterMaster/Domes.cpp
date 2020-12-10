@@ -96,7 +96,8 @@ void CDomes::SetState(int state)
 
 void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CJason* jason = CJason::GetInstance();
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
 	CGameObject::Update(dt);
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -143,7 +144,7 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else
 				{
 					CollisionHandleWithBrick(nx, ny);
-					HandleFlyToJason(jason->x, jason->y, nx, ny);
+					HandleFlyToJason(player->x, player->y, nx, ny);
 				}
 
 			}
