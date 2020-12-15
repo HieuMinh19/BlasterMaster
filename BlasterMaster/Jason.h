@@ -82,4 +82,8 @@ public:
 	void spawnItem(float x, float y);
 	static CJason* GetInstance(float x, float y);
 	static CJason* GetInstance();
+
+	~CJason() {
+		__instance = NULL;
+	}
 };

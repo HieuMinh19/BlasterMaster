@@ -82,8 +82,6 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//if (nx!=0) vx = 0;
 		if (ny != 0) vy = 0;
 
-
-
 		//
 		// Collision logic with other objects
 		//
@@ -94,14 +92,10 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
-				// jump on top >> kill Goomba and deflect a bit 
-				
+				// jump on top >> kill Goomba and deflect a bit 				
 					if (isJumping) {
 						ResetJump();
 					}
-				
-				
 			} // if Player
 			else if (dynamic_cast<CTrap*>(e->obj)) 
 			{
@@ -422,7 +416,8 @@ void CSophia::Reset()
 	animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
 }
 //
-void CSophia::ResetStandUp(){
+void CSophia::ResetStandUp()
+{
 		isMoveUp = FALSE;
 		isStandUp = FALSE;
 		animation_set->at(SOPHIA_ANI_MOVE_UP_RIGHT)->Reset();

@@ -112,5 +112,7 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CSophia* GetInstance(float x, float y);
 	static CSophia* GetInstance();
-
+	~CSophia() {
+		__instance = NULL;
+	}
 };
