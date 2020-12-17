@@ -438,8 +438,8 @@
 8	0	224	2	1008	16
 
 # --- SCENE PORTAL ----
-# type	l	t	ani_set_id	r	b	scene_id
-50	300	98	0	316	150	18
+# type	left	top	ani_set_id	right	bottom	scene_id
+50	978	98	0	984	150	18
 
 # UI
 40	0	100	99

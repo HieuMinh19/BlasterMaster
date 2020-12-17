@@ -1,6 +1,6 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
-0	textures\SpritesTank.png	255	255	255
+0	textures\SpritesTank.png	0	136	255
 10	textures\tankAndMain.png	0	136	255
 20	textures\bbox.png	237	38	26
 90	textures\enemies-1.png	255	0	255
@@ -348,3 +348,12 @@
 # ORBS // 0 -> normal // 1 -> fly to
 34	100	520	34	0.05	0
 34	100	540	34	0.05	0
+
+# --- SCENE PORTAL ----
+# type	left	top	ani_set_id	right	bottom	scene_id
+#section_F
+50	32	114	0	48	144	12
+#section_E
+50	466	880	0	480	912	11
+#section_C
+50	32	880	0	48	912	10
