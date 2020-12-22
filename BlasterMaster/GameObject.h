@@ -45,6 +45,7 @@ struct CCollisionEvent
 class CGameObject
 {
 public:
+	bool readyUpdate = true;
 
 	float x;
 	float y;

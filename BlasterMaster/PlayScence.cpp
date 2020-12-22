@@ -1,6 +1,5 @@
 ﻿#include <iostream>
 #include <fstream>
-
 #include "PlayScence.h"
 #include "Utils.h"
 #include "Textures.h"
@@ -348,6 +347,7 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 1; i < objects.size(); i++)
 	{
+		//start convert object type.
 		if (dynamic_cast<CBrick *>(objects[i]))
 		{
 			brickObjects.push_back(objects[i]);
@@ -397,13 +397,30 @@ void CPlayScene::Update(DWORD dt)
 			uiObjects.push_back(objects[i]);
 		}
 		coObjects.push_back(objects[i]);
+	//end convert object type
 	}
+	
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
+	
+	float xPlayer, yPlayer;
+	player->GetPosition(xPlayer, yPlayer);
+
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if (objects[i]->state == OBJECT_STATE_DELETE)
+		float xObj, yObj;
+		//objects[i]->GetPosition(xObj, yObj);
+		/*if (objects[i]->state == OBJECT_STATE_DELETE)
 		{
 			objects[i]->deleteObject(objects, i);
+		}*/
+
+		if (xObj > xPlayer + SCREEN_WIDTH) {
+			objects[i]->readyUpdate = false;
+		}
+		else {
+			objects[i]->readyUpdate = true;
 		}
 
 		if (dynamic_cast<CJason *>(objects[i]))
@@ -418,49 +435,30 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			objects[i]->Update(dt, &playerCoObjects);
 		}
+
 		if (dynamic_cast<CJasonOW *>(objects[i]))
 		{
-			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			objects[i]->Update(dt, &enemyCoObjects);
 		}
+
 		if (dynamic_cast<CUI *>(objects[i]))
 		{
-			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = uiObjects;
-			objects[i]->Update(dt, &coObjects);
+			vector<LPGAMEOBJECT> enemyCoObjects = uiObjects;		//dirty code by Hung.
 		}
-		if (dynamic_cast<CWorms *>(objects[i]))
+
+		if (dynamic_cast<CBreakable*>(objects[i]))
+		{
+			// enemy can colli with brick only
+			// objects[i]->Update(dt, &coObjects);
+		}
+
+		if (dynamic_cast<CEnemies *>(objects[i]))
 		{
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			objects[i]->Update(dt, &enemyCoObjects);
 		}
-		if (dynamic_cast<CDomes *>(objects[i]))
-		{
-			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			objects[i]->Update(dt, &enemyCoObjects);
-		}
-		if (dynamic_cast<CBreakable *>(objects[i]))
-		{
-			// enemy can colli with brick only
-			objects[i]->Update(dt, &coObjects);
-		}
-		if (dynamic_cast<CSkulls *>(objects[i]))
-		{
-			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			objects[i]->Update(dt, &enemyCoObjects);
-		}
-		if (dynamic_cast<CMines *>(objects[i]))
-		{
-			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			objects[i]->Update(dt, &enemyCoObjects);
-		}
+
 		if (dynamic_cast<CBullet *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> bulltetCoObjects;
@@ -468,16 +466,16 @@ void CPlayScene::Update(DWORD dt)
 			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
-			objects[i]->Update(dt, &bulltetCoObjects);
 		}
+
 		if (dynamic_cast<CMonsterBullet *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> bulltetCoObjects;
 
 			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
-			objects[i]->Update(dt, &bulltetCoObjects);
 		}
+
 		if (dynamic_cast<CSophia *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> playerCoObjects;
@@ -487,7 +485,9 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			objects[i]->Update(dt, &playerCoObjects);
+		}
+		if (objects[i]->readyUpdate) {
+			objects[i]->Update(dt, &objects);
 		}
 	}
 

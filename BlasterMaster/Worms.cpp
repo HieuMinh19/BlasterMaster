@@ -2,7 +2,7 @@
 
 CWorms::CWorms()
 {
-	SetState(WORMS_STATE_WALKING_LEFT);
+	this->state = WORMS_STATE_WALKING_LEFT;
 }
 
 void CWorms::GetBoundingBox(float& left, float& top, float& right, float& bottom)
