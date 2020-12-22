@@ -401,10 +401,10 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if (objects[i]->state == OBJECT_STATE_DELETE)
+		/*if (objects[i]->state == OBJECT_STATE_DELETE)
 		{
 			objects[i]->deleteObject(objects, i);
-		}
+		}*/
 
 		if (dynamic_cast<CJason *>(objects[i]))
 		{

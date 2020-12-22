@@ -65,8 +65,12 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-
-			if (dynamic_cast<CBreakable*>(e->obj)) // if e->obj is enemies
+			if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
+			{
+				spawnItem(e->obj->x, e->obj->y);
+				e->obj->SetPosition(-1000, 0);			//dirty way.
+			}
+			else if (dynamic_cast<CBreakable*>(e->obj)) // if e->obj is enemies
 			{
 				CBreakable* breakable = dynamic_cast<CBreakable*>(e->obj);
 				breakable->health--;
@@ -111,4 +115,19 @@ void CBullet::SetState(int state)
 		y -= BULLET_BBOX_HEIGHT;
 		break;
 	}
+}
+
+void CBullet::spawnItem(float x, float y)
+{
+	// General object setup
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	CGameObject* obj = new CItems(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(3);
+	obj->SetAnimationSet(ani_set);
+
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
 }

@@ -84,7 +84,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
 			{
-				//spawnItem(e->obj->x, e->obj->y);
+				spawnItem(e->obj->x, e->obj->y);
 				//e->obj->SetPosition(-1000, 0);			//dirty way.
 
 				if (untouchable == 0)
@@ -240,7 +240,7 @@ void CJason::KeyRight()
 		SetState(STATE_WALKING_RIGHT);
 	else
 		SetState(STATE_CRAWL_WALKING_RIGHT);
-}
+}	
 
 void CJason::KeyLeft()
 {

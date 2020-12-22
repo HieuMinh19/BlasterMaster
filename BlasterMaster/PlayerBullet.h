@@ -32,4 +32,5 @@ class CBullet : public CGameObject
 public:
 	CBullet(float nx, int animation);
 	virtual void SetState(int state);
+	void spawnItem(float x, float y);
 };
