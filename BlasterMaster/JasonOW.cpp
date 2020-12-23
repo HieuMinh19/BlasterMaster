@@ -35,7 +35,7 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state != STATE_DIE)
+	if (state != JASON_OW_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed

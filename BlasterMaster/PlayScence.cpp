@@ -401,11 +401,6 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if (objects[i]->state == OBJECT_STATE_DELETE)
-		{
-			objects[i]->deleteObject(objects, i);
-		}
-
 		if (dynamic_cast<CJason *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> playerCoObjects;
@@ -489,6 +484,10 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
 			objects[i]->Update(dt, &playerCoObjects);
 		}
+		if (objects[i]->state == OBJECT_STATE_DELETE)
+		{
+			objects[i]->deleteObject(objects, i);
+		}
 	}
 
 	// skip the rest if scene was already unloaded (sophia::Update might trigger PlayScene::Unload)
@@ -521,16 +520,6 @@ void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<CSophia*>(objects[i]) ) {
-			CSophia* sophia = CSophia::GetInstance();
-			sophia->~CSophia();
-			continue;
-		}
-		if (dynamic_cast<CJason*>(objects[i])) {
-			CJason* json = CJason::GetInstance();
-			json->~CJason();
-			continue;
-		}
 		//DebugOut(L"[INDEX] object index %d\n", i);
 		delete objects[i];
 	}
@@ -583,7 +572,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	vector<LPGAMEOBJECT> objects = ((CPlayScene *)scence)->GetObjects();
 	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
-	player->SetState(PLAYER_STATE_IDLE);
+	if (dynamic_cast<CJasonOW*>(player)) {
+		player->SetState(PLAYER_STATE_IDLE);
+	}
 	switch (KeyCode)
 	{
 	case DIK_UP:
