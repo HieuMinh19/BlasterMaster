@@ -2,6 +2,7 @@
 #include "Enemies.h"
 #include "Brick.h"
 #include "Utils.h"
+#include "StaticHelpers.h"
 #include "Jason.h"
 
 #define INSECT_WALKING_SPEED		0.02f

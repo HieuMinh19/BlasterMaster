@@ -48,7 +48,8 @@ void CSkulls::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CSkulls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CJason* jason = CJason::GetInstance();
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
 	CGameObject::Update(dt);
 	//vy += INSECT_GRAVITY * dt;
 
@@ -68,7 +69,7 @@ void CSkulls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-		float distance_x = abs(jason->x - x);
+		float distance_x = abs(player->x - x);
 		if (distance_x < 1.0f)
 		{
 			if (state == SKULLS_STATE_HORIZONTAL)

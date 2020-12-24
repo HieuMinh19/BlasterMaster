@@ -69,6 +69,8 @@ void CInsect::SetState(int state)
 
 void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
 	CGameObject::Update(dt);
 	//vy += INSECT_GRAVITY * dt;
 

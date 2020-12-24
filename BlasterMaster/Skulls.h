@@ -3,6 +3,7 @@
 #include "Enemies.h"
 #include "Brick.h"
 #include "Utils.h"
+#include "StaticHelpers.h"
 #include "Jason.h"
 
 #define SKULLS_SPEED_HORIZONTAL		0.05

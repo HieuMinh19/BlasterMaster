@@ -55,7 +55,8 @@ void CJumpers::SetState(int state)
 
 void CJumpers::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CJason* jason = CJason::GetInstance();
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
 	CGameObject::Update(dt);
 	vy += JUMPERS_GRAVITY * dt;
 
@@ -112,7 +113,7 @@ void CJumpers::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (now - jumpStartAt >= 1000 && ny <= 0.0f)
 				{
-					if (x - jason->x < 0)
+					if (x - player->x < 0)
 					{
 						newState = JUMPERS_STATE_JUMP_RIGHT;
 						if (nx < 0.0f && state == JUMPERS_STATE_JUMP_RIGHT)
