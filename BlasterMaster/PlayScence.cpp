@@ -360,6 +360,22 @@ void CPlayScene::Update(DWORD dt)
 		{
 			enemyObjects.push_back(objects[i]);
 		}
+		if (dynamic_cast<CJumpers*>(objects[i]))
+		{
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CInsect*>(objects[i]))
+		{
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<COrbs*>(objects[i]))
+		{
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CFloaters*>(objects[i]))
+		{
+			enemyObjects.push_back(objects[i]);
+		}
 		if (dynamic_cast<CItems *>(objects[i]))
 		{
 			itemObjects.push_back(objects[i]);
@@ -440,6 +456,26 @@ void CPlayScene::Update(DWORD dt)
 		}
 		if (dynamic_cast<CDomes *>(objects[i]))
 		{
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CJumpers*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CInsect*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<COrbs*>(objects[i])) {
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CFloaters*>(objects[i])) {
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			objects[i]->Update(dt, &enemyCoObjects);
