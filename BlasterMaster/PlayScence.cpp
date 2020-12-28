@@ -148,13 +148,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_JASON:
-
 		obj = CJason::GetInstance(x, y);
-		DebugOut(L"[INFO] Player object created!\n");
+		DebugOut(L"[INFO] Player object created! %d\n");
 		break;
 
 	case OBJECT_TYPE_SOPHIA:
-		obj = new CSophia();
 		obj = CSophia::GetInstance(x, y);
 		player = (CSophia *)obj;
 
@@ -198,7 +196,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CBreakable();
 		break;
 	case OBJECT_TYPE_UI:
-
 		obj = new CUI();
 		break;
 	case OBJECT_TYPE_PORTAL:
@@ -464,7 +461,6 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CUI *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> enemyCoObjects = uiObjects;
-			
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &coObjects);
 		}
@@ -652,6 +648,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		player->KeyX();
 		break;
 	case DIK_LSHIFT:
+		DebugOut(L"[HEATH] health: %d \n", player->getHealth());
 		player->KeySHIFT();
 		break;
 	}

@@ -18,11 +18,14 @@ void CUI::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	if (dynamic_cast<CSophia*>(player)) {
 		CSophia* sophia = CSophia::GetInstance();
-		CSophia::GetInstance()->getHealth(state);
+		state = CSophia::GetInstance()->getHealth();
 	}
 	else {
 		CJason* jason = CJason::GetInstance();
-		CJason::GetInstance()->getHealth(state);
+		state = CJason::GetInstance()->getHealth();
+
+		//int a = CJason::GetInstance()->getHealth(state);
+		//DebugOut(L"[INFO] Jason Health: %d\n", state);
 	}
 }
 void CUI::Render()

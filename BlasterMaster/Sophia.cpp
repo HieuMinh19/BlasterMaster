@@ -570,12 +570,14 @@ void CSophia::KeySHIFT()
 	if (this->state != SOPHIA_STATE_IDLE)
 		return;
 	CJason* jason = dynamic_cast<CJason*> (
-		CJason::GetInstance()
+		CJason::GetInstance(this->x, this->y)
 		);
+	DebugOut(L"[INFO] Jason Health1231412: %d\n", jason->getHealth());
 	jason->x = this->x + (SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
 	jason->nx = this->nx;
 	jason->y = this->y;
 	jason->inTank = false;
+	jason->setHealth(JASON_MAX_HEALTH);
 	jason->GetOut();
 	dynamic_cast<CPlayScene*> (
 		CGame::GetInstance()

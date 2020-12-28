@@ -22,6 +22,7 @@ CJason::CJason(float x, float y) : CPlayer()
 	start_y = y;
 	this->x = x;
 	this->y = y;
+	DebugOut(L"[DEBUG] Go to construct: %d\n", health);
 }
 
 void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -84,7 +85,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
 			{
-				spawnItem(e->obj->x, e->obj->y);
+				//spawnItem(e->obj->x, e->obj->y);
 				//e->obj->SetPosition(-1000, 0);			//dirty way.
 
 				if (untouchable == 0)
@@ -288,13 +289,18 @@ void CJason::spawnItem(float x, float y)
 
 CJason* CJason::GetInstance(float x, float y)
 {
-	if (__instance == NULL) __instance = new CJason(x, y);
+	if (__instance == NULL) {
+		__instance = new CJason(x, y);
+	}
 	return __instance;
 }
 
 CJason* CJason::GetInstance()
 {
-	if (__instance == NULL) __instance = new CJason();
+	if (__instance == NULL) {
+		DebugOut(L"[GO IF]\n");
+		__instance = new CJason();
+	}
 	return __instance;
 }
 

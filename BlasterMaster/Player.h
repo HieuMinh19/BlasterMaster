@@ -44,7 +44,9 @@ public:
 	virtual void KeySHIFT() = 0;
 	
 	void Reset();
-	int getHealth(int& x) { x = health; return x; }
+	//int getHealth(int& x) { x = health; return x; }
+	int getHealth() { return this->health; }
+	void setHealth(int health) { this->health = health; }
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) = 0;
 	void Fire(vector<LPGAMEOBJECT>& objects);
 };
