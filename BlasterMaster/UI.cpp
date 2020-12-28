@@ -13,9 +13,17 @@ void CUI::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	y += LOCATION_Y;
 	x += LOCATION_X;
 	
-	CSophia*sophia = CSophia::GetInstance();
-	CSophia::GetInstance()->getHealth(state);
-	//DebugOut(L"[INFO] type: %d\n", state);
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
+
+	if (dynamic_cast<CSophia*>(player)) {
+		CSophia* sophia = CSophia::GetInstance();
+		CSophia::GetInstance()->getHealth(state);
+	}
+	else {
+		CJason* jason = CJason::GetInstance();
+		CJason::GetInstance()->getHealth(state);
+	}
 }
 void CUI::Render()
 {

@@ -4,6 +4,7 @@
 #include "Sophia.h"
 #include "Utils.h"
 #include "PlayScence.h"
+#include "StaticHelpers.h"
 #include "Scence.h"
 #define UI_STATE_0	0
 #define UI_STATE_1	1
