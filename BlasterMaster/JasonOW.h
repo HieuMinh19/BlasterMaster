@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Player.h"
 
-#define WALKING_SPEED		0.15f 
+#define WALKING_SPEED		0.15f
 #define JASON_OW_BBOX_WIDTH  24
 #define JASON_OW_BBOX_HEIGHT 32
 
@@ -26,10 +26,7 @@
 class CJasonOW : public CPlayer
 {
 	static CJasonOW* __instance;
-	int untouchable;
-	DWORD untouchable_start;
 	int alpha;
-	int health;
 	float start_x;
 	float start_y;
 public:
@@ -37,7 +34,6 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 	void SetState(int state);
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void KeyDown();
 	void KeyUp();
 	void KeyLeft();

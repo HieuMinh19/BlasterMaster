@@ -85,12 +85,14 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
 			{
-				//spawnItem(e->obj->x, e->obj->y);
-				//e->obj->SetPosition(-1000, 0);			//dirty way.
+				// spawnItem(e->obj->x, e->obj->y);
+				//e->obj->SetState(OBJECT_STATE_DELETE);
 
 				if (untouchable == 0)
 				{
 					health--;
+					DebugOut(L"[DEBUG] health: %d\n", health);
+					DebugOut(L"[DEBUG] getHealth: %d\n", getHealth());
 					if (health > 0)
 						StartUntouchable();
 					else
@@ -289,7 +291,9 @@ void CJason::spawnItem(float x, float y)
 
 CJason* CJason::GetInstance(float x, float y)
 {
+	DebugOut(L"[GO OUT] instance\n");
 	if (__instance == NULL) {
+		DebugOut(L"[GO IF] instance\n");
 		__instance = new CJason(x, y);
 	}
 	return __instance;
@@ -297,6 +301,8 @@ CJason* CJason::GetInstance(float x, float y)
 
 CJason* CJason::GetInstance()
 {
+	DebugOut(L"[DEBUG] __instance: %d\n", __instance->getHealth());
+	DebugOut(L"[DEBUG] xxxxxxxx");
 	if (__instance == NULL) {
 		DebugOut(L"[GO IF]\n");
 		__instance = new CJason();

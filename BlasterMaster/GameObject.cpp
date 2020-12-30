@@ -137,6 +137,6 @@ CGameObject::~CGameObject()
 }
 
 void CGameObject::deleteObject(vector<LPGAMEOBJECT>& coObjects, int i) {
-	coObjects[i]->x = 1000;
+	coObjects[i]->x = -10000;
 	// coObjects.erase(coObjects.begin() + i);
 }

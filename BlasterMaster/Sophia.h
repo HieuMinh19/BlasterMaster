@@ -79,8 +79,6 @@ class CSophia : public CPlayer
 {
 	static CSophia* __instance;
 	int level;
-	int untouchable;
-	DWORD untouchable_start;
 	int istouch;
 
 	float start_x;			// initial position of SOPHIA at scene
@@ -90,12 +88,12 @@ public:
 	boolean isJumping, isMoveUp, isStandUp, isJumpingWhileWalk, isWalkAfterJump;
 	DWORD jump_start, moveup_start;
 	CSophia(float x = 0.0f, float y = 0.0f);
+	void spawnItem(float x, float y);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
 	void fire(vector<LPGAMEOBJECT>& objects);
 	void Reset();
 	void ResetStandUp();

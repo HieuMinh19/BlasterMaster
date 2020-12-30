@@ -119,8 +119,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 			} else if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
 			{
-				//spawnItem(e->obj->x, e->obj->y);
-				//e->obj->SetPosition(-1000, 0);			//dirty way.
+				// spawnItem(e->obj->x, e->obj->y);
+				//e->obj->SetState(OBJECT_STATE_DELETE);			//dirty way.
 
 				if (untouchable == 0)
 				{
@@ -569,15 +569,12 @@ void CSophia::KeySHIFT()
 {
 	if (this->state != SOPHIA_STATE_IDLE)
 		return;
-	CJason* jason = dynamic_cast<CJason*> (
-		CJason::GetInstance(this->x, this->y)
-		);
-	DebugOut(L"[INFO] Jason Health1231412: %d\n", jason->getHealth());
+	CJason* jason = CJason::GetInstance(this->x, this->y);
 	jason->x = this->x + (SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
 	jason->nx = this->nx;
 	jason->y = this->y;
 	jason->inTank = false;
-	jason->setHealth(JASON_MAX_HEALTH);
+	jason->setHealth(JASON_MAX_HEALTH - 3);
 	jason->GetOut();
 	dynamic_cast<CPlayScene*> (
 		CGame::GetInstance()
@@ -585,3 +582,19 @@ void CSophia::KeySHIFT()
 		)->SetPlayer(jason);
 
 }
+
+void CSophia::spawnItem(float x, float y)
+{
+	// General object setup
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	CGameObject* obj = new CItems(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(3);
+	obj->SetAnimationSet(ani_set);
+
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
+}
+
