@@ -431,9 +431,11 @@
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 #50	300	98	0	316	150	2
-# MARIO
-7	300	50	7
+# SOPHIA
+7	50.0	1148	7
+#7	300	50.0	7
 0	50.0	0	1
+
 # WORMS
 30	250	295	9
 # DOMES

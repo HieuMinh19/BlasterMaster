@@ -166,10 +166,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BRICK:
 	{
-		DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
 		int width = atof(tokens[4].c_str());
 		int height = atof(tokens[5].c_str());
-		DebugOut(L"[BBOX] width: %d\n", width);
 		obj = new CBrick(height, width);
 		break;
 	}
@@ -434,6 +432,7 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->readyUpdate = true;
 		}
 
+		// start collision with player
 		if (dynamic_cast<CJason *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> playerCoObjects;
@@ -458,13 +457,17 @@ void CPlayScene::Update(DWORD dt)
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &enemyCoObjects);
 		}
+		// end collision with player
+
 		if (dynamic_cast<CUI *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> enemyCoObjects = uiObjects;
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &coObjects);
 		}
-		if (dynamic_cast<CWorms *>(objects[i]))
+
+		// start collision with enemies
+		if (dynamic_cast<CEnemies *>(objects[i]))
 		{
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
@@ -472,42 +475,8 @@ void CPlayScene::Update(DWORD dt)
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &enemyCoObjects);
 		}
-		if (dynamic_cast<CDomes *>(objects[i]))
-		{
-			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &enemyCoObjects);
-		}
-		if (dynamic_cast<CJumpers*>(objects[i])) {
-			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &enemyCoObjects);
-		}
-		if (dynamic_cast<CInsect*>(objects[i])) {
-			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &enemyCoObjects);
-		}
-		if (dynamic_cast<COrbs*>(objects[i])) {
-			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &enemyCoObjects);
-		}
-		if (dynamic_cast<CFloaters*>(objects[i])) {
-			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &enemyCoObjects);
-		}
+		// end collision with enemies
+
 		if (dynamic_cast<CBreakable *>(objects[i]))
 		{
 			// enemy can colli with brick only
@@ -550,7 +519,8 @@ void CPlayScene::Update(DWORD dt)
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &bulltetCoObjects);
 		}
-		if (dynamic_cast<CSophia *>(objects[i]))
+
+		if (dynamic_cast<CSophia*>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> playerCoObjects;
 			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
@@ -559,7 +529,7 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			
+
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &playerCoObjects);
 		}
@@ -576,8 +546,34 @@ void CPlayScene::Update(DWORD dt)
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
-	if (cx < 0)
-		cx = 0;
+
+	// start handle limit max and min x_cam, y_cam
+	CBackground *background = new CBackground();
+	float left, top, right, bottom;
+	background->GetBoundingBox(left, top, right, bottom);
+
+
+	float bgWidth = game->GetScreenWidth();
+	float bgHeight = game->GetScreenHeight();
+	DebugOut(L"[BG] ======left: %f\n", bgWidth);
+	DebugOut(L"[BG] ======right: %f\n", bgHeight);
+
+	if (cx < 0) cx = 0;
+
+	DebugOut(L"[CAM] ======CY: %f\n", cx);
+	DebugOut(L"[CAM] ======bgWidth: %f\n", bgWidth);
+
+	if ((cx + SCREEN_WIDTH) > bgWidth) {
+		cx = bgWidth - SCREEN_WIDTH;
+	}
+
+	/*if (cy < 0) {
+		cy = 0;
+	}*/
+
+	/*if (cy > 1050) {
+		cy = 1050;
+	}*/
 
 	CGame::GetInstance()->SetCamPos(cx, cy);
 }

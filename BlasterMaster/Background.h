@@ -5,8 +5,11 @@
 
 class CBackground : public CGameObject
 {
+	float bgWidht, bgHeight;
 public:
 	CBackground();
+	float GetBGWidth() { return this->bgWidht; }
+	float GetBGHeight() { return this->bgHeight; }
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 };
