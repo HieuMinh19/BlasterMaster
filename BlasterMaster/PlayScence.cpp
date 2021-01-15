@@ -664,12 +664,8 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_UP:
-		if (player->OBJECT_ID == OBJECT_TYPE_SOPHIA)
-		{
-			//player->x = 1000;
 			player->OnKeyUp();
 			break;
-		}
 	}
 }
 

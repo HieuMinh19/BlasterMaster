@@ -85,7 +85,7 @@ class CSophia : public CPlayer
 	float start_y;
 public:
 	int hover;
-	boolean isJumping, isMoveUp, isStandUp, isJumpingWhileWalk, isWalkAfterJump;
+	boolean isJumping, isMoveUp, isStandUp, isJumpingWhileWalk, isWalkAfterJump, jumpBack;
 	DWORD jump_start, moveup_start;
 	CSophia(float x = 0.0f, float y = 0.0f);
 	void spawnItem(float x, float y);

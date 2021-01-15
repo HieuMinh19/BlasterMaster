@@ -295,7 +295,8 @@
 10	1000	1001	1002	1003	1004	1005	1006	1007	1008
 # SKULLS
 15	928	929	930	931
-
+#UI
+99	1000	1001	1002	1003	1004	1005	1006	1007	1008
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 19 = BACKGROUND, 9 = WORMS
@@ -328,7 +329,7 @@
 36	300	120	15	-0.05
 36	450	120	15	-0.05
 # UI
-40	0	100	10
+40	100	100	99
 
 # --- SCENE PORTAL ----
 # type	left	top	ani_set_id	right	bottom	scene_id
