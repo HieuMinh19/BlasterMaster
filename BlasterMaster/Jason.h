@@ -62,6 +62,7 @@ public:
 	void MoveRight();
 	void MoveLeft();
 	void KeyDown();
+	void OnKeyUp();
 	void KeyUp();
 	void KeyLeft();
 	void KeyRight();

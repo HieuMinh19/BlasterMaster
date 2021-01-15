@@ -2,17 +2,19 @@
 
 CUI::CUI()
 {
+	
 }
 void CUI::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	CGame* game = CGame::GetInstance();
 	// CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
-	CGame::GetInstance()->GetCamX(x);
-	CGame::GetInstance()->GetCamY(y);
+	game->GetCamX(x);
+	game->GetCamY(y);
 	y += LOCATION_Y;
 	x += LOCATION_X;
-	
+	DebugOut(L"[INFO] x cam: %f\n", x);
+	DebugOut(L"[INFO] y cam: %f\n", y);
 	CStaticHelpers* helpers = new CStaticHelpers();
 	CPlayer* player = helpers->GetPlayer();
 
@@ -30,7 +32,7 @@ void CUI::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 }
 void CUI::Render()
 {
-	int ani = 0;
+	int ani;
 	
 	if (state == UI_STATE_0) {
 		ani = ANI_UI_0;

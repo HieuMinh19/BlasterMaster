@@ -43,7 +43,7 @@ public:
 	void KeySHIFT();
 	void Reset();
 	void GetOut();
-
+	void OnKeyUp();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	//

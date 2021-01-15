@@ -155,14 +155,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SOPHIA:
 		obj = CSophia::GetInstance(x, y);
 		player = (CSophia *)obj;
-
 		break;
 
 	case OBJECT_TYPE_JASON_OW:
 		obj = CJasonOW::GetInstance(x, y);
 		DebugOut(L"[INFO] Player object created!\n");
 		player = (CJasonOW *)obj;
-
 		break;
 	case OBJECT_TYPE_BRICK:
 	{
@@ -243,6 +241,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 
 	// General object setup
+	
 	obj->SetPosition(x, y);
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -407,6 +406,7 @@ void CPlayScene::Update(DWORD dt)
 		}
 		if (dynamic_cast<CUI *>(objects[i]))
 		{
+			
 			uiObjects.push_back(objects[i]);
 		}
 		coObjects.push_back(objects[i]);
@@ -427,7 +427,7 @@ void CPlayScene::Update(DWORD dt)
 		// phan hoach khong gian
 		float xObj, yObj;
 		objects[i]->GetPosition(xObj, yObj);
-		if (xObj > xPlayer + SCREEN_WIDTH) {
+		if (xObj > xPlayer + SCREEN_WIDTH && !dynamic_cast<CUI*>(objects[i])) {
 			objects[i]->readyUpdate = false;
 		}
 		else {
@@ -460,9 +460,12 @@ void CPlayScene::Update(DWORD dt)
 		}
 		if (dynamic_cast<CUI *>(objects[i]))
 		{
+
 			vector<LPGAMEOBJECT> enemyCoObjects = uiObjects;
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &coObjects);
+			if (objects[i]->readyUpdate) {
+				objects[i]->Update(dt, &enemyCoObjects);
+			}
+			
 		}
 		if (dynamic_cast<CWorms *>(objects[i]))
 		{
@@ -532,7 +535,6 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CBullet *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> bulltetCoObjects;
-
 			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
@@ -543,7 +545,6 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CMonsterBullet *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> bulltetCoObjects;
-
 			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			
@@ -559,7 +560,6 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &playerCoObjects);
 		}
@@ -666,7 +666,8 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_UP:
 		if (player->OBJECT_ID == OBJECT_TYPE_SOPHIA)
 		{
-			player->KeyUp();
+			//player->x = 1000;
+			player->OnKeyUp();
 			break;
 		}
 	}

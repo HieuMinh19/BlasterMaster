@@ -93,9 +93,9 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				// jump on top >> kill Goomba and deflect a bit 				
-					if (isJumping) {
+					/*if (isJumping) {
 						ResetJump();
-					}
+					}*/
 			} // if Player
 			else if (dynamic_cast<CTrap*>(e->obj)) 
 			{
@@ -491,15 +491,17 @@ void CSophia::KeyUp()
 		moveup_start = GetTickCount();
 		isMoveUp = TRUE;
 	}
-	else {
+	/*else {
 		ResetStandUp();	
-	}
+	}*/
 }
 void CSophia::KeyDown()
 {
 
 }
-
+void CSophia::OnKeyUp() {
+	ResetStandUp();
+}
 void CSophia::KeyX() {
 	if (!isJumping) {
 		isJumping = true;

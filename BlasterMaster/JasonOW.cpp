@@ -274,3 +274,7 @@ void CJasonOW::GetOut()
 {
 
 }
+void CJasonOW::OnKeyUp()
+{
+
+}

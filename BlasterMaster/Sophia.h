@@ -100,6 +100,7 @@ public:
 	void ResetJump();
 	void KeyDown();
 	void KeyUp();
+	void OnKeyUp();
 	void KeyLeft();
 	void KeyRight();
 	void KeyX();

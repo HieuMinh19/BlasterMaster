@@ -321,7 +321,10 @@ void CJason::KeyUp()
 {
 
 }
+void CJason::OnKeyUp()
+{
 
+}
 void CJason::KeyX()
 {
 	if (isSpecialAni == false && isJump == false)
