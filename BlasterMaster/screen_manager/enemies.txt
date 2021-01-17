@@ -52,7 +52,7 @@
 90006	149	425	166	441	90
 # left
 90007	132	441	149	458	90
-90008	133	461	149	478	90
+90008	132	461	149	478	90
 # down
 90009	149	479	166	495	90
 90010	169	479	186	494	90
@@ -128,6 +128,15 @@
 908	90017	100	90018	100
 # left
 909	90019	100	90020	100
+# == ani fly ==
+# brick ngang dau tren
+910	90013	100
+# brick ngang dau trai
+911	90007	100
+# brick doc dau duoi
+912	90009	100
+# brick doc dau phai
+913	90015	100
 
 #
 # id	ani1	ani2	ani3
@@ -141,24 +150,26 @@
 # WORMS
 6	900	901
 # DOMES
-7	902	903	904	905	906	907	908	909
+7	902	903	904	905	906	907	908	909	910	911	912	913
 
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 9 = Worms, 10 = DOMES
 
 # MARIO
-0	50.0	0	1
+0	70.0	0	1
 
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
-1	0	144	2
+1	0	144	2	1000	1000
 
-1	448	0	2
+1	0	70	2	1000	16
 
-1	0	-990	2
+1	448	0	2	1000	1000
 
-1	-990	0	2
+1	0	-990	2	1000	1000
+
+1	-990	0	2	1000	1000
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
@@ -168,6 +179,6 @@
 #9	110.0	0	6
 
 # DOMES
-10	150	100	7	0.05	0.1
+10	30	100	7	0.05	0.1
 
 #10	150	90	7	0.05	-0.05

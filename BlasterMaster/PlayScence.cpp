@@ -125,6 +125,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float y = atof(tokens[2].c_str());
 	float _vx = 0;
 	float _vy = 0;
+	int height = 0;
+	int width = 0;
 	int ani_set_id = atoi(tokens[3].c_str());
 
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
@@ -143,14 +145,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CJason*)obj;
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_INTRO: obj = new CIntro(); break;
+	case OBJECT_TYPE_BRICK:
+		width = atof(tokens[4].c_str());
+		height = atof(tokens[5].c_str());
+		obj = new CBrick(height, width);
+		break;
+	case OBJECT_TYPE_INTRO: obj = new CIntro(); break; 
 	case OBJECT_TYPE_WORMS: obj = new CWorms(); break;
 	case OBJECT_TYPE_ITEMS: obj = new CItems(); break;
 	case OBJECT_TYPE_DOMES:
 		_vx = atof(tokens[4].c_str());
 		_vy = atof(tokens[5].c_str());
-		obj = new CDomes(_vx, _vy);
+		obj = new CDomes(x, y, _vx, _vy);
 		break;
 	
 	/*case OBJECT_TYPE_PORTAL:
