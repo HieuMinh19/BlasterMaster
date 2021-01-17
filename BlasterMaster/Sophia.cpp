@@ -100,7 +100,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CTrap* trap= dynamic_cast<CTrap*>(e->obj);
 				if (!untouchable) {
-					health--;
+					//health--;
 					untouchable = 1;
 					untouchable_start = GetTickCount();
 				}
@@ -123,7 +123,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (untouchable == 0)
 				{
-					health--;
+					//health--;
 					if (health > 0)
 						StartUntouchable();
 					else
@@ -147,12 +147,12 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}//fix this
 				}
 				else {
-					if (nx < 0) {
-						x += (SOPHIA_JUMP_WHILE_WALK_SPEED_X * dt);
+					if (state == SOPHIA_JUMP_BACK_RIGHT) {
+						x += (SOPHIA_JUMP_BACK_SPEED_X * dt);
 					}
-					if (nx > 0) {
-						x -= (SOPHIA_JUMP_WHILE_WALK_SPEED_X * dt);
-					}//fix this
+					if (state == SOPHIA_JUMP_BACK_LEFT) {
+						x -= (SOPHIA_JUMP_BACK_SPEED_X * dt);
+					}
 				}
 			}
 			if (GetTickCount() - jump_start > SOPHIA_JUMP_TIME)
@@ -161,6 +161,18 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 		else {
+			if (GetTickCount() - jump_start > 500)
+			{
+				if (jumpBack) {
+					if (state == SOPHIA_JUMP_BACK_RIGHT) {
+						x += (SOPHIA_JUMP_BACK_SPEED_X * dt);
+					}
+					if (state == SOPHIA_JUMP_BACK_LEFT) {
+						x -= (SOPHIA_JUMP_BACK_SPEED_X * dt);
+					}
+				}
+			}
+			
 			if (GetTickCount() - jump_start > SOPHIA_JUMP_TIME)
 			{
 				ResetJump();
@@ -477,6 +489,10 @@ void CSophia::KeyRight()
 			SetState(SOPHIA_STATE_WALKING_RIGHT);
 		}
 	}
+	else {
+		jumpBack = TRUE;
+		SetState(SOPHIA_JUMP_BACK_RIGHT);
+	}
 }
 
 void CSophia::KeyLeft()
@@ -490,9 +506,8 @@ void CSophia::KeyLeft()
 		}
 	}
 	else {
-		if (nx > 0) {
 			jumpBack = TRUE;
-		}
+			SetState(SOPHIA_JUMP_BACK_LEFT);
 	}
 }
 
