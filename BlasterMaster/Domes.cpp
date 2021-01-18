@@ -5,11 +5,13 @@ CDomes::CDomes()
 
 }
 
-CDomes::CDomes(float _vx, float _vy)
+CDomes::CDomes(float x, float y, float _vx, float _vy)
 {
 	SetState(DOMES_STATE_INITIAL);
 	this->vx = _vx;
 	this->vy = _vy;
+	max_coordinates_X = x + DOMES_MAX_JOURNEY_X;
+	min_coordinates_X = x - DOMES_MAX_JOURNEY_X;
 }
 
 void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -22,7 +24,6 @@ void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CDomes::SetState(int state)
 {
-	CGameObject::SetState(state);
 	this->state = state;
 	//DERECTION 1->UP // 2-> LEFT // 3->DOWN // 4->RIGHT
 	switch (state)
@@ -75,21 +76,25 @@ void CDomes::SetState(int state)
 		direction = 4;
 		ani = DOMES_ANI_RIGHT_RIGHT;
 		break;
-	case DOMES_STATE_UP:
-		vx = 0;
-		vy = -DOMES_SPEED_FLY_TO;
-		break;
-	case DOMES_STATE_LEFT:
-		vx = -DOMES_SPEED_FLY_TO;
-		vy = 0;
-		break;
-	case DOMES_STATE_DOWN:
+	case DOMES_STATE_BEFORE_FLY_UP:
+		fly_start_at = GetTickCount();
 		vx = 0.0f;
-		vy = DOMES_SPEED_FLY_TO;
+		ani = DOMES_ANI_BEFORE_FLY_UP;
 		break;
-	case DOMES_STATE_RIGHT:
-		vx = DOMES_SPEED_FLY_TO;
-		vy = 0;
+	case DOMES_STATE_BEFORE_FLY_LEFT:
+		fly_start_at = GetTickCount();
+		vy = 0.0f;
+		ani = DOMES_ANI_BEFORE_FLY_LEFT;
+		break;
+	case DOMES_STATE_BEFORE_FLY_DOWN:
+		fly_start_at = GetTickCount();
+		vx = 0.0f;
+		ani = DOMES_ANI_BEFORE_FLY_DOWN;
+		break;
+	case DOMES_STATE_BEFORE_FLY_RIGHT:
+		fly_start_at = GetTickCount();
+		vy = 0.0f;
+		ani = DOMES_ANI_BEFORE_FLY_RIGHT;
 		break;
 	}
 }
@@ -111,6 +116,10 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 
+		if (x > max_coordinates_X || x < min_coordinates_X)
+		{
+			HandleMaxMinJourneyXWithoutCollision();
+		}
 		if (state != DOMES_STATE_INITIAL)
 		{
 			HandleWithoutObstruction();
@@ -137,6 +146,10 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
+				if (x > max_coordinates_X || x < min_coordinates_X)
+				{
+					HandleMaxMinJourneyX(vx);
+				}
 				if (state == DOMES_STATE_INITIAL)
 				{
 					SetStateAfterFirstCollision(nx, ny);
@@ -159,6 +172,48 @@ void CDomes::Render()
 {
 	animation_set->at(ani)->Render(x, y);
 	RenderBoundingBox();
+}
+
+void CDomes::HandleMaxMinJourneyXWithoutCollision()
+{
+	if (state == DOMES_STATE_BEFORE_FLY_RIGHT)
+	{
+		SetState(DOMES_STATE_INITIAL);
+		vx = -vx;
+		vy = 0.05f;
+	}
+	if (state == DOMES_STATE_BEFORE_FLY_LEFT)
+	{
+		SetState(DOMES_STATE_INITIAL);
+		vx = -vx;
+		vy = 0.05f;
+	}
+}
+
+void CDomes::HandleMaxMinJourneyX(float vx)
+{
+	if (vx > 0)
+	{
+		if (state == DOMES_STATE_RIGHT_UP)
+		{
+			SetState(DOMES_STATE_LEFT_UP);
+		}
+		if (state == DOMES_STATE_LEFT_DOWN)
+		{
+			SetState(DOMES_STATE_RIGHT_DOWN);
+		}
+	}
+	if (vx < 0)
+	{
+		if (state == DOMES_STATE_LEFT_UP)
+		{
+			SetState(DOMES_STATE_RIGHT_UP);
+		}
+		if (state == DOMES_STATE_RIGHT_DOWN)
+		{
+			SetState(DOMES_STATE_LEFT_DOWN);
+		}
+	}
 }
 
 void CDomes::HandleWithoutObstruction()
@@ -190,40 +245,58 @@ void CDomes::HandleWithoutObstruction()
 	}
 }
 
-void CDomes::HandleFlyToJason(float jason_x, float jason_y, float nx, float ny)
+void CDomes::HandleFlyToJason(float player_x, float player_y, float nx, float ny)
 {
-	float distance_x = abs(jason_x - x);
-	float distance_y = abs(jason_y - y);
+	float distance_x = abs(player_x - x);
+	float distance_y = abs(player_y - y);
 	int newState = NULL;
-	switch (direction)
+	DWORD now = GetTickCount();
+	if (vx != 0 && distance_x < 1.0f)
 	{
-	case 1:
-		if (distance_x < 1.0f && (state == DOMES_STATE_LEFT_UP || state == DOMES_STATE_RIGHT_UP))
+		if (state == DOMES_STATE_LEFT_UP || state == DOMES_STATE_RIGHT_UP)
 		{
-			newState = DOMES_STATE_UP;
+			SetState(DOMES_STATE_BEFORE_FLY_UP);
 		}
-		break;
-	case 2:
-		if (distance_y < 1.0f && (state == DOMES_STATE_LEFT_LEFT || state == DOMES_STATE_RIGHT_LEFT))
+		if (distance_y >= 35.0f && (state == DOMES_STATE_LEFT_DOWN || state == DOMES_STATE_RIGHT_DOWN))
 		{
-			newState = DOMES_STATE_LEFT;
-		}
-		break;
-	case 3:
-		if (distance_x < 1.0f && (state == DOMES_STATE_LEFT_DOWN || state == DOMES_STATE_RIGHT_DOWN))
-		{
-			newState = DOMES_STATE_DOWN;
-		}
-	case 4:
-		if (distance_y < 1.0f && (state == DOMES_STATE_LEFT_RIGHT || state == DOMES_STATE_RIGHT_RIGHT))
-		{
-			newState = DOMES_STATE_RIGHT;
+			SetState(DOMES_STATE_BEFORE_FLY_DOWN);
 		}
 	}
 
-	if (newState != NULL) {
-		SetState(newState);
-		SetState(DOMES_STATE_INITIAL);
+	if (vy != 0 && distance_y < 1.0f)
+	{
+		if (state == DOMES_STATE_LEFT_LEFT || state == DOMES_STATE_RIGHT_LEFT)
+		{
+			SetState(DOMES_STATE_BEFORE_FLY_LEFT);
+		}
+		if (state == DOMES_STATE_LEFT_RIGHT || state == DOMES_STATE_RIGHT_RIGHT)
+		{
+			SetState(DOMES_STATE_BEFORE_FLY_RIGHT);
+		}
+	}
+
+	if (vx == 0 && now - fly_start_at >= 300)
+	{
+		if (state == DOMES_STATE_BEFORE_FLY_UP)
+		{
+			vy = -DOMES_SPEED_FLY_TO;
+		}
+		if (state == DOMES_STATE_BEFORE_FLY_DOWN)
+		{
+			vy = DOMES_SPEED_FLY_TO;
+		}
+	}
+
+	if (vy == 0 && now - fly_start_at >= 300)
+	{
+		if (state == DOMES_STATE_BEFORE_FLY_LEFT)
+		{
+			vx = -DOMES_SPEED_FLY_TO;
+		}
+		if (state == DOMES_STATE_BEFORE_FLY_RIGHT)
+		{
+			vx = DOMES_SPEED_FLY_TO;
+		}
 	}
 }
 
@@ -288,6 +361,10 @@ void CDomes::CollisionHandleWithBrick(float nx, float ny)
 	int newState = NULL;
 	switch (direction) {
 	case 1:
+		if (state == DOMES_STATE_BEFORE_FLY_UP && ny > 0.0f)
+		{
+			newState = DOMES_STATE_RIGHT_DOWN;
+		}
 		if (state == DOMES_STATE_LEFT_UP && nx > 0.0f)
 		{
 			newState = DOMES_STATE_LEFT_RIGHT;
@@ -298,6 +375,10 @@ void CDomes::CollisionHandleWithBrick(float nx, float ny)
 		}
 		break;
 	case 2:
+		if (state == DOMES_STATE_BEFORE_FLY_LEFT && nx > 0.0f)
+		{
+			newState = DOMES_STATE_LEFT_RIGHT;
+		}
 		if (state == DOMES_STATE_LEFT_LEFT && ny < 0.0f)
 		{
 			newState = DOMES_STATE_LEFT_UP;
@@ -308,6 +389,10 @@ void CDomes::CollisionHandleWithBrick(float nx, float ny)
 		}
 		break;
 	case 3:
+		if (state == DOMES_STATE_BEFORE_FLY_DOWN && ny < 0.0f)
+		{
+			newState = DOMES_STATE_LEFT_UP;
+		}
 		if (state == DOMES_STATE_LEFT_DOWN && nx < 0.0f)
 		{
 			newState = DOMES_STATE_LEFT_LEFT;
@@ -318,6 +403,10 @@ void CDomes::CollisionHandleWithBrick(float nx, float ny)
 		}
 		break;
 	case 4:
+		if (state == DOMES_STATE_BEFORE_FLY_RIGHT && nx < 0.0f)
+		{
+			newState = DOMES_STATE_RIGHT_LEFT;
+		}
 		if (state == DOMES_STATE_LEFT_RIGHT && ny > 0.0f)
 		{
 			newState = DOMES_STATE_LEFT_DOWN;

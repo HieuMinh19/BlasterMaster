@@ -221,7 +221,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_DOMES:
 		_vx = atof(tokens[4].c_str());
 		_vy = atof(tokens[5].c_str());
-		obj = new CDomes(_vx, _vy);
+		obj = new CDomes(x, y, _vx, _vy);
 		break;
 	case OBJECT_TYPE_FLOATERS:
 		_vx = atof(tokens[4].c_str());
