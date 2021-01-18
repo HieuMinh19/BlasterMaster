@@ -3,7 +3,7 @@
 #include "Utils.h"
 #include "Jason.h"
 
-#define DOMES_MAX_JOURNEY_X		50
+#define DOMES_MAX_JOURNEY_X		100
 #define DOMES_WALKING_SPEED		0.05f
 #define DOMES_TRACTION			0.04f
 #define DOMES_SPEED_FLY_TO		0.3f
@@ -52,8 +52,9 @@ class CDomes : public CEnemies
 	DWORD fly_start_at;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual void Render();
-	void HandleMaxMinJourneyX(float vx);
+	virtual void Render(); 
+	void HandleMaxMinJourneyXWithoutCollision();
+	void HandleMaxMinJourneyX(float vx, float nx, float ny);
 	void HandleWithoutObstruction();
 	void HandleFlyToJason(float jason_x, float jason_y, float nx, float ny);
 	void SetStateAfterFirstCollision(float nx, float ny);
