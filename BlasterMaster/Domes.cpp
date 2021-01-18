@@ -176,18 +176,18 @@ void CDomes::Render()
 
 void CDomes::HandleMaxMinJourneyXWithoutCollision()
 {
-	if (state == DOMES_STATE_BEFORE_FLY_RIGHT)
-	{
-		SetState(DOMES_STATE_INITIAL);
-		vx = -vx;
-		vy = 0.05f;
-	}
-	if (state == DOMES_STATE_BEFORE_FLY_LEFT)
-	{
-		SetState(DOMES_STATE_INITIAL);
-		vx = -vx;
-		vy = 0.05f;
-	}
+	//if (state == DOMES_STATE_BEFORE_FLY_RIGHT)
+	//{
+	//	SetState(DOMES_STATE_INITIAL);
+	//	vx = -vx;
+	//	vy = 0.05f;
+	//}
+	//if (state == DOMES_STATE_BEFORE_FLY_LEFT)
+	//{
+	//	SetState(DOMES_STATE_INITIAL);
+	//	vx = -vx;
+	//	vy = 0.05f;
+	//}
 }
 
 void CDomes::HandleMaxMinJourneyX(float vx)

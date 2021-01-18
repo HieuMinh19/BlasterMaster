@@ -88,6 +88,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
+
 			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
 			{
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
@@ -100,7 +101,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CTrap* trap= dynamic_cast<CTrap*>(e->obj);
 				if (!untouchable) {
-					//health--;
+					health--;
 					untouchable = 1;
 					untouchable_start = GetTickCount();
 				}
@@ -123,7 +124,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (untouchable == 0)
 				{
-					//health--;
+					health--;
 					if (health > 0)
 						StartUntouchable();
 					else
@@ -138,21 +139,14 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isJumping) {
 		if (isJumpingWhileWalk) {
 			if (GetTickCount() - jump_start < SOPHIA_JUMP_TIME) {
-				if (!jumpBack) {
-					if (nx > 0) {
-						x += (SOPHIA_JUMP_WHILE_WALK_SPEED_X * dt);
-					}
-					if (nx < 0) {
-						x -= (SOPHIA_JUMP_WHILE_WALK_SPEED_X * dt);
-					}//fix this
+				if (nx > 0) {
+					x += (SOPHIA_JUMP_WHILE_WALK_SPEED_X * dt);
 				}
-				else {
-					if (state == SOPHIA_JUMP_BACK_RIGHT) {
-						x += (SOPHIA_JUMP_BACK_SPEED_X * dt);
-					}
-					if (state == SOPHIA_JUMP_BACK_LEFT) {
-						x -= (SOPHIA_JUMP_BACK_SPEED_X * dt);
-					}
+				if (nx < 0) {
+					x -= (SOPHIA_JUMP_WHILE_WALK_SPEED_X * dt);
+				}//fix this
+				if (GetTickCount() - jump_start > SOPHIA_WALK_JUMP_TIME && GetTickCount() - jump_start <= SOPHIA_JUMP_TIME) {
+					isWalkAfterJump = TRUE;
 				}
 			}
 			if (GetTickCount() - jump_start > SOPHIA_JUMP_TIME)
@@ -161,18 +155,6 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 		else {
-			if (GetTickCount() - jump_start > 500)
-			{
-				if (jumpBack) {
-					if (state == SOPHIA_JUMP_BACK_RIGHT) {
-						x += (SOPHIA_JUMP_BACK_SPEED_X * dt);
-					}
-					if (state == SOPHIA_JUMP_BACK_LEFT) {
-						x -= (SOPHIA_JUMP_BACK_SPEED_X * dt);
-					}
-				}
-			}
-			
 			if (GetTickCount() - jump_start > SOPHIA_JUMP_TIME)
 			{
 				ResetJump();
@@ -315,6 +297,7 @@ void CSophia::Render()
 
 		}
 	}
+
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 	animation_set->at(ani)->Render(x, y, alpha);
@@ -445,7 +428,6 @@ void CSophia::ResetJump()
 	isJumping = FALSE;
 	isJumpingWhileWalk = FALSE;
 	isWalkAfterJump = FALSE;
-	jumpBack = FALSE;
 	SetState(SOPHIA_STATE_IDLE);
 	//bug this -> can't add object
 	SetLevel(SOPHIA_LEVEL_NORMAL);
@@ -489,10 +471,6 @@ void CSophia::KeyRight()
 			SetState(SOPHIA_STATE_WALKING_RIGHT);
 		}
 	}
-	else {
-		jumpBack = TRUE;
-		SetState(SOPHIA_JUMP_BACK_RIGHT);
-	}
 }
 
 void CSophia::KeyLeft()
@@ -504,10 +482,6 @@ void CSophia::KeyLeft()
 		else {
 			SetState(SOPHIA_STATE_WALKING_LEFT);
 		}
-	}
-	else {
-			jumpBack = TRUE;
-			SetState(SOPHIA_JUMP_BACK_LEFT);
 	}
 }
 
