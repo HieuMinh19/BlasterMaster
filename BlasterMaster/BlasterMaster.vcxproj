@@ -139,6 +139,7 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Breakable.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Canon.cpp" />
     <ClCompile Include="Domes.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Floaters.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="Breakable.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="Cannon.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Domes.h" />
     <ClInclude Include="Enemies.h" />
