@@ -469,6 +469,7 @@ void CPlayScene::Update(DWORD dt)
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects;
 			enemyCoObjects.insert(enemyCoObjects.end(), brickObjects.begin(), brickObjects.end());
+			enemyCoObjects.insert(enemyCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			enemyCoObjects.insert(enemyCoObjects.end(), playerObjects.begin(), playerObjects.end());
 
 			if (objects[i]->readyUpdate)

@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemies.h"
 #include "Brick.h"
+#include "Trap.h"
 #include "Utils.h"
 #include "Jason.h"
 #include "PlayScence.h"
