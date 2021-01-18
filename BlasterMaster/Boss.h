@@ -16,8 +16,8 @@
 #define BOSS_ANI_WALKING_RIGHT		0
 #define BOSS_ANI_WALKING_LEFT			1
 
-#define BOSS_BBOX_WIDTH  17
-#define BOSS_BBOX_HEIGHT 9
+#define BOSS_BBOX_WIDTH  64
+#define BOSS_BBOX_HEIGHT 78
 
 class CBoss : public CEnemies
 {
