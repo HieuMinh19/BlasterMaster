@@ -552,24 +552,15 @@ void CPlayScene::Update(DWORD dt)
 	float left, top, right, bottom;
 	background->GetBoundingBox(left, top, right, bottom);
 
-
-	float bgWidth = game->GetScreenWidth();
-	float bgHeight = game->GetScreenHeight();
-	DebugOut(L"[BG] ======left: %f\n", bgWidth);
-	DebugOut(L"[BG] ======right: %f\n", bgHeight);
-
 	if (cx < 0) cx = 0;
-
-	DebugOut(L"[CAM] ======CY: %f\n", cx);
-	DebugOut(L"[CAM] ======bgWidth: %f\n", bgWidth);
-
-	if ((cx + SCREEN_WIDTH) > bgWidth) {
-		cx = bgWidth - SCREEN_WIDTH;
-	}
-
-	/*if (cy < 0) {
-		cy = 0;
+	
+	/*if ((cx + SCREEN_WIDTH) > 1024) {
+		cx = 1024 - SCREEN_WIDTH;
 	}*/
+
+	if (cy < 0) {
+		cy = 0;
+	}
 
 	/*if (cy > 1050) {
 		cy = 1050;
