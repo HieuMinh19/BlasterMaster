@@ -3,10 +3,12 @@
 #include "PlayScence.h"
 #include "MonsterBullet.h"
 
-CTeleporter::CTeleporter()
+CTeleporter::CTeleporter(float mx, float my)
 {
 	SetState(TELEPORT_STATE_ARMORL);
-	lastArmorl = GetTickCount();
+	lastTele = lastArmorl = GetTickCount();
+	maxX = mx;
+	maxY = my;
 }
 
 void CTeleporter::SetState(int state)
@@ -34,11 +36,18 @@ void CTeleporter::GetBoundingBox(float& left, float& top, float& right, float& b
 void CTeleporter::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
-
-
-
-	if (lastArmorl + TIME_ARMORL < GetTickCount()) {
-		SetState(TELEPORT_STATE_NORMAL);
+		
+	if (state == TELEPORT_STATE_ARMORL) {
+		this->SetHealth(TELEPORT_HEALTH);
+		if (lastArmorl + TIME_ARMORL < GetTickCount()) {
+			SetState(TELEPORT_STATE_NORMAL);
+		}
+	}
+	if (state == TELEPORT_STATE_NORMAL) {
+		if (lastTele + TIME_RELOAD < GetTickCount()) {
+			lastTele = GetTickCount();
+			Teleport();
+		}
 	}
 }
 
@@ -50,6 +59,24 @@ void CTeleporter::Render()
 
 void CTeleporter::Teleport()
 {
+	
+	int res = rand() % (4 - 1 + 1) + 1;
+	switch (res)
+	{
+	case 1:
+		x = x + 32;
+		break;
+	case 2:
+		x = x - 32;
+		break;
+	case 3:
+		y = y + 32;
+		break;
+	case 4:
+		y = y - 32;
+		break;
+	}
+	DebugOut(L"teltelteltletl ltetleltletle : %i \n", res);
 
 }
 

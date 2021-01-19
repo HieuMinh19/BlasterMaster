@@ -150,6 +150,12 @@
 410000	96	603	122	629	90
 410001	41	603	67	629	90
 410002	68	603	94	629	90
+#Teleport
+420000  71  568  95   600
+420000  159  568  183   600
+420000  98  568  122   600
+420000  71  568  95   600
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 # ==== BACKGROUND_AREA2 =========
@@ -301,7 +307,8 @@
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
 #1	0	64	2	512	32  
-11	640	64	11
+11	500	64	11
+42	500	0	41
 41	0	0	41
 #brick
 1	0	0	2	30	2000  
