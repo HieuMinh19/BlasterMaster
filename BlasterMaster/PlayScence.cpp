@@ -21,6 +21,7 @@
 #include "MonsterBullet.h"
 #include "Skulls.h"
 #include "Mines.h"
+#include "Boss.h"
 
 using namespace std;
 
@@ -235,6 +236,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_MINES:
 		obj = new CMines();
 		break;
+	case OBJECT_TYPE_BOSS:
+		obj = new CBoss();
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -412,6 +416,11 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CPlayer*>(objects[i]))
 		{
 			playerObjects.push_back(objects[i]);
+			uiObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CBoss*>(objects[i]))
+		{
+			enemyObjects.push_back(objects[i]);
 		}
 		coObjects.push_back(objects[i]);
 	}
@@ -485,6 +494,14 @@ void CPlayScene::Update(DWORD dt)
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			
+			if (objects[i]->readyUpdate)
+				objects[i]->Update(dt, &enemyCoObjects);
+		}
+		if (dynamic_cast<CBoss*>(objects[i]))
+		{
+			// enemy can colli with brick only
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &enemyCoObjects);
 		}

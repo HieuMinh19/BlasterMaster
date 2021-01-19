@@ -1,7 +1,7 @@
 #include "Mines.h"
 #include "MonsterBullet.h"
 #include "PlayScence.h"
-#include "MonsterBullet.h"
+
 
 CMines::CMines()
 {

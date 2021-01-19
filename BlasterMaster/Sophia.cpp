@@ -93,9 +93,9 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				// jump on top >> kill Goomba and deflect a bit 				
-					/*if (isJumping) {
+					if (isJumping) {
 						ResetJump();
-					}*/
+					}
 			} // if Player
 			else if (dynamic_cast<CTrap*>(e->obj)) 
 			{
@@ -107,12 +107,12 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 
 			}
-			else if (dynamic_cast<CItems*>(e->obj))
-			{
-				CItems* items = dynamic_cast<CItems*>(e->obj);
-				items->hasTaken();
-				health++;
-			}
+			//else if (dynamic_cast<CItems*>(e->obj))
+			//{
+			///*	CItems* items = dynamic_cast<CItems*>(e->obj);
+			//	items->hasTaken();
+			//	health++;*/
+			//}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
