@@ -1,6 +1,8 @@
 #include "MonsterBullet.h"
 #include "Utils.h"
 #include "PlayScence.h"
+#include "math.h"
+
 CMonsterBullet::CMonsterBullet(float state, int ani) : CGameObject()
 {
 	animation = ani;
@@ -8,6 +10,9 @@ CMonsterBullet::CMonsterBullet(float state, int ani) : CGameObject()
 	timeDestroy = GetTickCount() + 2500;
 	this->x = x;
 	this->y = y;
+	if (state == BULLET_DIRECTION) {
+		Setup();
+	}
 }
 
 CMonsterBullet::CMonsterBullet(float state, int ani, float VX,float VY) : CGameObject()
@@ -99,4 +104,26 @@ void CMonsterBullet::SetState(int state)
 		vy = BULLET_WALKING_SPEED
 			break;
 	}
+}
+
+void CMonsterBullet::Setup()
+{
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
+	float sinn = player->x - this->x;
+	float coss = player->y - this->y;
+	int ox = 1;
+	int oy = 1;
+	if (sinn < 0) {
+		ox = -1;
+		sinn = fabs(sinn);
+	}
+	if (coss < 0) {
+		oy = -1;
+		coss = fabs(coss);
+	}
+	float v = BULLET_WALKING_SPEED;
+	double result = atan(sinn / coss);
+	this->vx = v * ox  * sin(result);
+	this->vy = v * oy * cos(result);
 }
