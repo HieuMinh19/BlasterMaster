@@ -249,9 +249,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_TELEPORT:
 		obj = new CTeleporter(0, 1000);
 		break;
-	case OBJECT_TYPE_BOSS:
-		obj = new CBoss();
-		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
