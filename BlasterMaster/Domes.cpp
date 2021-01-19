@@ -14,7 +14,7 @@ CDomes::CDomes(float x, float y, float _vx, float _vy)
 	min_coordinates_X = x - DOMES_MAX_JOURNEY_X;
 }
 
-void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom, int bbox_width, int bbox_height)
+void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;

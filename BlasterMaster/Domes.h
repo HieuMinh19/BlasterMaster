@@ -51,7 +51,7 @@ class CDomes : public CEnemies
 	int max_coordinates_X;
 	int min_coordinates_X;
 	DWORD fly_start_at;
-	void GetBoundingBox(float& left, float& top, float& right, float& bottom, int bbox_width, int bbox_height);
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 	void HandleMaxMinJourneyXWithoutCollision();
