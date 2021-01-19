@@ -430,7 +430,7 @@ void CPlayScene::Update(DWORD dt)
 		{
 			objects[i]->readyUpdate = true;
 		}
-		if (dynamic_cast<CPlayer *>(objects[i]))
+		if (dynamic_cast<CJason *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> playerCoObjects;
 			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
@@ -506,6 +506,17 @@ void CPlayScene::Update(DWORD dt)
 
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &bulltetCoObjects);
+		}
+		if (dynamic_cast<CSophia*>(objects[i]))
+		{
+			vector<LPGAMEOBJECT> playerCoObjects;
+			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
+			if (objects[i]->readyUpdate)
+				objects[i]->Update(dt, &playerCoObjects);
 		}
 	}
 
@@ -594,7 +605,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		player->KeyX();
 		break;
 	case DIK_LSHIFT:
-		DebugOut(L"[HEATH] health: %d \n", player->getHealth());
 		player->KeySHIFT();
 		break;
 	}
