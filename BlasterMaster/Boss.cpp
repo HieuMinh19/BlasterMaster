@@ -11,6 +11,7 @@ void CBoss::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 	top = y;
 	right = x + BOSS_BBOX_WIDTH;
 	bottom = y + BOSS_BBOX_HEIGHT;
+	lastFire = GetTickCount();
 }
 
 void CBoss::SetState(int state)
@@ -20,6 +21,9 @@ void CBoss::SetState(int state)
 	{
 	case BOSS_STATE_WALKING_LEFT:
 		vx = -BOSS_WALKING_SPEED;
+		break;
+	case BOSS_STATE_WALKING_RIGHT:
+		vx = BOSS_WALKING_SPEED;
 		break;
 	}
 }
@@ -62,16 +66,24 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj))
 			{
-				if (nx > 0) {
-					nx = -1;
+				
+				if (nx < 0) {
+					Fire();
+					vx = -BOSS_WALKING_SPEED;
 				}
 				else {
-					nx = 1;
+					vx = BOSS_WALKING_SPEED;
 				}
 			}
 		}
+		
 	}
-
+	
+	if (lastFire + TIME_RELOAD < GetTickCount()) {
+		x = 1000;
+		Fire();
+		lastFire = GetTickCount();
+	}
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
@@ -85,4 +97,31 @@ void CBoss::Render()
 	else ani = 1;
 	animation_set->at(ani)->Render(x, y);
 	RenderBoundingBox();
+}
+void CBoss::Fire()
+{
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	float yy = this->y + (BOSS_BBOX_HEIGHT - BULLET_BBOX_WIDTH) / 2;
+	float xx = this->x + (BOSS_BBOX_HEIGHT - BULLET_BBOX_WIDTH) / 2;
+	
+		AddBullet(BULLET_UP, animation_sets);
+		AddBullet(BULLET_DOWN, animation_sets);
+		dx = 1;
+
+}
+
+void CBoss::AddBullet(float fastSpeed, CAnimationSets* animation_sets) {
+	CGameObject* obj = NULL;
+	obj = new CMonsterBullet(BULLET_MINE, 0, fastSpeed, fastSpeed);
+
+	// General object setup
+	obj->SetPosition(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
+
+	obj->SetAnimationSet(ani_set);
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
 }
