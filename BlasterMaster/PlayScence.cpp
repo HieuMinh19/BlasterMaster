@@ -24,6 +24,9 @@
 #include "Boss.h"
 #include "Cannon.h"
 #include "Teleporter.h"
+#include "Cannon.h"
+#include "Teleporter.h"
+#include "Boss.h"
 
 using namespace std;
 
@@ -245,6 +248,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_TELEPORT:
 		obj = new CTeleporter(0, 1000);
+		break;
+	case OBJECT_TYPE_BOSS:
+		obj = new CBoss();
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
@@ -475,19 +481,16 @@ void CPlayScene::Update(DWORD dt)
 		{
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &enemyCoObjects);
 		}
-		// if (dynamic_cast<CBoss *>(objects[i]))
-		// {
-		// 	// enemy can colli with brick only
-		// 	vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 
-		// 	if (objects[i]->readyUpdate)
-		// 		objects[i]->Update(dt, &enemyCoObjects);
-		// }
-
+		if (dynamic_cast<CTeleporter *>(objects[i]))
+		{
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+			if (objects[i]->readyUpdate)
+				objects[i]->Update(dt, &enemyCoObjects);
+		}
 		if (dynamic_cast<CBullet *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> bulltetCoObjects;
