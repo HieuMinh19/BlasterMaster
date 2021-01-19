@@ -140,6 +140,7 @@
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="Breakable.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Canon.cpp" />
     <ClCompile Include="Domes.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="Floaters.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Sophia.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="StaticHelpers.cpp" />
+    <ClCompile Include="Teleporter.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Trap.cpp" />
     <ClCompile Include="UI.cpp" />
@@ -176,6 +178,7 @@
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Breakable.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="Cannon.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Domes.h" />
     <ClInclude Include="Enemies.h" />
@@ -201,6 +204,7 @@
     <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="StaticHelpers.h" />
+    <ClInclude Include="Teleporter.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Trap.h" />
     <ClInclude Include="UI.h" />

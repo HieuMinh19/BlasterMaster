@@ -22,6 +22,8 @@
 #include "Skulls.h"
 #include "Mines.h"
 #include "Boss.h"
+#include "Cannon.h"
+#include "Teleporter.h"
 
 using namespace std;
 
@@ -238,6 +240,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BOSS:
 		obj = new CBoss();
+	case OBJECT_TYPE_CANNON:
+		obj = new CCanon();
+		break;
+	case OBJECT_TYPE_TELEPORT:
+		obj = new CTeleporter(0, 1000);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
@@ -245,7 +252,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 
 	// General object setup
-	
+
 	obj->SetPosition(x, y);
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -353,41 +360,13 @@ void CPlayScene::Update(DWORD dt)
 		{
 			brickObjects.push_back(objects[i]);
 		}
-		if (dynamic_cast<CWorms *>(objects[i]))
-		{
-			enemyObjects.push_back(objects[i]);
-		}
-		if (dynamic_cast<CDomes *>(objects[i]))
-		{
-			enemyObjects.push_back(objects[i]);
-		}
-		if (dynamic_cast<CJumpers*>(objects[i]))
-		{
-			enemyObjects.push_back(objects[i]);
-		}
-		if (dynamic_cast<CInsect*>(objects[i]))
-		{
-			enemyObjects.push_back(objects[i]);
-		}
-		if (dynamic_cast<COrbs*>(objects[i]))
-		{
-			enemyObjects.push_back(objects[i]);
-		}
-		if (dynamic_cast<CFloaters*>(objects[i]))
+		if (dynamic_cast<CEnemies *>(objects[i]))
 		{
 			enemyObjects.push_back(objects[i]);
 		}
 		if (dynamic_cast<CItems *>(objects[i]))
 		{
 			itemObjects.push_back(objects[i]);
-		}
-		if (dynamic_cast<CSkulls *>(objects[i]))
-		{
-			enemyObjects.push_back(objects[i]);
-		}
-		if (dynamic_cast<CMines *>(objects[i]))
-		{
-			enemyObjects.push_back(objects[i]);
 		}
 		if (dynamic_cast<CTrap *>(objects[i]))
 		{
@@ -413,20 +392,20 @@ void CPlayScene::Update(DWORD dt)
 		{
 			uiObjects.push_back(objects[i]);
 		}
-		if (dynamic_cast<CPlayer*>(objects[i]))
+		if (dynamic_cast<CPlayer *>(objects[i]))
 		{
 			playerObjects.push_back(objects[i]);
 			uiObjects.push_back(objects[i]);
 		}
-		if (dynamic_cast<CBoss*>(objects[i]))
-		{
-			enemyObjects.push_back(objects[i]);
-		}
+		// if (dynamic_cast<CBoss *>(objects[i]))
+		// {
+		// 	enemyObjects.push_back(objects[i]);
+		// }
 		coObjects.push_back(objects[i]);
 	}
 
-	CStaticHelpers* helpers = new CStaticHelpers();
-	CPlayer* player = helpers->GetPlayer();
+	CStaticHelpers *helpers = new CStaticHelpers();
+	CPlayer *player = helpers->GetPlayer();
 	float xPlayer, yPlayer;
 	player->GetPosition(xPlayer, yPlayer);
 
@@ -436,17 +415,20 @@ void CPlayScene::Update(DWORD dt)
 		{
 			objects[i]->deleteObject(objects, i);
 		}
-		
+
 		// phan hoach khong gian
 		float xObj, yObj;
 		objects[i]->GetPosition(xObj, yObj);
-		if (xObj > xPlayer + SCREEN_WIDTH && !dynamic_cast<CUI*>(objects[i])) {
+		if (xObj > xPlayer + SCREEN_WIDTH && !dynamic_cast<CUI *>(objects[i]))
+		{
 			objects[i]->readyUpdate = false;
 		}
-		else {
+		else
+		{
 			objects[i]->readyUpdate = true;
 		}
-		if (dynamic_cast<CPlayer*>(objects[i])) {
+		if (dynamic_cast<CPlayer *>(objects[i]))
+		{
 			vector<LPGAMEOBJECT> playerCoObjects;
 			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			// playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
@@ -461,17 +443,17 @@ void CPlayScene::Update(DWORD dt)
 		{
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			
+
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CUI *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> enemyCoObjects = uiObjects;
-			if (objects[i]->readyUpdate) {
+			if (objects[i]->readyUpdate)
+			{
 				objects[i]->Update(dt, &enemyCoObjects);
 			}
-			
 		}
 		if (dynamic_cast<CEnemies *>(objects[i]))
 		{
@@ -493,25 +475,26 @@ void CPlayScene::Update(DWORD dt)
 		{
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &enemyCoObjects);
-		}
-		if (dynamic_cast<CBoss*>(objects[i]))
-		{
-			// enemy can colli with brick only
-			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &enemyCoObjects);
 		}
+		// if (dynamic_cast<CBoss *>(objects[i]))
+		// {
+		// 	// enemy can colli with brick only
+		// 	vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+
+		// 	if (objects[i]->readyUpdate)
+		// 		objects[i]->Update(dt, &enemyCoObjects);
+		// }
+
 		if (dynamic_cast<CBullet *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> bulltetCoObjects;
 			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
-			
+
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &bulltetCoObjects);
 		}
@@ -520,7 +503,7 @@ void CPlayScene::Update(DWORD dt)
 			vector<LPGAMEOBJECT> bulltetCoObjects;
 			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
-			
+
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &bulltetCoObjects);
 		}
@@ -556,13 +539,15 @@ void CPlayScene::Unload()
 {
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if (dynamic_cast<CSophia*>(objects[i]) ) {
-			CSophia* sophia = CSophia::GetInstance();
+		if (dynamic_cast<CSophia *>(objects[i]))
+		{
+			CSophia *sophia = CSophia::GetInstance();
 			sophia->~CSophia();
 			continue;
 		}
-		if (dynamic_cast<CJason*>(objects[i])) {
-			CJason* json = CJason::GetInstance();
+		if (dynamic_cast<CJason *>(objects[i]))
+		{
+			CJason *json = CJason::GetInstance();
 			json->~CJason();
 			continue;
 		}
@@ -619,14 +604,15 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	vector<LPGAMEOBJECT> objects = ((CPlayScene *)scence)->GetObjects();
 	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
-	if (dynamic_cast<CJasonOW*>(player)) {
+	if (dynamic_cast<CJasonOW *>(player))
+	{
 		player->SetState(PLAYER_STATE_IDLE);
 	}
 	switch (KeyCode)
 	{
 	case DIK_UP:
-			player->OnKeyUp();
-			break;
+		player->OnKeyUp();
+		break;
 	}
 }
 
