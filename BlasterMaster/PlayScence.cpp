@@ -21,6 +21,8 @@
 #include "MonsterBullet.h"
 #include "Skulls.h"
 #include "Mines.h"
+#include "Cannon.h"
+#include "Teleporter.h"
 
 using namespace std;
 
@@ -235,6 +237,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_MINES:
 		obj = new CMines();
 		break;
+	case OBJECT_TYPE_CANNON:
+		obj = new CCanon();
+		break;
+	case OBJECT_TYPE_TELEPORT:
+		obj = new CTeleporter(0,1000);
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -385,6 +393,14 @@ void CPlayScene::Update(DWORD dt)
 		{
 			enemyObjects.push_back(objects[i]);
 		}
+		if (dynamic_cast<CCanon *>(objects[i]))
+		{
+			enemyObjects.push_back(objects[i]);
+		}
+		if (dynamic_cast<CTeleporter *>(objects[i]))
+		{
+			enemyObjects.push_back(objects[i]);
+		}
 		if (dynamic_cast<CTrap *>(objects[i]))
 		{
 			trapObjects.push_back(objects[i]);
@@ -485,6 +501,22 @@ void CPlayScene::Update(DWORD dt)
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
 			
+			if (objects[i]->readyUpdate)
+				objects[i]->Update(dt, &enemyCoObjects);
+		}
+		
+		if (dynamic_cast<CTeleporter *>(objects[i]))
+		{
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+
+			if (objects[i]->readyUpdate)
+				objects[i]->Update(dt, &enemyCoObjects);
+		}
+
+		if (dynamic_cast<CCanon *>(objects[i]))
+		{
+			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
+
 			if (objects[i]->readyUpdate)
 				objects[i]->Update(dt, &enemyCoObjects);
 		}
