@@ -605,9 +605,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_UP:
 		player->KeyUp();
 		break;
-	case DIK_DOWN:
+	/*case DIK_DOWN:
 		player->KeyDown();
-		break;
+		break;*/
 	case DIK_LEFT:
 		player->KeyLeft();
 		break;
