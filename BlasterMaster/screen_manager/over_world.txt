@@ -6,7 +6,7 @@
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
 70	textures\area2.png	255	255	255
-80	textures\game_over.png	255	255	255
+80	textures\over_word.png	255	255	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #===============BACKGROUND-AREA2==============
