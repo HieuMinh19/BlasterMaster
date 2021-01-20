@@ -8,6 +8,7 @@
 
 #define JUMP_SPEED_Y		0.5f
 #define JUMP_DEFLECT_SPEED 0.2f
+#define STAND_UP 0.17f
 #define JUMP_CHANGE_PLAYER_SPEED 0.1f
 #define GRAVITY			0.002f
 #define DIE_DEFLECT_SPEED	 0.5f
@@ -54,7 +55,7 @@ class CJason : public CPlayer
 	float start_x;			// initial position of Mario at scene
 	float start_y;
 public:
-	boolean inTank;
+	boolean inTank, isCrawl;
 	CJason(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();

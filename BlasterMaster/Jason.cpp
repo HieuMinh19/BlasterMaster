@@ -23,6 +23,7 @@ CJason::CJason(float x, float y) : CPlayer()
 	this->x = x;
 	this->y = y;
 	isDie = 0;
+	isCrawl = FALSE;
 	DebugOut(L"[DEBUG] Go to construct: %d\n", health);
 }
 
@@ -75,8 +76,13 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 		if (GetTickCount() - die_start > 1000)
 		{
-			CGame::GetInstance()->SwitchScene(99);
+			CGame::GetInstance()->SwitchScene(END_SCENE);
 		}
+	}
+	if (!isSpecialAni && isCrawl) {
+		vy = -STAND_UP;
+		isCrawl = false;
+		
 	}
 	if (coEventsResult.size() == 0)
 	{
@@ -230,16 +236,6 @@ void CJason::SetState(int state)
 		nx = -1;
 		break;
 	case STATE_CRAWL_IDLE:
-		if (isSpecialAni) {
-			y -= CRAWL_BBOX_HEIGHT;
-			RenderBoundingBox();
-			isSpecialAni = false;
-		}
-		else {
-			y += CRAWL_BBOX_HEIGHT;
-			RenderBoundingBox();
-			isSpecialAni = true;
-		}
 		vx = 0;
 		break;
 	case STATE_CRAWL_IN_TANK:
@@ -350,14 +346,23 @@ CJason* CJason::GetInstance()
 
 void CJason::KeyDown()
 {
-	if (state == STATE_JUMP)
+	if (state == STATE_JUMP) {
 		return;
-	SetState(STATE_CRAWL_IDLE);
+	}
+	else {
+		isCrawl = TRUE;
+		isSpecialAni = true;
+		SetState(STATE_CRAWL_IDLE);
+	}
 }
 
 void CJason::KeyUp()
 {
-
+	
+	if (isCrawl) {
+		SetState(STATE_IDLE);
+		isSpecialAni = false;
+	}
 }
 void CJason::OnKeyUp()
 {
