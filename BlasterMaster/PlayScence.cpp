@@ -28,6 +28,7 @@
 #include "Teleporter.h"
 #include "Boss.h"
 
+
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) : CScene(id, filePath)
@@ -133,6 +134,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
+	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
+	int sceneID = curentScene->getCurrentID();
+	int preSceneID = CGame::GetInstance()->getPre();
+
 	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
 
 	if (tokens.size() < 3)
@@ -159,6 +164,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 
 	case OBJECT_TYPE_SOPHIA:
+		if (preSceneID == 7 && sceneID == 18) {
+			x = 32;
+			y = 1160;
+		}
+
+		if(player != NULL){
+			DebugOut(L"111111111111111111111, %d\n", sceneID);
+		}
+	
 		obj = CSophia::GetInstance(x, y);
 		player = (CSophia *)obj;
 		break;
@@ -337,7 +351,6 @@ void CPlayScene::Load()
 	f.close();
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
-
 	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
 }
 
@@ -414,6 +427,13 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
+		// todo ducnp start
+		if (player != NULL) {
+			float pos = abs(player->x - objects[i]->x);
+			if (pos > 50) continue;
+		}
+		// todo ducnp end
+
 		if (objects[i]->state == OBJECT_STATE_DELETE)
 		{
 			objects[i]->deleteObject(objects, i);
@@ -540,8 +560,18 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < objects.size(); i++){
+		// todo ducnp start
+		if(player != NULL){
+			float pos = abs(player->x - objects[i]->x);
+			if (!dynamic_cast<CBackground*>(objects[i]))
+			{
+				if (pos > 50) continue;
+			}
+		}
+		// todo ducnp end
 		objects[i]->Render();
+	}
 }
 
 /*
@@ -549,26 +579,33 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
+
 	for (int i = 0; i < objects.size(); i++)
 	{
 		if (dynamic_cast<CSophia *>(objects[i]))
 		{
-			CSophia *sophia = CSophia::GetInstance();
-			sophia->~CSophia();
+			// CSophia *sophia = CSophia::GetInstance();
+			// sophia->~CSophia();
 			continue;
 		}
 		if (dynamic_cast<CJason *>(objects[i]))
 		{
-			CJason *json = CJason::GetInstance();
-			json->~CJason();
+			// CJason *json = CJason::GetInstance();
+			// json->~CJason();
 			continue;
 		}
-		//DebugOut(L"[INDEX] object index %d\n", i);
+		if (dynamic_cast<CPlayer*>(objects[i]))
+		{
+			// CJason *json = CJason::GetInstance();
+			// json->~CJason();
+			continue;
+		}
 		delete objects[i];
+		//DebugOut(L"[INDEX] object index %d\n", i);
 	}
 
 	objects.clear();
-	player = NULL;
+	// player = NULL;
 
 	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
