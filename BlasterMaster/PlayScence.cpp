@@ -639,6 +639,9 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		player->KeyUp();
 	else if (game->IsKeyDown(DIK_DOWN))
 		player->KeyDown();
-	else
-		player->SetState(PLAYER_STATE_IDLE);
+	else {
+		if (!player->isJump) {
+			player->SetState(PLAYER_STATE_IDLE);
+		}
+	}
 }
