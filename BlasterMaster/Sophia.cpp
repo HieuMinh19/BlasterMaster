@@ -116,6 +116,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				break;
 			}
 			else if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
 			{

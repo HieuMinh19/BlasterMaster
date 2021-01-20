@@ -418,6 +418,7 @@ void CPlayScene::Update(DWORD dt)
 		{
 			objects[i]->deleteObject(objects, i);
 		}
+		objects[i]->readyUpdate = true;
 
 		// phan hoach khong gian
 		float xObj, yObj;
