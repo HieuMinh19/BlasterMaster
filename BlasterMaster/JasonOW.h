@@ -3,7 +3,7 @@
 #include "Player.h"
 
 #define WALKING_SPEED		0.15f
-#define JASON_OW_BBOX_WIDTH  24
+#define JASON_OW_BBOX_WIDTH  25
 #define JASON_OW_BBOX_HEIGHT 32
 
 #define JASON_OW_STATE_IDLE					0
