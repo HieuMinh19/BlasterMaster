@@ -2,15 +2,15 @@
 #include "GameObject.h"
 #include "Enemies.h"
 #include "Player.h"
-
+#include "Config.h"
 #define SOPHIA_WALKING_SPEED		0.15f 
 //0.1f
-#define SOPHIA_JUMP_SPEED_Y		0.35f
+#define SOPHIA_JUMP_SPEED_Y		0.25f
 #define SOPHIA_JUMP_DEFLECT_SPEED 0.2f
 #define SOPHIA_GRAVITY			0.002f
 #define SOPHIA_DIE_DEFLECT_SPEED	 0.5f
-#define SOPHIA_JUMP_WHILE_WALK_SPEED_Y		0.26f
-#define SOPHIA_JUMP_WHILE_WALK_SPEED_X		0.07f
+#define SOPHIA_JUMP_WHILE_WALK_SPEED_Y		0.27f
+#define SOPHIA_JUMP_WHILE_WALK_SPEED_X		0.08f
 #define CANNON_X 10
 #define CANNON_Y 18
 #define JUMP_GRAVITY			0.0005f
@@ -75,8 +75,8 @@
 #define SOPHIA_UNTOUCHABLE_TIME 1500
 #define SOPHIA_JUMP_TIME 1000
 #define SOPHIA_MOVEUP_START 450
-#define SOPHIA_HEAL 8
-
+#define SOPHIA_HEALTH 8
+#define SOPHIA_DIE_TIME 200
 
 class CSophia : public CPlayer
 {

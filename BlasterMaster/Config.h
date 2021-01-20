@@ -44,3 +44,5 @@
 #define OBJECT_TYPE_TELEPORT 42
 #define OBJECT_TYPE_Eyeball 43
 #define MAX_SCENE_LINE 1024
+
+#define END_SCENE	99
