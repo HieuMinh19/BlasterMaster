@@ -434,10 +434,19 @@ void CPlayScene::Update(DWORD dt)
 		if (dynamic_cast<CJasonOW *>(objects[i]))
 		{
 			// enemy can colli with brick only
+			CGame* _cGame = CGame::GetInstance();
+			int beforeUpdateScence = _cGame->GetCurrentSceneId();
+			
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-
-			if (objects[i]->readyUpdate)
+			
+			if (objects[i]->readyUpdate) {
 				objects[i]->Update(dt, &enemyCoObjects);
+				
+			}
+			int afterUpdateScence = _cGame->GetCurrentSceneId();
+			if (beforeUpdateScence != afterUpdateScence) {
+				break;
+			}
 		}
 		if (dynamic_cast<CUI *>(objects[i]))
 		{

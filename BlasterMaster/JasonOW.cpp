@@ -89,6 +89,7 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						SetState(STATE_DIE);
 				}
 			}
+			
 		}
 	}
 
