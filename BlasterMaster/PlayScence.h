@@ -22,7 +22,7 @@ class CPlayScene : public CScene
 	static CPlayScene* __instance;
 protected:
 	int state;
-	CPlayer* player;					// A play scene has to have player, right? 
+	CPlayer* player;					// A play scene has to have player, right?
 
 	vector<LPGAMEOBJECT> objects;
 	void _ParseSection_TEXTURES(string line);
