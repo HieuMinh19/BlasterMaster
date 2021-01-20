@@ -431,18 +431,6 @@ void CPlayScene::Update(DWORD dt)
 		{
 			objects[i]->readyUpdate = true;
 		}
-		if (dynamic_cast<CJason *>(objects[i]))
-		{
-			vector<LPGAMEOBJECT> playerCoObjects;
-			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
-			// playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
-			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
-			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
-			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
-			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &playerCoObjects);
-		}
 		if (dynamic_cast<CJasonOW *>(objects[i]))
 		{
 			// enemy can colli with brick only
@@ -510,8 +498,26 @@ void CPlayScene::Update(DWORD dt)
 		}
 		if (dynamic_cast<CSophia*>(objects[i]))
 		{
+			CGame* _cGame = CGame::GetInstance();
+			int beforeUpdateScence = _cGame->GetCurrentSceneId();
 			vector<LPGAMEOBJECT> playerCoObjects;
 			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
+			if (objects[i]->readyUpdate)
+				objects[i]->Update(dt, &playerCoObjects);
+			int afterUpdateScence = _cGame->GetCurrentSceneId();
+			if (beforeUpdateScence != afterUpdateScence) {
+				break;
+			}
+		}
+		if (dynamic_cast<CJason*>(objects[i]))
+		{
+			vector<LPGAMEOBJECT> playerCoObjects;
+			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			// playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
@@ -534,8 +540,17 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetScreenHeight() / 2;
 	if (cx < 0)
 		cx = 0;
+	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
+	int sceneID = curentScene->getCurrentID();
+	DebugOut(L"[INFO] sceneID: %d\n", sceneID);
+	if (sceneID == 99) {
+	CGame::GetInstance()->SetCamPos(0, 0);
+	}
+	else {
+		CGame::GetInstance()->SetCamPos(cx, cy);
 
-	CGame::GetInstance()->SetCamPos(cx, cy);
+	}
+	
 }
 
 void CPlayScene::Render()
@@ -629,19 +644,27 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
-	CGame *game = CGame::GetInstance();
-	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
-	if (game->IsKeyDown(DIK_RIGHT))
-		player->KeyRight();
-	else if (game->IsKeyDown(DIK_LEFT))
-		player->KeyLeft();
-	else if (game->IsKeyDown(DIK_UP))
-		player->KeyUp();
-	else if (game->IsKeyDown(DIK_DOWN))
-		player->KeyDown();
+	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
+	int sceneID = curentScene->getCurrentID();
+	DebugOut(L"[INFO] sceneID: %d\n", sceneID);
+	if (sceneID == 99){
+		return;
+	}
 	else {
-		if (!player->isJump) {
-			player->SetState(PLAYER_STATE_IDLE);
+		CGame* game = CGame::GetInstance();
+		CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
+		if (game->IsKeyDown(DIK_RIGHT))
+			player->KeyRight();
+		else if (game->IsKeyDown(DIK_LEFT))
+			player->KeyLeft();
+		else if (game->IsKeyDown(DIK_UP))
+			player->KeyUp();
+		else if (game->IsKeyDown(DIK_DOWN))
+			player->KeyDown();
+		else {
+			if (!player->isJump) {
+				player->SetState(PLAYER_STATE_IDLE);
+			}
 		}
 	}
 }
