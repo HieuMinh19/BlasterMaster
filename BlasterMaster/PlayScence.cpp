@@ -492,8 +492,26 @@ void CPlayScene::Update(DWORD dt)
 		}
 		if (dynamic_cast<CSophia*>(objects[i]))
 		{
+			CGame* _cGame = CGame::GetInstance();
+			int beforeUpdateScence = _cGame->GetCurrentSceneId();
 			vector<LPGAMEOBJECT> playerCoObjects;
 			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
+			if (objects[i]->readyUpdate)
+				objects[i]->Update(dt, &playerCoObjects);
+			int afterUpdateScence = _cGame->GetCurrentSceneId();
+			if (beforeUpdateScence != afterUpdateScence) {
+				break;
+			}
+		}
+		if (dynamic_cast<CJason*>(objects[i]))
+		{
+			vector<LPGAMEOBJECT> playerCoObjects;
+			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			// playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
@@ -516,16 +534,10 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetScreenHeight() / 2;
 
 	// start handle limit max and min x_cam, y_cam
-	CBackground *background = new CBackground();
-	float left, top, right, bottom;
-	background->GetBoundingBox(left, top, right, bottom);
 	CScene* scene = CGame::GetInstance()->GetCurrentScene();
 
 	int sceneHeight = scene->GetScreenHeight();
 	int sceneWidth = scene->GetScreenWidth();
-
-	DebugOut(L"sceneHeight: %d\n", sceneHeight);
-	DebugOut(L"camera: %f\n", cy);
 
 	if (cx < 0) cx = 0;
 
@@ -540,8 +552,16 @@ void CPlayScene::Update(DWORD dt)
 	if (cy < 0) cy = 0;
 	// end handle limit camera
 
-
-	CGame::GetInstance()->SetCamPos(cx, cy);
+	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
+	int sceneID = curentScene->getCurrentID();
+	DebugOut(L"[INFO] sceneID: %d\n", sceneID);
+	if (sceneID == 99) {
+	CGame::GetInstance()->SetCamPos(0, 0);
+	}
+	else {
+		CGame::GetInstance()->SetCamPos(cx, cy);
+	}
+	
 }
 
 void CPlayScene::Render()
@@ -645,19 +665,27 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
-	CGame *game = CGame::GetInstance();
-	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
-	if (game->IsKeyDown(DIK_RIGHT))
-		player->KeyRight();
-	else if (game->IsKeyDown(DIK_LEFT))
-		player->KeyLeft();
-	else if (game->IsKeyDown(DIK_UP))
-		player->KeyUp();
-	else if (game->IsKeyDown(DIK_DOWN))
-		player->KeyDown();
+	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
+	int sceneID = curentScene->getCurrentID();
+	DebugOut(L"[INFO] sceneID: %d\n", sceneID);
+	if (sceneID == 99){
+		return;
+	}
 	else {
-		if (!player->isJump) {
-			player->SetState(PLAYER_STATE_IDLE);
+		CGame* game = CGame::GetInstance();
+		CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
+		if (game->IsKeyDown(DIK_RIGHT))
+			player->KeyRight();
+		else if (game->IsKeyDown(DIK_LEFT))
+			player->KeyLeft();
+		else if (game->IsKeyDown(DIK_UP))
+			player->KeyUp();
+		else if (game->IsKeyDown(DIK_DOWN))
+			player->KeyDown();
+		else {
+			if (!player->isJump) {
+				player->SetState(PLAYER_STATE_IDLE);
+			}
 		}
 	}
 }

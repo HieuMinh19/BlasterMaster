@@ -19,11 +19,12 @@ CSophia::CSophia(float x, float y) : CPlayer()
 	level = SOPHIA_LEVEL_NORMAL;
 	untouchable = 0;
 	SetState(SOPHIA_STATE_IDLE);
-	health = SOPHIA_HEAL;
+	health = SOPHIA_HEALTH;
 	start_x = x;
 	start_y = y;
 	this->x = x;
 	this->y = y;
+	isDie = 0;
 }
 
 void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -83,6 +84,15 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				ResetJump();
 			}
+		}
+	}
+	if (isDie) {
+		vx = 0;
+		vy = 0;
+		state = SOPHIA_STATE_DIE;
+		if (GetTickCount() - die_start > SOPHIA_DIE_TIME)
+		{
+			CGame::GetInstance()->SwitchScene(END_SCENE);
 		}
 	}
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -146,10 +156,16 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else if (dynamic_cast<CTrap*>(e->obj))
 			{
 				CTrap* trap = dynamic_cast<CTrap*>(e->obj);
-				if (!untouchable) {
-					//health--;
+				if (!untouchable && health >0) {
+					health= health-2;
 					untouchable = 1;
 					untouchable_start = GetTickCount();
+				}
+				if (health <= 0 && !isDie) {
+					die_start = GetTickCount();
+					untouchable = 1;
+					health = 0;
+					isDie = 1;
 				}
 
 			}
@@ -175,8 +191,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					//health--;
 					if (health > 0)
 						StartUntouchable();
-					else
-						SetState(STATE_DIE);
+					
 				}
 			}
 		}
@@ -239,8 +254,9 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CSophia::Render()
 {
 	int ani = -1;
-	if (state == SOPHIA_STATE_DIE)
+	if (state == SOPHIA_STATE_DIE) {
 		ani = SOPHIA_ANI_DIE;
+	}
 	else if (level == SOPHIA_LEVEL_NORMAL)
 	{
 		if (state == SOPHIA_STATE_UNTOUCHABLE) {
@@ -254,10 +270,12 @@ void CSophia::Render()
 		{
 			if (!isJump) {
 				if (nx > 0) {
-					if (state == SOPHIA_STATE_IDLE)
+					if (state == SOPHIA_STATE_IDLE) {
 						ani = SOPHIA_ANI_IDLE_RIGHT;
-					else if (state == SOPHIA_STATE_MOVE_UP_RIGHT)
+					}
+					else if (state == SOPHIA_STATE_MOVE_UP_RIGHT) {
 						ani = SOPHIA_ANI_MOVE_UP_RIGHT;
+					}
 					else if (state == SOPHIA_STATE_STAND_UP_RIGHT) {
 						ani = SOPHIA_ANI_STAND_UP_RIGHT;
 					}

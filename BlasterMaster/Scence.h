@@ -78,6 +78,7 @@ public:
 	virtual void Render() = 0;
 	int GetScreenHeight();
 	int GetScreenWidth();
+	int getCurrentID() { return id; }
 };
 typedef CScene* LPSCENE;
 

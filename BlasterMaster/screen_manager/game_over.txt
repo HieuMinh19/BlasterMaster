@@ -1,0 +1,100 @@
+# id	file_path	transparent_color_r	g	b
+[TEXTURES]
+10	textures\tankAndMain.png	0	136	255
+20	textures\bbox.png	237	38	26
+70	textures\game_over.png	255	255	255
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#===============BACKGROUND-AREA2==============
+70000	0	0	253	252	70
+
+# SOPHIA
+# idle right
+10001	0	6	26	42	10
+# walk right
+10002	0	6	26	42	10
+10003	39	6	66	42	10
+10004	80	6	106	42	10
+10005	120	6	146	42	10
+# idle left
+10011	162	160	188	195	10
+#walk left
+10012	162	160	188	195	10
+10013	122	160	147	195	10
+10014	81	160	108	195	10
+10015	42	160	67	195	10
+# die 
+10099	215	120	231	135	10
+# jump right
+10040	159	7	186	44	10
+10041	120	7	146	41	10
+10042	120	7	146	41	10
+10043	120	7	146	41	10
+# jump left
+10050	0	159	28	200	10
+10051	41	159	68	198	10
+10052	80	159	108	198	10
+10053	121	159	148	198	10
+# attack up right
+10060	196	36	225	78	10
+10061	196	75	228	110	10
+10062	203	270	230	310	10
+# walk up right
+10070	203	270	230	310	10
+10071	238	270	265	310	10
+10072	140	270	167	310	10
+10073	171	270	198	310	10
+# jump up right
+10080	240	310	270	345	10
+10081	238	270	265	310	10
+# attack up left
+10090	664	36	691	78	10
+10091	664	75	691	110	10
+10092	44	270	70	310	10
+# jump up left
+10100	285	310	315	345	10
+10101	285	270	315	310	10
+# walk up left
+10110	44	270	70	310	10
+10111	9	270	35	310	10
+10112	105	270	130	310	10
+10113	75	270	100	310	10
+#state_untouchable_right
+10120	0	6	26	42	10
+10121	140	340	166	377	10
+#state_untouchable_left
+10130	162	160	188	195	10
+10131	102	340	130	377	10
+#die
+10099	45	21	61	29	10
+
+
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]
+# ==== BACKGROUND_AREA2 =========
+700	70000	1000
+# ==== SOPHIA =========
+#idle right
+400	10001	100
+
+# id	ani1	ani2	ani3
+#
+[ANIMATION_SETS]
+#===== BACKGROUND ==========
+19	700
+70000	2048	1024	2560	2032	71
+# BRICK 
+2	601
+# ITEMS
+3	603
+#SOPHIA
+7	400
+
+[OBJECTS]
+# type	x	y	ani_set_id	extra_settings per object type
+# type: 0 = Mario , 1 = Brick, 19 = BACKGROUND, 9 = WORMS
+# MARIO
+7	50	875	7
+#====== BACKGROUND =======
+19	0	0	19
+

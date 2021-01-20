@@ -58,6 +58,8 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
+		DebugOut(L"x:::: %f \n", x);
+		DebugOut(L"y:::: %f \n", y);
 	}
 	else
 	{
