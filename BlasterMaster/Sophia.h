@@ -5,12 +5,12 @@
 
 #define SOPHIA_WALKING_SPEED		0.15f 
 //0.1f
-#define SOPHIA_JUMP_SPEED_Y		0.25f
+#define SOPHIA_JUMP_SPEED_Y		0.35f
 #define SOPHIA_JUMP_DEFLECT_SPEED 0.2f
 #define SOPHIA_GRAVITY			0.002f
 #define SOPHIA_DIE_DEFLECT_SPEED	 0.5f
-#define SOPHIA_JUMP_WHILE_WALK_SPEED_Y		0.25f
-#define SOPHIA_JUMP_WHILE_WALK_SPEED_X		0.05f
+#define SOPHIA_JUMP_WHILE_WALK_SPEED_Y		0.26f
+#define SOPHIA_JUMP_WHILE_WALK_SPEED_X		0.07f
 #define CANNON_X 10
 #define CANNON_Y 18
 #define JUMP_GRAVITY			0.0005f
@@ -35,8 +35,7 @@
 #define SOPHIA_STATE_AFTER_JUMP_LEFT	1300
 #define SOPHIA_STATE_UNTOUCHABLE	1400
 #define SOPHIA_JUMP_BACK_LEFT	1500
-#define SOPHIA_JUMP_BACK_RIGHT	1400
-
+#define SOPHIA_JUMP_BACK_RIGHT	1600
 #define SOPHIA_STATE_DIE				9900
 
 #define SOPHIA_ANI_IDLE_RIGHT			0
@@ -58,7 +57,7 @@
 #define SOPHIA_ANI_AFTER_JUMP_LEFT		15
 #define SOPHIA_ANI_UNTOUCHABLE_RIGHT	16
 #define SOPHIA_ANI_UNTOUCHABLE_LEFT		17
-#define SOPHIA_ANI_DIE					99
+#define SOPHIA_ANI_DIE					18
 
 
 #define	SOPHIA_LEVEL_NORMAL	1
@@ -89,7 +88,7 @@ class CSophia : public CPlayer
 	float start_y;
 public:
 	int hover;
-	boolean isJumping, isMoveUp, isStandUp, isJumpingWhileWalk, isWalkAfterJump, jumpBack;
+	boolean isMoveUp, isStandUp, isJumpWhileWalk, isWalkAfterJump, jumpBack;
 	DWORD jump_start, moveup_start;
 	CSophia(float x = 0.0f, float y = 0.0f);
 	void spawnItem(float x, float y);

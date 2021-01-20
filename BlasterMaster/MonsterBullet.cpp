@@ -1,24 +1,26 @@
 #include "MonsterBullet.h"
 #include "Utils.h"
 #include "PlayScence.h"
+#include "math.h"
+
 CMonsterBullet::CMonsterBullet(float state, int ani) : CGameObject()
 {
 	animation = ani;
-	SetState(state);
 	timeDestroy = GetTickCount() + 2500;
 	this->x = x;
 	this->y = y;
+	SetState(state);
 }
 
-CMonsterBullet::CMonsterBullet(float state, int ani, float VX,float VY) : CGameObject()
+CMonsterBullet::CMonsterBullet(float state, int ani, float VX, float VY) : CGameObject()
 {
 	animation = ani;
-	SetState(state);
 	timeDestroy = GetTickCount() + 2500;
 	this->x = x;
 	this->y = y;
 	this->vx = VX;
 	this->vy = VY;
+	SetState(state);
 }
 void CMonsterBullet::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
@@ -30,15 +32,17 @@ void CMonsterBullet::GetBoundingBox(float &left, float &top, float &right, float
 
 void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (timeDestroy < GetTickCount() && state != OBJECT_STATE_DELETE) {
+	if (timeDestroy < GetTickCount() && state != OBJECT_STATE_DELETE)
+	{
 		SetState(OBJECT_STATE_DELETE);
 	}
 
 	CGameObject::Update(dt, coObjects);
 	//
 	// TO-DO: make sure Goomba can interact with the world and to each of them too!
-	// 
-	if (state == BULLET_MINE) {
+	//
+	if (state == BULLET_MINE)
+	{
 		vy += BULLET_DOWN_SPEED;
 	}
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -68,11 +72,13 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0 || ny != 0) SetState(OBJECT_STATE_DELETE);
+		if (nx != 0 || ny != 0)
+			SetState(OBJECT_STATE_DELETE);
 	}
 
 	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
 }
 
 void CMonsterBullet::Render()
@@ -87,16 +93,39 @@ void CMonsterBullet::SetState(int state)
 	switch (state)
 	{
 	case BULLET_RIGHT:
-		vx = BULLET_WALKING_SPEED
-		break;
+		vx = BULLET_WALKING_SPEED break;
 	case BULLET_LEFT:
-		vx = -BULLET_WALKING_SPEED
-		break;
+		vx = -BULLET_WALKING_SPEED break;
 	case BULLET_UP:
-		vy = -BULLET_WALKING_SPEED
-			break;
+		vy = -BULLET_WALKING_SPEED break;
 	case BULLET_DOWN:
-		vy = BULLET_WALKING_SPEED
-			break;
+		vy = BULLET_WALKING_SPEED break;
+	case BULLET_DIRECTION:
+		Setup();
+		break;
 	}
+}
+
+void CMonsterBullet::Setup()
+{
+	CStaticHelpers *helpers = new CStaticHelpers();
+	CPlayer *player = helpers->GetPlayer();
+	float sinn = player->x - this->x;
+	float coss = player->y - this->y;
+	int ox = 1;
+	int oy = 1;
+	if (sinn < 0)
+	{
+		ox = -1;
+		sinn = fabs(sinn);
+	}
+	if (coss < 0)
+	{
+		oy = -1;
+		coss = fabs(coss);
+	}
+	float v = BULLET_WALKING_SPEED;
+	double result = atan(sinn / coss);
+	this->vx = v * ox * sin(result);
+	this->vy = v * oy * cos(result);
 }

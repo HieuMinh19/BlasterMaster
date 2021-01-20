@@ -15,16 +15,7 @@
 #define BULLET_DOWN  300
 #define BULLET_STATE_DESTROY 400
 #define BULLET_MINE 500
-#define BULLET_CUSTOM 600
-
-#define ANI_JASON 0
-#define ANI_DESTROY  1
-#define ANI_SOPHIA_LEFT 2
-#define ANI_SOPHIA_RIGHT  3
-#define ANI_SOPHIA_TOP  4
-#define ANI_SOPHIA_UPDATE_LEFT 5
-#define ANI_SOPHIA_UPDATE_RIGHT  6
-#define ANI_SOPHIA_UPDATE_TOP  7
+#define BULLET_DIRECTION 600
 
 class CMonsterBullet : public CGameObject
 {
@@ -35,7 +26,9 @@ class CMonsterBullet : public CGameObject
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
 
+
 public:
+	void Setup();
 	CMonsterBullet(float state, int animation);
 	CMonsterBullet(float state, int animation, float VX, float VY);
 	virtual void SetState(int state);
