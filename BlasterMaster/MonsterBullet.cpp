@@ -12,6 +12,21 @@ CMonsterBullet::CMonsterBullet(float state, int ani) : CGameObject()
 	SetState(state);
 }
 
+CMonsterBullet::CMonsterBullet(int ani, float Xp, float Yp, float Xe, float Ye, float Vb) : CGameObject()
+{
+	animation = ani;
+	timeDestroy = GetTickCount() + 250000;
+	Xp += 10;
+	Yp += 18;
+	float T = (Yp - Ye) == 0 ? 0 : (Xp - Xe) / (Yp - Ye); // T = vx / vy
+	float _vy = Vb / sqrt((1 + T * T));
+
+	float _vx = abs(T *_vy);
+
+	this->vx = Xp > Xe ? _vx : -_vx;
+	this->vy = Yp > Ye ? _vy : -_vy;
+}
+
 CMonsterBullet::CMonsterBullet(float state, int ani, float VX, float VY) : CGameObject()
 {
 	animation = ani;
@@ -100,32 +115,32 @@ void CMonsterBullet::SetState(int state)
 		vy = -BULLET_WALKING_SPEED break;
 	case BULLET_DOWN:
 		vy = BULLET_WALKING_SPEED break;
-	case BULLET_DIRECTION:
-		Setup();
-		break;
+	//case BULLET_DIRECTION:
+	//	Setup();
+	//	break;
 	}
 }
 
-void CMonsterBullet::Setup()
-{
-	CStaticHelpers *helpers = new CStaticHelpers();
-	CPlayer *player = helpers->GetPlayer();
-	float sinn = player->x - this->x;
-	float coss = player->y - this->y;
-	int ox = 1;
-	int oy = 1;
-	if (sinn < 0)
-	{
-		ox = -1;
-		sinn = fabs(sinn);
-	}
-	if (coss < 0)
-	{
-		oy = -1;
-		coss = fabs(coss);
-	}
-	float v = BULLET_WALKING_SPEED;
-	double result = atan(sinn / coss);
-	this->vx = v * ox * sin(result);
-	this->vy = v * oy * cos(result);
-}
+//void CMonsterBullet::Setup()
+//{
+//	CStaticHelpers *helpers = new CStaticHelpers();
+//	CPlayer *player = helpers->GetPlayer();
+//	float sinn = player->x - this->x;
+//	float coss = player->y - this->y;
+//	int ox = 1;
+//	int oy = 1;  
+//	if (sinn < 0)
+//	{
+//		ox = -1;
+//		sinn = fabs(sinn);
+//	}
+//	if (coss < 0)
+//	{
+//		oy = -1;
+//		coss = fabs(coss);
+//	}
+//	float v = BULLET_WALKING_SPEED;
+//	double result = atan(sinn / coss);
+//	this->vx = v * ox * sin(result);
+//	this->vy = v * oy * cos(result);
+//}
