@@ -427,13 +427,20 @@ void CPlayScene::Update(DWORD dt)
 
 		if (dynamic_cast<CJason *>(objects[i]))
 		{
+			CGame* _cGame = CGame::GetInstance();
+			int beforeUpdateScence = _cGame->GetCurrentSceneId();
 			vector<LPGAMEOBJECT> playerCoObjects;
 			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			objects[i]->Update(dt, &playerCoObjects);
+			if (objects[i]->readyUpdate)
+				objects[i]->Update(dt, &playerCoObjects);
+			int afterUpdateScence = _cGame->GetCurrentSceneId();
+			if (beforeUpdateScence != afterUpdateScence) {
+				break;
+			}
 		}
 		if (dynamic_cast<CJasonOW *>(objects[i]))
 		{

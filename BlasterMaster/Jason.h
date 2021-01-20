@@ -13,6 +13,7 @@
 #define GRAVITY			0.002f
 #define DIE_DEFLECT_SPEED	 0.5f
 
+
 #define STATE_IDLE					0
 #define STATE_WALKING_RIGHT			100
 #define STATE_WALKING_LEFT			200
@@ -22,6 +23,7 @@
 #define STATE_CRAWL_WALKING_RIGHT	600
 #define STATE_CRAWL_WALKING_LEFT	700
 #define STATE_CRAWL_IN_TANK	800
+
 
 #define ANI_IDLE_RIGHT				0
 #define ANI_IDLE_LEFT				1
@@ -44,6 +46,7 @@
 #define CRAWL_BBOX_HEIGHT 8
 
 #define UNTOUCHABLE_TIME 10000
+#define DIE_TIME	1000
 #define JASON_MAX_HEALTH 8
 
 
