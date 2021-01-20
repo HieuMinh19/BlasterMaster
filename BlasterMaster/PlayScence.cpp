@@ -173,7 +173,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
 		int width = atof(tokens[4].c_str());
 		int height = atof(tokens[5].c_str());
-		DebugOut(L"[BBOX] width: %d\n", width);
 		obj = new CBrick(height, width);
 		break;
 	}
@@ -414,22 +413,27 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
+		//start phan hoach khong gian
+		if (player != NULL) {
+			float pos = abs(player->x - objects[i]->x);
+			if (pos > SCREEN_WIDTH) continue;
+		}
+		// end phan hoach khong gian
+
 		if (objects[i]->state == OBJECT_STATE_DELETE)
 		{
 			objects[i]->deleteObject(objects, i);
 		}
-		objects[i]->readyUpdate = true;
 
-		// phan hoach khong gian
-		float xObj, yObj;
-		objects[i]->GetPosition(xObj, yObj);
-		if (xObj > xPlayer + SCREEN_WIDTH && !dynamic_cast<CUI *>(objects[i]))
+		if (dynamic_cast<CJason *>(objects[i]))
 		{
-			objects[i]->readyUpdate = false;
-		}
-		else
-		{
-			objects[i]->readyUpdate = true;
+			vector<LPGAMEOBJECT> playerCoObjects;
+			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
+			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
+			objects[i]->Update(dt, &playerCoObjects);
 		}
 		if (dynamic_cast<CJasonOW *>(objects[i]))
 		{
@@ -447,14 +451,12 @@ void CPlayScene::Update(DWORD dt)
 			if (beforeUpdateScence != afterUpdateScence) {
 				break;
 			}
+			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CUI *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> enemyCoObjects = uiObjects;
-			if (objects[i]->readyUpdate)
-			{
-				objects[i]->Update(dt, &enemyCoObjects);
-			}
+			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CEnemies *>(objects[i]))
 		{
@@ -464,8 +466,7 @@ void CPlayScene::Update(DWORD dt)
 			enemyCoObjects.insert(enemyCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			enemyCoObjects.insert(enemyCoObjects.end(), playerObjects.begin(), playerObjects.end());
 
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &enemyCoObjects);
+			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CBreakable *>(objects[i]))
 		{
@@ -476,15 +477,13 @@ void CPlayScene::Update(DWORD dt)
 		{
 			// enemy can colli with brick only
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &enemyCoObjects);
+			objects[i]->Update(dt, &enemyCoObjects);
 		}
 
 		if (dynamic_cast<CTeleporter *>(objects[i]))
 		{
 			vector<LPGAMEOBJECT> enemyCoObjects = brickObjects;
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &enemyCoObjects);
+			objects[i]->Update(dt, &enemyCoObjects);
 		}
 		if (dynamic_cast<CBullet *>(objects[i]))
 		{
@@ -493,8 +492,7 @@ void CPlayScene::Update(DWORD dt)
 			bulltetCoObjects.insert(bulltetCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &bulltetCoObjects);
+			objects[i]->Update(dt, &bulltetCoObjects);
 		}
 		if (dynamic_cast<CMonsterBullet *>(objects[i]))
 		{
@@ -502,8 +500,7 @@ void CPlayScene::Update(DWORD dt)
 			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &bulltetCoObjects);
+			objects[i]->Update(dt, &bulltetCoObjects);
 		}
 		if (dynamic_cast<CSophia*>(objects[i]))
 		{
@@ -531,8 +528,8 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &playerCoObjects);
+			
+			objects[i]->Update(dt, &playerCoObjects);
 		}
 	}
 
@@ -547,8 +544,26 @@ void CPlayScene::Update(DWORD dt)
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
-	if (cx < 0)
-		cx = 0;
+
+	// start handle limit max and min x_cam, y_cam
+	CScene* scene = CGame::GetInstance()->GetCurrentScene();
+
+	int sceneHeight = scene->GetScreenHeight();
+	int sceneWidth = scene->GetScreenWidth();
+
+	if (cx < 0) cx = 0;
+
+	if ((cx + SCREEN_WIDTH) > sceneWidth) {
+		cx = sceneWidth - SCREEN_WIDTH;
+	}
+
+	if ((cy + SCREEN_HEIGHT) > sceneHeight) {
+		cy = sceneHeight - SCREEN_HEIGHT;
+	}
+
+	if (cy < 0) cy = 0;
+	// end handle limit camera
+
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
 	int sceneID = curentScene->getCurrentID();
 	DebugOut(L"[INFO] sceneID: %d\n", sceneID);
@@ -557,15 +572,24 @@ void CPlayScene::Update(DWORD dt)
 	}
 	else {
 		CGame::GetInstance()->SetCamPos(cx, cy);
-
 	}
 	
 }
 
 void CPlayScene::Render()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < objects.size(); i++) {
+		// start phan hoach khong gian
+		if (player != NULL) {
+			float pos = abs(player->x - objects[i]->x);
+			if (!dynamic_cast<CBackground*>(objects[i]))
+			{
+				if (pos > SCREEN_WIDTH) continue;
+			}
+		}
+		// end phan hoach khong gian
 		objects[i]->Render();
+	}
 }
 
 /*
