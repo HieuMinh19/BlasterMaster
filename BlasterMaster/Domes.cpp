@@ -131,8 +131,8 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 		// block every object first!
-	/*	x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;*/
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
 
 		//
 		// Collision logic with other objects
@@ -149,7 +149,6 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->nx != 0) {
 					x -= nx * 0.4f;
 				}
-			
 			}
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
@@ -168,19 +167,6 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 			}
-			if (dynamic_cast<CPlayer*>(e->obj) || dynamic_cast<CPlayer*>(e->obj))
-			{
-				isTouchPlayer = 1;
-			}
-		}
-		if (isTouchPlayer) {
-			isTouchPlayer = 0;
-			x += min_tx * dx;
-			y += min_ty * dy;
-		}
-		if (!isTouchPlayer) {
-			x += min_tx * dx + nx * 0.4f;
-			y += min_ty * dy + ny * 0.4f;
 		}
 	}
 
