@@ -12,7 +12,7 @@
 #include "Brick.h"
 #include "Trap.h"
 
-CSophia* CSophia::__instance = NULL;
+CSophia *CSophia::__instance = NULL;
 
 CSophia::CSophia(float x, float y) : CPlayer()
 {
@@ -27,38 +27,49 @@ CSophia::CSophia(float x, float y) : CPlayer()
 	isDie = 0;
 }
 
-void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	// Calculate dx, dy 
+	// Calculate dx, dy
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	if (!isJump) {
+	if (!isJump)
+	{
 		vy += SOPHIA_GRAVITY * dt;
 	}
-	else {
+	else
+	{
 		vy += JUMP_GRAVITY * dt;
 	}
 	//Jump checking
 	//DebugOut(L"[INFO] y: %d\n", y);
 	//DebugOut(L"[INFO] jump: %d\n", isJump);
-	if (isJump) {
-		if (isJumpWhileWalk) {
-			if (GetTickCount() - jump_start < SOPHIA_JUMP_TIME) {
-				if (!jumpBack) {
-					if (nx > 0) {
+	if (isJump)
+	{
+		if (isJumpWhileWalk)
+		{
+			if (GetTickCount() - jump_start < SOPHIA_JUMP_TIME)
+			{
+				if (!jumpBack)
+				{
+					if (nx > 0)
+					{
 						vx = SOPHIA_JUMP_WHILE_WALK_SPEED_X;
 					}
-					if (nx < 0) {
-						vx = -1*SOPHIA_JUMP_WHILE_WALK_SPEED_X;
-					}//fix this
+					if (nx < 0)
+					{
+						vx = -1 * SOPHIA_JUMP_WHILE_WALK_SPEED_X;
+					} //fix this
 				}
-				else {
-					if (state == SOPHIA_JUMP_BACK_RIGHT) {
+				else
+				{
+					if (state == SOPHIA_JUMP_BACK_RIGHT)
+					{
 						vx = SOPHIA_JUMP_BACK_SPEED_X;
 					}
-					if (state == SOPHIA_JUMP_BACK_LEFT) {
-						vx = -1* SOPHIA_JUMP_BACK_SPEED_X;
+					if (state == SOPHIA_JUMP_BACK_LEFT)
+					{
+						vx = -1 * SOPHIA_JUMP_BACK_SPEED_X;
 					}
 				}
 			}
@@ -67,15 +78,19 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				ResetJump();
 			}
 		}
-		else {
+		else
+		{
 			if (GetTickCount() - jump_start > 500)
 			{
-				if (jumpBack) {
-					if (state == SOPHIA_JUMP_BACK_RIGHT) {
+				if (jumpBack)
+				{
+					if (state == SOPHIA_JUMP_BACK_RIGHT)
+					{
 						vx = SOPHIA_JUMP_BACK_SPEED_X;
 					}
-					if (state == SOPHIA_JUMP_BACK_LEFT) {
-						vx = -1*SOPHIA_JUMP_BACK_SPEED_X;
+					if (state == SOPHIA_JUMP_BACK_LEFT)
+					{
+						vx = -1 * SOPHIA_JUMP_BACK_SPEED_X;
 					}
 				}
 			}
@@ -86,7 +101,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
-	if (isDie) {
+	if (isDie)
+	{
 		vx = 0;
 		vy = 0;
 		state = SOPHIA_STATE_DIE;
@@ -100,12 +116,13 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	coEvents.clear();
 
-	// turn off collision when die 
+	// turn off collision when die
 	if (state != SOPHIA_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
-	if (untouchable) {
+	if (untouchable)
+	{
 		if (GetTickCount() - untouchable_start > SOPHIA_UNTOUCHABLE_TIME)
 		{
 			untouchable_start = 0;
@@ -129,7 +146,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		// how to push back SOPHIA if collides with a moving objects, what if SOPHIA is pushed this way into another object?
 		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
+		//	x += nx*abs(rdx);
 
 		// block every object first!
 
@@ -137,7 +154,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		y += min_ty * dy + ny * 0.4f;
 
 		//if (nx!=0) vx = 0;
-		if (ny != 0) vy = 0;
+		if (ny != 0)
+			vy = 0;
 
 		//
 		// Collision logic with other objects
@@ -145,29 +163,31 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-			if (dynamic_cast<CBrick*>(e->obj)) // if e->obj is Goomba 
+			if (dynamic_cast<CBrick *>(e->obj)) // if e->obj is Goomba
 			{
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-				// jump on top >> kill Goomba and deflect a bit 				
-				if (isJump) {
+				CBrick *brick = dynamic_cast<CBrick *>(e->obj);
+				// jump on top >> kill Goomba and deflect a bit
+				if (isJump)
+				{
 					ResetJump();
 				}
 			} // if Player
-			else if (dynamic_cast<CTrap*>(e->obj))
+			else if (dynamic_cast<CTrap *>(e->obj))
 			{
-				CTrap* trap = dynamic_cast<CTrap*>(e->obj);
-				if (!untouchable && health >0) {
-					health= health-2;
+				CTrap *trap = dynamic_cast<CTrap *>(e->obj);
+				if (!untouchable && health > 0)
+				{
+					health = health - 2;
 					untouchable = 1;
 					untouchable_start = GetTickCount();
 				}
-				if (health <= 0 && !isDie) {
+				if (health <= 0 && !isDie)
+				{
 					die_start = GetTickCount();
 					untouchable = 1;
 					health = 0;
 					isDie = 1;
 				}
-
 			}
 			//else if (dynamic_cast<CItems*>(e->obj))
 			//{
@@ -175,13 +195,13 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			//	items->hasTaken();
 			//	health++;*/
 			//}
-			else if (dynamic_cast<CPortal*>(e->obj))
+			else if (dynamic_cast<CPortal *>(e->obj))
 			{
-				CPortal* p = dynamic_cast<CPortal*>(e->obj);
+				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 				break;
 			}
-			else if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
+			else if (dynamic_cast<CEnemies *>(e->obj)) // if e->obj is enemies
 			{
 				// spawnItem(e->obj->x, e->obj->y);
 				//e->obj->SetState(OBJECT_STATE_DELETE);			//dirty way.
@@ -191,18 +211,20 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					//health--;
 					if (health > 0)
 						StartUntouchable();
-					
 				}
 			}
 		}
 	}
-	
+
 	//Stand up checking
-	if (isMoveUp && !isStandUp) {
-		if (nx > 0) {
+	if (isMoveUp && !isStandUp)
+	{
+		if (nx > 0)
+		{
 			state = SOPHIA_STATE_MOVE_UP_RIGHT;
 		}
-		else {
+		else
+		{
 			state = SOPHIA_STATE_MOVE_UP_LEFT;
 		}
 		if (GetTickCount() - moveup_start > SOPHIA_MOVEUP_START)
@@ -210,57 +232,75 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			isStandUp = TRUE;
 		}
 	}
-	if (isStandUp) {
-		if (vx == 0) {
-			if (!isJump) {
-				if (nx > 0) {
+	if (isStandUp)
+	{
+		if (vx == 0)
+		{
+			if (!isJump)
+			{
+				if (nx > 0)
+				{
 					state = SOPHIA_STATE_STAND_UP_RIGHT;
 				}
-				else {
+				else
+				{
 					state = SOPHIA_STATE_STAND_UP_LEFT;
 				}
 			}
-			else {
-				if (nx > 0) {
+			else
+			{
+				if (nx > 0)
+				{
 					state = SOPHIA_STATE_JUMP_UP_RIGHT;
 				}
-				else {
+				else
+				{
 					state = SOPHIA_STATE_JUMP_UP_LEFT;
 				}
 			}
 		}
-		else {
-			if (nx > 0) {
+		else
+		{
+			if (nx > 0)
+			{
 				state = SOPHIA_STATE_WALK_UP_RIGHT;
 			}
-			else {
+			else
+			{
 				state = SOPHIA_STATE_WALK_UP_LEFT;
 			}
 		}
 	}
-	if (isWalkAfterJump) {
-		if (nx > 0) {
+	if (isWalkAfterJump)
+	{
+		if (nx > 0)
+		{
 			state = SOPHIA_STATE_AFTER_JUMP_RIGHT;
 		}
-		if (nx < 0) {
+		if (nx < 0)
+		{
 			state = SOPHIA_STATE_AFTER_JUMP_LEFT;
 		}
 	}
 
 	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
 }
 
 void CSophia::Render()
 {
 	int ani = -1;
-	if (state == SOPHIA_STATE_DIE) {
+	if (state == SOPHIA_STATE_DIE)
+	{
 		ani = SOPHIA_ANI_DIE;
 	}
 	else if (level == SOPHIA_LEVEL_NORMAL)
 	{
-		if (state == SOPHIA_STATE_UNTOUCHABLE) {
-			if (nx > 0) {
+		if (state == SOPHIA_STATE_UNTOUCHABLE)
+		{
+			if (nx > 0)
+			{
 				ani = SOPHIA_ANI_UNTOUCHABLE_RIGHT;
 			}
 			else
@@ -268,76 +308,100 @@ void CSophia::Render()
 		}
 		if (vx == 0)
 		{
-			if (!isJump) {
-				if (nx > 0) {
-					if (state == SOPHIA_STATE_IDLE) {
+			if (!isJump)
+			{
+				if (nx > 0)
+				{
+					if (state == SOPHIA_STATE_IDLE)
+					{
 						ani = SOPHIA_ANI_IDLE_RIGHT;
 					}
-					else if (state == SOPHIA_STATE_MOVE_UP_RIGHT) {
+					else if (state == SOPHIA_STATE_MOVE_UP_RIGHT)
+					{
 						ani = SOPHIA_ANI_MOVE_UP_RIGHT;
 					}
-					else if (state == SOPHIA_STATE_STAND_UP_RIGHT) {
+					else if (state == SOPHIA_STATE_STAND_UP_RIGHT)
+					{
 						ani = SOPHIA_ANI_STAND_UP_RIGHT;
 					}
-					else ani = SOPHIA_ANI_IDLE_RIGHT;
+					else
+						ani = SOPHIA_ANI_IDLE_RIGHT;
 				}
-				else {
+				else
+				{
 					if (state == SOPHIA_STATE_IDLE)
 						ani = SOPHIA_ANI_IDLE_LEFT;
 					else if (state == SOPHIA_STATE_MOVE_UP_LEFT)
 						ani = SOPHIA_ANI_MOVE_UP_LEFT;
-					else if (state == SOPHIA_STATE_STAND_UP_LEFT) {
+					else if (state == SOPHIA_STATE_STAND_UP_LEFT)
+					{
 						ani = SOPHIA_ANI_STAND_UP_LEFT;
 					}
 
-					else ani = SOPHIA_ANI_IDLE_LEFT;
+					else
+						ani = SOPHIA_ANI_IDLE_LEFT;
 				}
 			}
-			if (isJump) {
-				if (nx > 0) {
-					if (state == SOPHIA_STATE_JUMP_UP_RIGHT) {
+			if (isJump)
+			{
+				if (nx > 0)
+				{
+					if (state == SOPHIA_STATE_JUMP_UP_RIGHT)
+					{
 						ani = SOPHIA_ANI_JUMP_UP_RIGHT;
 					}
-					else {
+					else
+					{
 						ani = SOPHIA_ANI_JUMP_RIGHT;
 					}
 				}
-				else {
-					if (state == SOPHIA_STATE_JUMP_UP_LEFT) {
+				else
+				{
+					if (state == SOPHIA_STATE_JUMP_UP_LEFT)
+					{
 						ani = SOPHIA_ANI_JUMP_UP_LEFT;
 					}
-					else {
+					else
+					{
 						ani = SOPHIA_ANI_JUMP_LEFT;
 					}
 				}
 			}
 		}
-		else if (vx > 0) {
-			if (state == SOPHIA_STATE_WALK_UP_RIGHT) {
+		else if (vx > 0)
+		{
+			if (state == SOPHIA_STATE_WALK_UP_RIGHT)
+			{
 				ani = SOPHIA_ANI_WALK_UP_RIGHT;
 			}
-			else if (state == SOPHIA_STATE_AFTER_JUMP_RIGHT) {
+			else if (state == SOPHIA_STATE_AFTER_JUMP_RIGHT)
+			{
 				ani = SOPHIA_ANI_AFTER_JUMP_RIGHT;
 			}
-			else {
+			else
+			{
 				ani = SOPHIA_ANI_WALKING_RIGHT;
 			}
 		}
-		else {
-			if (state == SOPHIA_STATE_WALK_UP_LEFT) {
+		else
+		{
+			if (state == SOPHIA_STATE_WALK_UP_LEFT)
+			{
 				ani = SOPHIA_ANI_WALK_UP_LEFT;
 			}
-			else if (state == SOPHIA_STATE_AFTER_JUMP_RIGHT) {
+			else if (state == SOPHIA_STATE_AFTER_JUMP_RIGHT)
+			{
 				ani = SOPHIA_ANI_AFTER_JUMP_LEFT;
 			}
-			else {
+			else
+			{
 				ani = SOPHIA_ANI_WALKING_LEFT;
 			}
-
 		}
 	}
 	int alpha = 255;
-	if (untouchable) alpha = 128;
+	if (untouchable)
+		alpha = 128;
 	animation_set->at(ani)->Render(x, y, alpha);
 	RenderBoundingBox();
 }
@@ -358,46 +422,58 @@ void CSophia::SetState(int state)
 		break;
 	case SOPHIA_STATE_JUMP:
 		// TODO: need to check if SOPHIA is *current* on a platform before allowing to jump again
-		if (isJumpWhileWalk) {
+		if (isJumpWhileWalk)
+		{
 			vy = -SOPHIA_JUMP_WHILE_WALK_SPEED_Y;
-			if (nx > 0) {
+			if (nx > 0)
+			{
 				vx = SOPHIA_JUMP_WHILE_WALK_SPEED_X;
 			}
-			else {
+			else
+			{
 				vx = -SOPHIA_JUMP_WHILE_WALK_SPEED_X;
 			}
 		}
-		else {
+		else
+		{
 			vy = -SOPHIA_JUMP_SPEED_Y;
 		}
 		break;
 	case SOPHIA_STATE_JUMP_UP_LEFT:
 		// TODO: need to check if SOPHIA is *current* on a platform before allowing to jump again
-		if (isJumpWhileWalk) {
+		if (isJumpWhileWalk)
+		{
 			vy = -SOPHIA_JUMP_WHILE_WALK_SPEED_Y;
-			if (nx > 0) {
+			if (nx > 0)
+			{
 				vx = SOPHIA_JUMP_WHILE_WALK_SPEED_X;
 			}
-			else {
+			else
+			{
 				vx = -SOPHIA_JUMP_WHILE_WALK_SPEED_X;
 			}
 		}
-		else {
+		else
+		{
 			vy = -SOPHIA_JUMP_SPEED_Y;
 		}
 		break;
 	case SOPHIA_STATE_JUMP_UP_RIGHT:
 		// TODO: need to check if SOPHIA is *current* on a platform before allowing to jump again
-		if (isJumpWhileWalk) {
+		if (isJumpWhileWalk)
+		{
 			vy = -SOPHIA_JUMP_WHILE_WALK_SPEED_Y;
-			if (nx > 0) {
+			if (nx > 0)
+			{
 				vx = SOPHIA_JUMP_WHILE_WALK_SPEED_X;
 			}
-			else {
+			else
+			{
 				vx = -SOPHIA_JUMP_WHILE_WALK_SPEED_X;
 			}
 		}
-		else {
+		else
+		{
 			vy = -SOPHIA_JUMP_SPEED_Y;
 		}
 		break;
@@ -421,8 +497,7 @@ void CSophia::SetState(int state)
 	}
 }
 
-
-void CSophia::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void CSophia::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	float new_y;
 	new_y = y + 15;
@@ -434,11 +509,11 @@ void CSophia::GetBoundingBox(float& left, float& top, float& right, float& botto
 		right = x + SOPHIA_BBOX_WIDTH;
 		bottom = new_y + SOPHIA_BBOX_HEIGHT;
 	}
-	else {
+	else
+	{
 		right = x + SOPHIA_MOVE_UP_BBOX_WIDTH;
 		bottom = y + SOPHIA_MOVE_UP_BBOX_HEIGHT;
 	}
-
 }
 
 /*
@@ -477,16 +552,16 @@ void CSophia::ResetJump()
 	animation_set->at(SOPHIA_ANI_JUMP_LEFT)->Reset();
 	animation_set->at(SOPHIA_ANI_JUMP_UP_RIGHT)->Reset();
 	animation_set->at(SOPHIA_ANI_JUMP_UP_LEFT)->Reset();
-
 }
-void CSophia::fire(vector<LPGAMEOBJECT>& objects)
+void CSophia::fire(vector<LPGAMEOBJECT> &objects)
 {
-	if (isMoveUp == true && isStandUp != true) {
+	if (isMoveUp == true && isStandUp != true)
+	{
 		return;
 	}
-	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	CAnimationSets *animation_sets = CAnimationSets::GetInstance();
 
-	CGameObject* obj = NULL;
+	CGameObject *obj = NULL;
 	obj = new CBullet(nx, ANI_JASON);
 
 	// General object setup
@@ -494,23 +569,26 @@ void CSophia::fire(vector<LPGAMEOBJECT>& objects)
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 
 	obj->SetAnimationSet(ani_set);
-	dynamic_cast<CPlayScene*> (
+	dynamic_cast<CPlayScene *>(
 		CGame::GetInstance()
-		->GetCurrentScene()
-		)
+			->GetCurrentScene())
 		->AddObject(obj);
 }
 void CSophia::KeyRight()
 {
-	if (!isJump) {
-		if (isStandUp) {
+	if (!isJump)
+	{
+		if (isStandUp)
+		{
 			SetState(SOPHIA_STATE_WALK_UP_RIGHT);
 		}
-		else {
+		else
+		{
 			SetState(SOPHIA_STATE_WALKING_RIGHT);
 		}
 	}
-	else {
+	else
+	{
 		jumpBack = TRUE;
 		SetState(SOPHIA_JUMP_BACK_RIGHT);
 	}
@@ -518,15 +596,19 @@ void CSophia::KeyRight()
 
 void CSophia::KeyLeft()
 {
-	if (!isJump) {
-		if (isStandUp) {
+	if (!isJump)
+	{
+		if (isStandUp)
+		{
 			SetState(SOPHIA_STATE_WALK_UP_LEFT);
 		}
-		else {
+		else
+		{
 			SetState(SOPHIA_STATE_WALKING_LEFT);
 		}
 	}
-	else {
+	else
+	{
 		jumpBack = TRUE;
 		SetState(SOPHIA_JUMP_BACK_LEFT);
 	}
@@ -534,7 +616,8 @@ void CSophia::KeyLeft()
 
 void CSophia::KeyUp()
 {
-	if (!isMoveUp) {
+	if (!isMoveUp)
+	{
 		moveup_start = GetTickCount();
 		isMoveUp = TRUE;
 	}
@@ -544,27 +627,34 @@ void CSophia::KeyUp()
 }
 void CSophia::KeyDown()
 {
-
 }
-void CSophia::OnKeyUp() {
+void CSophia::OnKeyUp()
+{
 	ResetStandUp();
 }
-void CSophia::KeyX() {
-	if (!isJump) {
+void CSophia::KeyX()
+{
+	if (!isJump)
+	{
 		isJump = true;
 		jump_start = GetTickCount();
-		if (vx != 0) {
+		if (vx != 0)
+		{
 			isJumpWhileWalk = TRUE;
 		}
-		if (nx > 0) {
-			if (isStandUp) {
+		if (nx > 0)
+		{
+			if (isStandUp)
+			{
 				SetState(SOPHIA_STATE_JUMP_UP_RIGHT);
 			}
 			else
 				SetState(SOPHIA_STATE_JUMP);
 		}
-		else {
-			if (isStandUp) {
+		else
+		{
+			if (isStandUp)
+			{
 				SetState(SOPHIA_STATE_JUMP_UP_LEFT);
 			}
 			else
@@ -574,43 +664,45 @@ void CSophia::KeyX() {
 }
 void CSophia::KeyZ()
 {
-	if (isMoveUp == true && isStandUp != true) {
+	if (isMoveUp == true && isStandUp != true)
+	{
 		return;
 	}
-	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	CAnimationSets *animation_sets = CAnimationSets::GetInstance();
 
-
-	CGameObject* obj = NULL;
-	if (isStandUp) {
+	CGameObject *obj = NULL;
+	if (isStandUp)
+	{
 		obj = new CBullet(0, ANI_SOPHIA_LEFT);
 		// General object setup
 		obj->SetPosition(x + CANNON_X, y);
 	}
-	else {
+	else
+	{
 		obj = new CBullet(nx, ANI_SOPHIA_LEFT);
 		// General object setup
 		if (nx > 0)
 			obj->SetPosition(x + SOPHIA_BBOX_WIDTH - 5, y + CANNON_Y);
 		else
 			obj->SetPosition(x, y + CANNON_Y);
-
 	}
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 	obj->SetAnimationSet(ani_set);
-	dynamic_cast<CPlayScene*> (
+	dynamic_cast<CPlayScene *>(
 		CGame::GetInstance()
-		->GetCurrentScene()
-		)
+			->GetCurrentScene())
 		->AddObject(obj);
 }
-CSophia* CSophia::GetInstance(float x, float y)
+CSophia *CSophia::GetInstance(float x, float y)
 {
-	if (__instance == NULL) __instance = new CSophia(x, y);
+	if (__instance == NULL)
+		__instance = new CSophia(x, y);
 	return __instance;
 }
-CSophia* CSophia::GetInstance()
+CSophia *CSophia::GetInstance()
 {
-	if (__instance == NULL) __instance = new CSophia();
+	if (__instance == NULL)
+		__instance = new CSophia();
 	return __instance;
 }
 
@@ -618,31 +710,15 @@ void CSophia::KeySHIFT()
 {
 	if (this->state != SOPHIA_STATE_IDLE)
 		return;
-	CJason* jason = CJason::GetInstance(this->x, this->y);
+	CJason *jason = CJason::GetInstance(this->x, this->y);
 	jason->x = this->x + (SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
 	jason->nx = this->nx;
 	jason->y = this->y;
 	jason->inTank = false;
 	jason->setHealth(JASON_MAX_HEALTH - 3);
 	jason->GetOut();
-	dynamic_cast<CPlayScene*> (
+	dynamic_cast<CPlayScene *>(
 		CGame::GetInstance()
-		->GetCurrentScene()
-		)->SetPlayer(jason);
-
-}
-
-void CSophia::spawnItem(float x, float y)
-{
-	// General object setup
-	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-	CGameObject* obj = new CItems(x, y);
-	LPANIMATION_SET ani_set = animation_sets->Get(3);
-	obj->SetAnimationSet(ani_set);
-
-	dynamic_cast<CPlayScene*> (
-		CGame::GetInstance()
-		->GetCurrentScene()
-		)
-		->AddObject(obj);
+			->GetCurrentScene())
+		->SetPlayer(jason);
 }

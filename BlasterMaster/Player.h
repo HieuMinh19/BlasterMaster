@@ -52,6 +52,7 @@ public:
 
 	void Reset();
 	int getHealth() { return this->health; }
+	void spawnItem(float x, float y);
 	void setHealth(int health) { this->health = health; }
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;
 	void Fire(vector<LPGAMEOBJECT> &objects);

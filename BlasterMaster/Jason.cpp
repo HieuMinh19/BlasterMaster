@@ -8,7 +8,7 @@
 #include "Worms.h"
 #include "PlayScence.h"
 
-CJason* CJason::__instance = NULL;
+CJason *CJason::__instance = NULL;
 
 CJason::CJason(float x, float y) : CPlayer()
 {
@@ -26,16 +26,18 @@ CJason::CJason(float x, float y) : CPlayer()
 	DebugOut(L"[DEBUG] Go to construct: %d\n", health);
 }
 
-void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CJason::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	// Calculate dx, dy 
+	// Calculate dx, dy
 	CGameObject::Update(dt);
 
 	// Simple fall down
-	if (!inTank) {
+	if (!inTank)
+	{
 		vy += GRAVITY * dt;
 	}
-	else {
+	else
+	{
 		SetState(STATE_CRAWL_IN_TANK);
 	}
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -43,7 +45,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	coEvents.clear();
 
-	// turn off collision when die 
+	// turn off collision when die
 	if (state != STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
@@ -54,7 +56,8 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 		alpha = 255;
 	}
-	if (untouchable) {
+	if (untouchable)
+	{
 		if (GetTickCount() - untouchable_start > DIE_TIME)
 		{
 			untouchable_start = 0;
@@ -68,11 +71,12 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// TODO: This is a very ugly designed function!!!!
 	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 	// No collision occured, proceed normally
-	if (isDie) {
+	if (isDie)
+	{
 		vx = 0;
 		vy = 0;
 		state = STATE_DIE;
-	
+
 		if (GetTickCount() - die_start > DIE_TIME)
 		{
 			CGame::GetInstance()->SwitchScene(END_SCENE);
@@ -91,15 +95,17 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
+		if (nx != 0)
+			vx = 0;
+		if (ny != 0)
+			vy = 0;
 
 		//start collision with worm
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
+			if (dynamic_cast<CEnemies *>(e->obj)) // if e->obj is enemies
 			{
 				// spawnItem(e->obj->x, e->obj->y);
 				//e->obj->SetState(OBJECT_STATE_DELETE);
@@ -115,31 +121,33 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						SetState(STATE_DIE);
 				}
 			}
-			else if (dynamic_cast<CItems*>(e->obj))
+			else if (dynamic_cast<CItems *>(e->obj))
 			{
-				CItems* items = dynamic_cast<CItems*>(e->obj);
+				CItems *items = dynamic_cast<CItems *>(e->obj);
 				items->hasTaken();
 				health++;
 			}
-			else if (dynamic_cast<CTrap*>(e->obj))
+			else if (dynamic_cast<CTrap *>(e->obj))
 			{
-				CTrap* trap = dynamic_cast<CTrap*>(e->obj);
-				if (!untouchable && health > 0) {
+				CTrap *trap = dynamic_cast<CTrap *>(e->obj);
+				if (!untouchable && health > 0)
+				{
 					DebugOut(L"[INFO] health: %d\n", health);
 					health = health - 2;
 					untouchable = 1;
 					untouchable_start = GetTickCount();
 				}
-				if (health <= 0 && !isDie) {
+				if (health <= 0 && !isDie)
+				{
 					die_start = GetTickCount();
 					untouchable = 1;
 					health = 0;
 					isDie = 1;
 				}
 			}
-			else if (dynamic_cast<CPortal*>(e->obj))
+			else if (dynamic_cast<CPortal *>(e->obj))
 			{
-				CPortal* p = dynamic_cast<CPortal*>(e->obj);
+				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 				break;
 			}
@@ -147,7 +155,8 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
 }
 
 void CJason::Render()
@@ -155,40 +164,46 @@ void CJason::Render()
 	int ani = 0;
 	if (state == STATE_DIE)
 		ani = ANI_DIE;
-	else
-		if (isSpecialAni == false)
+	else if (isSpecialAni == false)
+	{
+		if (isJump == true)
 		{
-			if (isJump == true)
-			{
-				if (nx < 0)
-					ani = ANI_JUMP_LEFT;
-				else
-					ani = ANI_JUMP_RIGHT;
-			}
-			else if (vx == 0)
-			{
-				if (nx > 0) ani = ANI_IDLE_RIGHT;
-				else ani = ANI_IDLE_LEFT;
-			}
-			else if (vx > 0)
-				ani = ANI_WALKING_RIGHT;
-			else ani = ANI_WALKING_LEFT;
+			if (nx < 0)
+				ani = ANI_JUMP_LEFT;
+			else
+				ani = ANI_JUMP_RIGHT;
 		}
+		else if (vx == 0)
+		{
+			if (nx > 0)
+				ani = ANI_IDLE_RIGHT;
+			else
+				ani = ANI_IDLE_LEFT;
+		}
+		else if (vx > 0)
+			ani = ANI_WALKING_RIGHT;
 		else
+			ani = ANI_WALKING_LEFT;
+	}
+	else
+	{
+		if (vx == 0)
 		{
-			if (vx == 0)
-			{
-				if (nx > 0) ani = ANI_CRAWL_IDLE_RIGHT;
-				else ani = ANI_CRAWL_WALKING_RIGHT;
-			}
-			else if (vx > 0)
-				ani = ANI_CRAWL_IDLE_LEFT;
-			else ani = ANI_CRAWL_WALKING_LEFT;
+			if (nx > 0)
+				ani = ANI_CRAWL_IDLE_RIGHT;
+			else
+				ani = ANI_CRAWL_WALKING_RIGHT;
 		}
-	if (untouchable) {
+		else if (vx > 0)
+			ani = ANI_CRAWL_IDLE_LEFT;
+		else
+			ani = ANI_CRAWL_WALKING_LEFT;
+	}
+	if (untouchable)
+	{
 		if (alpha > UNTOUCHABLE_ALPHA)
 			alpha = UNTOUCHABLE_ALPHA;
-		else 
+		else
 			alpha = UNTOUCHABLE_ALPHA * 2;
 	}
 
@@ -230,12 +245,14 @@ void CJason::SetState(int state)
 		nx = -1;
 		break;
 	case STATE_CRAWL_IDLE:
-		if (isSpecialAni) {
+		if (isSpecialAni)
+		{
 			y -= CRAWL_BBOX_HEIGHT;
 			RenderBoundingBox();
 			isSpecialAni = false;
 		}
-		else {
+		else
+		{
 			y += CRAWL_BBOX_HEIGHT;
 			RenderBoundingBox();
 			isSpecialAni = true;
@@ -248,7 +265,7 @@ void CJason::SetState(int state)
 	}
 }
 
-void CJason::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void CJason::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
 	top = y;
@@ -281,7 +298,7 @@ void CJason::KeyRight()
 		SetState(STATE_WALKING_RIGHT);
 	else
 		SetState(STATE_CRAWL_WALKING_RIGHT);
-}	
+}
 
 void CJason::KeyLeft()
 {
@@ -291,10 +308,9 @@ void CJason::KeyLeft()
 		SetState(STATE_CRAWL_WALKING_LEFT);
 }
 
-
 void CJason::KeyZ()
 {
-	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
+	CAnimationSets *animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
 	obj = new CBullet(nx, ANI_JASON);
@@ -304,44 +320,29 @@ void CJason::KeyZ()
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 
 	obj->SetAnimationSet(ani_set);
-	dynamic_cast<CPlayScene*> (
+	dynamic_cast<CPlayScene *>(
 		CGame::GetInstance()
-		->GetCurrentScene()
-		)
-		->AddObject(obj);
-
-}
-
-void CJason::spawnItem(float x, float y)
-{
-	// General object setup
-	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-	CGameObject* obj = new CItems(x, y);
-	LPANIMATION_SET ani_set = animation_sets->Get(3);
-	obj->SetAnimationSet(ani_set);
-	
-	dynamic_cast<CPlayScene*> (
-		CGame::GetInstance()
-		->GetCurrentScene()
-		)
+			->GetCurrentScene())
 		->AddObject(obj);
 }
 
-CJason* CJason::GetInstance(float x, float y)
+CJason *CJason::GetInstance(float x, float y)
 {
 	DebugOut(L"[GO OUT] instance\n");
-	if (__instance == NULL) {
+	if (__instance == NULL)
+	{
 		DebugOut(L"[GO IF] instance\n");
 		__instance = new CJason(x, y);
 	}
 	return __instance;
 }
 
-CJason* CJason::GetInstance()
+CJason *CJason::GetInstance()
 {
 	DebugOut(L"[DEBUG] __instance: %d\n", __instance->getHealth());
 	DebugOut(L"[DEBUG] xxxxxxxx");
-	if (__instance == NULL) {
+	if (__instance == NULL)
+	{
 		DebugOut(L"[GO IF]\n");
 		__instance = new CJason();
 	}
@@ -357,11 +358,9 @@ void CJason::KeyDown()
 
 void CJason::KeyUp()
 {
-
 }
 void CJason::OnKeyUp()
 {
-
 }
 void CJason::KeyX()
 {
@@ -373,23 +372,20 @@ void CJason::KeySHIFT()
 {
 	if (this->state != PLAYER_STATE_IDLE || isSpecialAni == true || isJump == true)
 		return;
-	CSophia* sophia = dynamic_cast<CSophia*> (
-		CSophia::GetInstance()
-		);
+	CSophia *sophia = dynamic_cast<CSophia *>(
+		CSophia::GetInstance());
 
 	if (this->x < sophia->x || this->x > sophia->x + SOPHIA_BBOX_WIDTH - BBOX_WIDTH || this->y < sophia->y || this->y > sophia->y + SOPHIA_BBOX_HEIGHT)
 		return;
 
-	x = sophia->x +(SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
+	x = sophia->x + (SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
 	vy = -JUMP_SPEED_Y;
 	inTank = true;
-	dynamic_cast<CPlayScene*> (
+	dynamic_cast<CPlayScene *>(
 		CGame::GetInstance()
-		->GetCurrentScene()
-		)->SetPlayer(sophia);
-
+			->GetCurrentScene())
+		->SetPlayer(sophia);
 }
-
 
 void CJason::GetOut()
 {
