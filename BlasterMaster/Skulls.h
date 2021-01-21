@@ -6,8 +6,8 @@
 #include "StaticHelpers.h"
 #include "Jason.h"
 
-#define SKULLS_SPEED_HORIZONTAL		0.05
-#define SKULLS_SPEED_VERTICAL		0.05
+#define SKULLS_SPEED_HORIZONTAL		1.0f
+#define SKULLS_SPEED_VERTICAL		0.05f
 
 #define SKULLS_STATE_HORIZONTAL		100
 #define SKULLS_STATE_VERTICAL		200

@@ -55,9 +55,9 @@ void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 	{
-		// block every object first!
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
+		//// block every object first!
+		//x += min_tx * dx + nx * 0.4f;
+		//y += min_ty * dy + ny * 0.4f;
 
 		//
 		// Collision logic with other objects
@@ -66,8 +66,16 @@ void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
+			if (dynamic_cast<CPlayer*>(e->obj))
+			{
+				x += min_tx * dx;
+				y += min_ty * dy;
+			}
+
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
+				x += min_tx * dx + nx * 0.4f;
+				y += min_ty * dy + ny * 0.4f;
 				CollisionHandleWithBrick(nx);
 			}
 		}
