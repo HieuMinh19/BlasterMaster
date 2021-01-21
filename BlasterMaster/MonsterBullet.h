@@ -30,6 +30,7 @@ class CMonsterBullet : public CGameObject
 public:
 	void Setup();
 	CMonsterBullet(float state, int animation);
+	CMonsterBullet(int ani, float Xp, float Yp, float Xe, float Ye, float Vb);
 	CMonsterBullet(float state, int animation, float VX, float VY);
 	virtual void SetState(int state);
 };

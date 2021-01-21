@@ -73,6 +73,24 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
+
+		if (GetTickCount() - fireAt > 400) {
+			fireAt = GetTickCount();
+			Fire(player->x, player->y, x, y);
+		}
+
+		if (GetTickCount() - fireAt > 300)
+		{
+			if (ani == FLOATERS_ANI_GUN_LEFT)
+			{
+				ani = FLOATERS_ANI_WALKING_LEFT;
+			}
+			if (ani == FLOATERS_ANI_GUN_RIGHT)
+			{
+				ani = FLOATERS_ANI_WALKING_RIGHT;
+			}
+		}
+
 	}
 	else
 	{
@@ -112,16 +130,30 @@ void CFloaters::Render()
 	RenderBoundingBox();
 }
 
-//void CFloaters::Fire()
-//{
-//	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-//	CGameObject* obj = NULL;
-//	obj = new CBullet();
-//	// General object setup
-//	obj->SetPosition(x, y + BULLET_POSITION_Y);
-//	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
-//	obj->SetAnimationSet(ani_set);
-//	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(obj);
-//	//objects.push_back(obj);
-//
-//}
+void CFloaters::Fire(float Xp, float Yp, float Xe, float Ye)
+{
+	//CMonsterBullet(int ani, float Xp, float Yp, float Xe, float Ye, float Vb)
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+
+	CGameObject* obj = NULL;
+	if (Xp > Xe)
+	{
+		ani = FLOATERS_ANI_GUN_LEFT;
+		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_LEFT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
+	}
+	else
+	{
+		ani = FLOATERS_ANI_GUN_RIGHT;
+		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_RIGHT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
+	}
+	// General object setup
+	obj->SetPosition(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_FLOATERS);
+
+	obj->SetAnimationSet(ani_set);
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
+}

@@ -29,7 +29,13 @@ class CJasonOW : public CPlayer
 	int alpha;
 	float start_x;
 	float start_y;
+
 	int isTouchTrap;
+
+	int direction;
+	int ani;
+	bool brokenBrick;
+
 public:
 	CJasonOW(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
