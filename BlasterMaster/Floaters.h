@@ -8,6 +8,7 @@
 #include "Jason.h"
 
 #define FLOATERS_SPEED_BULLET		0.1f
+#define FLOATERS_MAX_DISTANCE		90
 
 #define FLOATERS_STATE_HORIZONTAL	100
 #define FLOATERS_STATE_VERTICAL		200
@@ -31,6 +32,7 @@ class CFloaters : public CEnemies
 {
 	int ani;
 	int direction_x;
+	int count_gun = 0;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();

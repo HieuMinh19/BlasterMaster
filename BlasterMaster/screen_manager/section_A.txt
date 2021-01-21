@@ -206,9 +206,9 @@
 # gun right
 90039	131	406	150	422	90
 # bullet left
-90040	31	304	40	313	90
+90040	32	289	37	294	90
 # buller right
-90041	213	304	222	313	90
+90041	214	289	219	294	90
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -402,7 +402,7 @@
 #====== BACKGROUND =======
 19	0	0	19
 # MARIO
-7	50	0	7
+7	500	0	7
 0	50.0	1000	1
 # BULLET
 #6	30	124	8
