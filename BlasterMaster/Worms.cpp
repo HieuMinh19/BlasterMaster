@@ -74,7 +74,6 @@ void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->nx != 0) {
 					x -= nx * 0.4f;
 				}
-
 			}
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
