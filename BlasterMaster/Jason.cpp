@@ -13,7 +13,7 @@ CJason* CJason::__instance = NULL;
 CJason::CJason(float x, float y) : CPlayer()
 {
 	untouchable = 0;
-	SetState(STATE_IDLE);
+	SetState(JASON_STATE_IDLE);
 	isSpecialAni = false;
 	alpha = 255;
 	health = JASON_MAX_HEALTH;
@@ -23,7 +23,6 @@ CJason::CJason(float x, float y) : CPlayer()
 	this->x = x;
 	this->y = y;
 	isDie = 0;
-	DebugOut(L"[DEBUG] Go to construct: %d\n", health);
 }
 
 void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -33,10 +32,10 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	// Simple fall down
 	if (!inTank) {
-		vy += GRAVITY * dt;
+		vy += 0.0002 * dt;
 	}
 	else {
-		SetState(STATE_CRAWL_IN_TANK);
+		SetState(JASON_STATE_CRAWL_IN_TANK);
 	}
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -44,18 +43,18 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state != STATE_DIE)
+	if (state != JASON_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
-	if (GetTickCount() - untouchable_start > UNTOUCHABLE_TIME)
+	if (GetTickCount() - untouchable_start > JASON_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 		alpha = 255;
 	}
 	if (untouchable) {
-		if (GetTickCount() - untouchable_start > DIE_TIME)
+		if (GetTickCount() - untouchable_start > JASON_DIE_TIME)
 		{
 			untouchable_start = 0;
 			untouchable = 0;
@@ -71,9 +70,9 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isDie) {
 		vx = 0;
 		vy = 0;
-		state = STATE_DIE;
+		state = JASON_STATE_DIE;
 	
-		if (GetTickCount() - die_start > DIE_TIME)
+		if (GetTickCount() - die_start > JASON_DIE_TIME)
 		{
 			CGame::GetInstance()->SwitchScene(END_SCENE);
 		}
@@ -112,7 +111,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (health > 0)
 						StartUntouchable();
 					else
-						SetState(STATE_DIE);
+						SetState(JASON_STATE_DIE);
 				}
 			}
 			else if (dynamic_cast<CItems*>(e->obj))
@@ -153,37 +152,37 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CJason::Render()
 {
 	int ani = 0;
-	if (state == STATE_DIE)
-		ani = ANI_DIE;
+	if (state == JASON_STATE_DIE)
+		ani = JASON_ANI_DIE;
 	else
 		if (isSpecialAni == false)
 		{
 			if (isJump == true)
 			{
 				if (nx < 0)
-					ani = ANI_JUMP_LEFT;
+					ani = JASON_ANI_JUMP_LEFT;
 				else
-					ani = ANI_JUMP_RIGHT;
+					ani = JASON_ANI_JUMP_RIGHT;
 			}
 			else if (vx == 0)
 			{
-				if (nx > 0) ani = ANI_IDLE_RIGHT;
-				else ani = ANI_IDLE_LEFT;
+				if (nx > 0) ani = JASON_ANI_IDLE_RIGHT;
+				else ani = JASON_ANI_IDLE_LEFT;
 			}
 			else if (vx > 0)
-				ani = ANI_WALKING_RIGHT;
-			else ani = ANI_WALKING_LEFT;
+				ani = JASON_ANI_WALKING_RIGHT;
+			else ani = JASON_ANI_WALKING_LEFT;
 		}
 		else
 		{
 			if (vx == 0)
 			{
-				if (nx > 0) ani = ANI_CRAWL_IDLE_RIGHT;
-				else ani = ANI_CRAWL_WALKING_RIGHT;
+				if (nx > 0) ani = JASON_ANI_CRAWL_IDLE_RIGHT;
+				else ani = JASON_ANI_CRAWL_WALKING_RIGHT;
 			}
 			else if (vx > 0)
-				ani = ANI_CRAWL_IDLE_LEFT;
-			else ani = ANI_CRAWL_WALKING_LEFT;
+				ani = JASON_ANI_CRAWL_IDLE_LEFT;
+			else ani = JASON_ANI_CRAWL_WALKING_LEFT;
 		}
 	if (untouchable) {
 		if (alpha > UNTOUCHABLE_ALPHA)
@@ -203,46 +202,46 @@ void CJason::SetState(int state)
 
 	switch (state)
 	{
-	case STATE_WALKING_RIGHT:
-		vx = WALKING_SPEED;
+	case JASON_STATE_WALKING_RIGHT:
+		vx = JASON_WALKING_SPEED;
 		nx = 1;
 		break;
-	case STATE_WALKING_LEFT:
-		vx = -WALKING_SPEED;
+	case JASON_STATE_WALKING_LEFT:
+		vx = -JASON_WALKING_SPEED;
 		nx = -1;
 		break;
-	case STATE_JUMP:
-		vy = -JUMP_SPEED_Y;
+	case JASON_STATE_JUMP:
+		vy = -JASON_JUMP_SPEED_Y;
 		isJump = true;
 		break;
-	case STATE_IDLE:
+	case JASON_STATE_IDLE:
 		vx = 0;
 		break;
-	case STATE_DIE:
-		vy = -DIE_DEFLECT_SPEED;
+	case JASON_STATE_DIE:
+		vy = -JASON_DIE_DEFLECT_SPEED;
 		break;
-	case STATE_CRAWL_WALKING_RIGHT:
-		vx = CRAWL_SPEED;
+	case JASON_STATE_CRAWL_WALKING_RIGHT:
+		vx = JASON_CRAWL_SPEED;
 		nx = 1;
 		break;
-	case STATE_CRAWL_WALKING_LEFT:
-		vx = -CRAWL_SPEED;
+	case JASON_STATE_CRAWL_WALKING_LEFT:
+		vx = -JASON_CRAWL_SPEED;
 		nx = -1;
 		break;
-	case STATE_CRAWL_IDLE:
+	case JASON_STATE_CRAWL_IDLE:
 		if (isSpecialAni) {
-			y -= CRAWL_BBOX_HEIGHT;
+			y -= JASON_CRAWL_BBOX_HEIGHT;
 			RenderBoundingBox();
 			isSpecialAni = false;
 		}
 		else {
-			y += CRAWL_BBOX_HEIGHT;
+			y += JASON_CRAWL_BBOX_HEIGHT;
 			RenderBoundingBox();
 			isSpecialAni = true;
 		}
 		vx = 0;
 		break;
-	case STATE_CRAWL_IN_TANK:
+	case JASON_STATE_CRAWL_IN_TANK:
 		y = 100000;
 		vy = 0;
 	}
@@ -255,13 +254,13 @@ void CJason::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 	if (!isSpecialAni)
 	{
-		right = x + BBOX_WIDTH;
-		bottom = y + BBOX_HEIGHT;
+		right = x + JASON_BBOX_WIDTH;
+		bottom = y + JASON_BBOX_HEIGHT;
 	}
 	else
 	{
-		right = x + CRAWL_BBOX_WIDTH;
-		bottom = y + CRAWL_BBOX_HEIGHT;
+		right = x + JASON_CRAWL_BBOX_WIDTH;
+		bottom = y + JASON_CRAWL_BBOX_HEIGHT;
 	}
 }
 
@@ -270,7 +269,7 @@ Reset Mario status to the beginning state of a scene
 */
 void CJason::Reset()
 {
-	SetState(STATE_IDLE);
+	SetState(JASON_STATE_IDLE);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
 }
@@ -278,17 +277,17 @@ void CJason::Reset()
 void CJason::KeyRight()
 {
 	if (isSpecialAni == false)
-		SetState(STATE_WALKING_RIGHT);
+		SetState(JASON_STATE_WALKING_RIGHT);
 	else
-		SetState(STATE_CRAWL_WALKING_RIGHT);
+		SetState(JASON_STATE_CRAWL_WALKING_RIGHT);
 }	
 
 void CJason::KeyLeft()
 {
 	if (isSpecialAni == false)
-		SetState(STATE_WALKING_LEFT);
+		SetState(JASON_STATE_WALKING_LEFT);
 	else
-		SetState(STATE_CRAWL_WALKING_LEFT);
+		SetState(JASON_STATE_CRAWL_WALKING_LEFT);
 }
 
 
@@ -329,9 +328,9 @@ void CJason::spawnItem(float x, float y)
 
 CJason* CJason::GetInstance(float x, float y)
 {
-	DebugOut(L"[GO OUT] instance\n");
+	//DebugOut(L"[GO OUT] instance\n");
 	if (__instance == NULL) {
-		DebugOut(L"[GO IF] instance\n");
+		//DebugOut(L"[GO IF] instance\n");
 		__instance = new CJason(x, y);
 	}
 	return __instance;
@@ -339,10 +338,10 @@ CJason* CJason::GetInstance(float x, float y)
 
 CJason* CJason::GetInstance()
 {
-	DebugOut(L"[DEBUG] __instance: %d\n", __instance->getHealth());
-	DebugOut(L"[DEBUG] xxxxxxxx");
+	//DebugOut(L"[DEBUG] __instance: %d\n", __instance->getHealth());
+	//DebugOut(L"[DEBUG] xxxxxxxx");
 	if (__instance == NULL) {
-		DebugOut(L"[GO IF]\n");
+		//DebugOut(L"[GO IF]\n");
 		__instance = new CJason();
 	}
 	return __instance;
@@ -350,9 +349,9 @@ CJason* CJason::GetInstance()
 
 void CJason::KeyDown()
 {
-	if (state == STATE_JUMP)
+	if (state == JASON_STATE_JUMP)
 		return;
-	SetState(STATE_CRAWL_IDLE);
+	SetState(JASON_STATE_CRAWL_IDLE);
 }
 
 void CJason::KeyUp()
@@ -366,7 +365,7 @@ void CJason::OnKeyUp()
 void CJason::KeyX()
 {
 	if (isSpecialAni == false && isJump == false)
-		SetState(STATE_JUMP);
+		SetState(JASON_STATE_JUMP);
 }
 
 void CJason::KeySHIFT()
@@ -377,11 +376,11 @@ void CJason::KeySHIFT()
 		CSophia::GetInstance()
 		);
 
-	if (this->x < sophia->x || this->x > sophia->x + SOPHIA_BBOX_WIDTH - BBOX_WIDTH || this->y < sophia->y || this->y > sophia->y + SOPHIA_BBOX_HEIGHT)
+	if (this->x < sophia->x || this->x > sophia->x + SOPHIA_BBOX_WIDTH - JASON_BBOX_WIDTH || this->y < sophia->y || this->y > sophia->y + SOPHIA_BBOX_HEIGHT)
 		return;
 
-	x = sophia->x +(SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
-	vy = -JUMP_SPEED_Y;
+	x = sophia->x +(SOPHIA_BBOX_WIDTH - JASON_BBOX_WIDTH) / 2;
+	vy = -JASON_JUMP_SPEED_Y;
 	inTank = true;
 	dynamic_cast<CPlayScene*> (
 		CGame::GetInstance()
@@ -393,7 +392,7 @@ void CJason::KeySHIFT()
 
 void CJason::GetOut()
 {
-	this->vy = -JUMP_CHANGE_PLAYER_SPEED;
+	this->vy = -JASON_JUMP_CHANGE_PLAYER_SPEED;
 	isJump = true;
 }
 

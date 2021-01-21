@@ -23,10 +23,8 @@ void CUI::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		state = sophia->getHealth();
 	}
 	else {
-
 		CJason* jason = CJason::GetInstance();
 		state = jason->getHealth();
-
 		//int a = CJason::GetInstance()->getHealth(state);
 	}
 }

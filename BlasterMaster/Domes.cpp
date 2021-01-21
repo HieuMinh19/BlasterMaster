@@ -12,6 +12,7 @@ CDomes::CDomes(float x, float y, float _vx, float _vy)
 	this->vy = _vy;
 	max_coordinates_X = x + DOMES_MAX_JOURNEY_X;
 	min_coordinates_X = x - DOMES_MAX_JOURNEY_X;
+	isTouchPlayer = 0;
 }
 
 void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -130,8 +131,8 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 		// block every object first!
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
+	/*	x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;*/
 
 		//
 		// Collision logic with other objects
@@ -161,8 +162,20 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						HandleFlyToJason(player->x, player->y, nx, ny);
 					}
 				}
-
 			}
+			if (dynamic_cast<CPlayer*>(e->obj) || dynamic_cast<CPlayer*>(e->obj))
+			{
+				isTouchPlayer = 1;
+			}
+		}
+		if (isTouchPlayer) {
+			isTouchPlayer = 0;
+			x += min_tx * dx;
+			y += min_ty * dy;
+		}
+		if (!isTouchPlayer) {
+			x += min_tx * dx + nx * 0.4f;
+			y += min_ty * dy + ny * 0.4f;
 		}
 	}
 

@@ -13,7 +13,6 @@ CJasonOW* CJasonOW::__instance = NULL;
 CJasonOW::CJasonOW(float x, float y) : CPlayer()
 {
 	untouchable = 0;
-	SetState(STATE_IDLE);
 	direction = JASON_OW_ANI_IDLE_DOWN;
 	isSpecialAni = false;
 	isTouchTrap = 0;
@@ -24,7 +23,7 @@ CJasonOW::CJasonOW(float x, float y) : CPlayer()
 	start_y = y;
 	this->x = x;
 	this->y = y;
-	SetState(JASON_OW_STATE_DIE);
+	this->state = JASON_OW_STATE_IDLE;
 }
 
 void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -43,7 +42,7 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
-	if (GetTickCount() - untouchable_start > UNTOUCHABLE_TIME)
+	if (GetTickCount() - untouchable_start > JASON_UNTOUCHABLE_TIME)
 	{
 		untouchable_start = 0;
 		untouchable = 0;
@@ -85,7 +84,7 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (health > 0)
 						StartUntouchable();
 					else
-						SetState(STATE_DIE);
+						SetState(JASON_OW_STATE_DIE);
 				}
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
@@ -175,7 +174,7 @@ void CJasonOW::SetState(int state)
 		direction = JASON_OW_ANI_IDLE_DOWN;
 		break;
 
-	case STATE_IDLE:
+	case JASON_OW_STATE_IDLE:
 		vx = 0;
 		vy = 0;
 		break;
@@ -209,7 +208,7 @@ void CJasonOW::Reset()
 void CJasonOW::KeyRight()
 {
 	vx = WALKING_SPEED;
-	if (state == STATE_IDLE) {
+	if (state == JASON_OW_STATE_IDLE) {
 		SetState(JASON_OW_STATE_WALKING_RIGHT);
 	}
 }
@@ -217,7 +216,7 @@ void CJasonOW::KeyRight()
 void CJasonOW::KeyLeft()
 {
 	vx = -WALKING_SPEED;
-	if (state == STATE_IDLE) {
+	if (state == JASON_OW_STATE_IDLE) {
 		SetState(JASON_OW_STATE_WALKING_LEFT);
 	}
 }
@@ -225,7 +224,7 @@ void CJasonOW::KeyLeft()
 void CJasonOW::KeyDown()
 {
 	vy = WALKING_SPEED;
-	if (state == STATE_IDLE) {
+	if (state == JASON_OW_STATE_IDLE) {
 		SetState(JASON_OW_STATE_WALKING_DOWN);
 	}
 }
@@ -233,7 +232,7 @@ void CJasonOW::KeyDown()
 void CJasonOW::KeyUp()
 {
 	vy = -WALKING_SPEED;
-	if (state == STATE_IDLE) {
+	if (state == JASON_OW_STATE_IDLE) {
 		SetState(JASON_OW_STATE_WALKING_TOP);
 	}
 }
@@ -317,7 +316,7 @@ CJasonOW* CJasonOW::GetInstance()
 void CJasonOW::KeyX()
 {
 	if (isSpecialAni == false && isJump == false)
-		SetState(STATE_JUMP);
+		SetState(JASON_STATE_JUMP);
 }
 
 void CJasonOW::KeySHIFT()

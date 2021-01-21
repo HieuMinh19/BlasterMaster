@@ -23,7 +23,7 @@
 #define JASON_OW_ANI_WALKING_DOWN			7
 #define JASON_OW_ANI_DIE					8
 
-
+#define JASON_OW_UNTOUCHABLE_TIME 1500
 class CJasonOW : public CPlayer
 {
 	static CJasonOW* __instance;

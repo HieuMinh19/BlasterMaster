@@ -34,10 +34,15 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	// Simple fall down
 	if (!isJump) {
-		vy += SOPHIA_GRAVITY * dt;
+		vy += 0.0005 * dt;
 	}
 	else {
-		vy += JUMP_GRAVITY * dt;
+		if (!isJumpWhileWalk) {
+			vy += JUMP_GRAVITY * dt;
+		}
+		else {
+			vy += 0.00058 * dt;
+		}
 	}
 	//Jump checking
 	//DebugOut(L"[INFO] y: %d\n", y);
@@ -50,8 +55,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						vx = SOPHIA_JUMP_WHILE_WALK_SPEED_X;
 					}
 					if (nx < 0) {
-						vx = -1*SOPHIA_JUMP_WHILE_WALK_SPEED_X;
-					}//fix this
+						vx = -SOPHIA_JUMP_WHILE_WALK_SPEED_X;
+					}
 				}
 				else {
 					if (state == SOPHIA_JUMP_BACK_RIGHT) {
@@ -622,7 +627,7 @@ void CSophia::KeySHIFT()
 	if (this->state != SOPHIA_STATE_IDLE)
 		return;
 	CJason* jason = CJason::GetInstance(this->x, this->y);
-	jason->x = this->x + (SOPHIA_BBOX_WIDTH - BBOX_WIDTH) / 2;
+	jason->x = this->x + (SOPHIA_BBOX_WIDTH - SOPHIA_BBOX_WIDTH) / 2;
 	jason->nx = this->nx;
 	jason->y = this->y;
 	jason->inTank = false;

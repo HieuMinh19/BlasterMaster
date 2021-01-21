@@ -49,6 +49,9 @@ int CScene::GetScreenWidth()
 	case SECTION_N_ID:
 		return SECTION_N_MAX_WIDTH;
 		break;
+	case SECTION_OVER_WORD_ID:
+		return SECTION_OVER_WORD_MAX_WIDTH;
+		break;
 	default:
 		return 1024;
 		break;
@@ -97,6 +100,9 @@ int CScene::GetScreenHeight()
 		break;
 	case SECTION_N_ID:
 		return SECTION_N_MAX_HEIGHT;
+		break;
+	case SECTION_OVER_WORD_ID:
+		return SECTION_OVER_WORD_MAX_HEIGHT;
 		break;
 	default:
 		return 1024;

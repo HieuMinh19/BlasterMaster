@@ -557,22 +557,22 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetScreenHeight() / 2;
 	DebugOut(L"sssssssssssssssss %f %f", cx, cy);
 	// start handle limit max and min x_cam, y_cam
-	//CScene* scene = CGame::GetInstance()->GetCurrentScene();
+	CScene* scene = CGame::GetInstance()->GetCurrentScene();
 
-	//int sceneHeight = scene->GetScreenHeight();
-	//int sceneWidth = scene->GetScreenWidth();
+	int sceneHeight = scene->GetScreenHeight();
+	int sceneWidth = scene->GetScreenWidth();
 
-	//if (cx < 0) cx = 0;
+	if (cx < 0) cx = 0;
 
-	//if ((cx + SCREEN_WIDTH) > sceneWidth) {
-	//	cx = sceneWidth - SCREEN_WIDTH;
-	//}
+	if ((cx + SCREEN_WIDTH) > sceneWidth) {
+		cx = sceneWidth - SCREEN_WIDTH;
+	}
 
-	//if ((cy + SCREEN_HEIGHT) > sceneHeight) {
-	//	cy = sceneHeight - SCREEN_HEIGHT;
-	//}
+	if ((cy + SCREEN_HEIGHT) > sceneHeight) {
+		cy = sceneHeight - SCREEN_HEIGHT;
+	}
 
-	//if (cy < 0) cy = 0;
+	if (cy < 0) cy = 0;
 	// end handle limit camera
 
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
@@ -648,14 +648,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
-<<<<<<< HEAD
 	if (player == NULL) return;
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
 	int sceneID = curentScene->getCurrentID();
-	if (sceneID == 99) return;
-=======
+	if (sceneID == END_SCENE) return;
 	if (player->isDie) return;
->>>>>>> feb87fd54f8b38b82b7ee75f301943016d987841
 	switch (KeyCode)
 	{
 	case DIK_A:
