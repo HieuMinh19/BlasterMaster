@@ -22,10 +22,10 @@
 
 class CWorms : public CEnemies
 {
+	DWORD goAt = GetTickCount();
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
-	void CollisionHandleWithBrick(float nx);
 
 public: 	
 	CWorms();
