@@ -59,6 +59,8 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
+		DebugOut(L"x:::: %f \n", x);
+		DebugOut(L"y:::: %f \n", y);
 	}
 	else
 	{
@@ -88,6 +90,13 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						SetState(STATE_DIE);
 				}
 			}
+			else if (dynamic_cast<CPortal*>(e->obj))
+			{
+				CPortal* p = dynamic_cast<CPortal*>(e->obj);
+				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				break;
+			}
+			
 		}
 	}
 

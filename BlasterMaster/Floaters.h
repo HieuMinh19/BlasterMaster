@@ -4,12 +4,13 @@
 #include "Trap.h"
 #include "Utils.h"
 #include "StaticHelpers.h"
+#include "MonsterBullet.h"
 #include "Jason.h"
+
+#define FLOATERS_SPEED_BULLET		0.1f
 
 #define FLOATERS_STATE_HORIZONTAL	100
 #define FLOATERS_STATE_VERTICAL		200
-#define FLOATERS_STATE_GUN_LEFT		300
-#define FLOATERS_STATE_GUN_RIGHT	400
 
 
 #define FLOATERS_ANI_WALKING_LEFT	0
@@ -33,13 +34,12 @@ class CFloaters : public CEnemies
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
-
+	DWORD fireAt = GetTickCount();
 public:
 	CFloaters();
 	CFloaters(float _vx, float _vy);
 	virtual void SetState(int state);
-	void Fire();
-
+	void Fire(float Xp, float Yp, float Xe, float Ye);
 };
 
 

@@ -22,7 +22,7 @@ class CPlayer : public CGameObject
 protected:
 	int untouchable;
 	boolean isSpecialAni;
-	boolean isJump;
+
 	DWORD untouchable_start;
 	int health;
 
@@ -31,6 +31,8 @@ protected:
 
 public:
 	int OBJECT_ID;
+	boolean isJump, isDie;
+	DWORD die_start;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL) = 0;
 	virtual void Render() = 0;
 	virtual void SetState(int state) = 0;

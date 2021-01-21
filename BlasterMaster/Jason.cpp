@@ -22,6 +22,7 @@ CJason::CJason(float x, float y) : CPlayer()
 	start_y = y;
 	this->x = x;
 	this->y = y;
+	isDie = 0;
 	DebugOut(L"[DEBUG] Go to construct: %d\n", health);
 }
 
@@ -53,7 +54,13 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 		alpha = 255;
 	}
-	
+	if (untouchable) {
+		if (GetTickCount() - untouchable_start > DIE_TIME)
+		{
+			untouchable_start = 0;
+			untouchable = 0;
+		}
+	}
 	float min_tx, min_ty, nx = 0, ny;
 	float rdx = 0;
 	float rdy = 0;
@@ -61,7 +68,16 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// TODO: This is a very ugly designed function!!!!
 	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 	// No collision occured, proceed normally
-
+	if (isDie) {
+		vx = 0;
+		vy = 0;
+		state = STATE_DIE;
+	
+		if (GetTickCount() - die_start > DIE_TIME)
+		{
+			CGame::GetInstance()->SwitchScene(END_SCENE);
+		}
+	}
 	if (coEventsResult.size() == 0)
 	{
 		x += dx;
@@ -104,6 +120,28 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CItems* items = dynamic_cast<CItems*>(e->obj);
 				items->hasTaken();
 				health++;
+			}
+			else if (dynamic_cast<CTrap*>(e->obj))
+			{
+				CTrap* trap = dynamic_cast<CTrap*>(e->obj);
+				if (!untouchable && health > 0) {
+					DebugOut(L"[INFO] health: %d\n", health);
+					health = health - 2;
+					untouchable = 1;
+					untouchable_start = GetTickCount();
+				}
+				if (health <= 0 && !isDie) {
+					die_start = GetTickCount();
+					untouchable = 1;
+					health = 0;
+					isDie = 1;
+				}
+			}
+			else if (dynamic_cast<CPortal*>(e->obj))
+			{
+				CPortal* p = dynamic_cast<CPortal*>(e->obj);
+				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				break;
 			}
 		}
 	}

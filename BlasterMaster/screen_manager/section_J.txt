@@ -308,7 +308,7 @@
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 50	448	120	0	476	150	8
-
+50	50	150	0	78	180	20
 # WORMS
 9	110.0	0	6
 # UI
