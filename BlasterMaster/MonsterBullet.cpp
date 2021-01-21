@@ -48,7 +48,7 @@ void CMonsterBullet::GetBoundingBox(float &left, float &top, float &right, float
 
 void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (state == BULLET_STATE_BUMP && GetTickCount() - timeBump >= 20)
+	if (state == BULLET_STATE_BUMP && GetTickCount() - timeBump >= TIME_BUMP)
 	{
 		SetState(OBJECT_STATE_DELETE);
 	}
