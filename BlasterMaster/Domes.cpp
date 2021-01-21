@@ -116,10 +116,6 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 
-		if (x > max_coordinates_X || x < min_coordinates_X)
-		{
-			HandleMaxMinJourneyXWithoutCollision();
-		}
 		if (state != DOMES_STATE_INITIAL)
 		{
 			HandleWithoutObstruction();
@@ -133,9 +129,9 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		//// block every object first!
-		//x += min_tx * dx + nx * 0.4f;
-		//y += min_ty * dy + ny * 0.4f;
+		// block every object first!
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
 
 		//
 		// Collision logic with other objects
@@ -144,21 +140,15 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CPlayer*>(e->obj))
-			{
-				x += min_tx * dx;
-				y += min_ty * dy;
-			}
+			//if (dynamic_cast<CPlayer*>(e->obj))
+			//{
+			//	x += min_tx * dx;
+			//	y += min_ty * dy;
+			//}
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
-
-				if (x > max_coordinates_X || x < min_coordinates_X)
-				{
-					HandleMaxMinJourneyX(vx);
-				}
+				float distance_x = abs(player->x - x);
 				if (state == DOMES_STATE_INITIAL)
 				{
 					SetStateAfterFirstCollision(nx, ny);
@@ -166,7 +156,10 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else
 				{
 					CollisionHandleWithBrick(nx, ny);
-					HandleFlyToJason(player->x, player->y, nx, ny);
+					if (distance_x <= 100)
+					{
+						HandleFlyToJason(player->x, player->y, nx, ny);
+					}
 				}
 
 			}
@@ -183,47 +176,31 @@ void CDomes::Render()
 	RenderBoundingBox();
 }
 
-void CDomes::HandleMaxMinJourneyXWithoutCollision()
-{
-	//if (state == DOMES_STATE_BEFORE_FLY_RIGHT)
-	//{
-	//	SetState(DOMES_STATE_INITIAL);
-	//	vx = -vx;
-	//	vy = 0.05f;
-	//}
-	//if (state == DOMES_STATE_BEFORE_FLY_LEFT)
-	//{
-	//	SetState(DOMES_STATE_INITIAL);
-	//	vx = -vx;
-	//	vy = 0.05f;
-	//}
-}
-
-void CDomes::HandleMaxMinJourneyX(float vx)
-{
-	if (vx > 0)
-	{
-		if (state == DOMES_STATE_RIGHT_UP)
-		{
-			SetState(DOMES_STATE_LEFT_UP);
-		}
-		if (state == DOMES_STATE_LEFT_DOWN)
-		{
-			SetState(DOMES_STATE_RIGHT_DOWN);
-		}
-	}
-	if (vx < 0)
-	{
-		if (state == DOMES_STATE_LEFT_UP)
-		{
-			SetState(DOMES_STATE_RIGHT_UP);
-		}
-		if (state == DOMES_STATE_RIGHT_DOWN)
-		{
-			SetState(DOMES_STATE_LEFT_DOWN);
-		}
-	}
-}
+//void CDomes::HandleMaxMinJourneyX(float vx)
+//{
+//	if (vx > 0)
+//	{
+//		if (state == DOMES_STATE_RIGHT_UP)
+//		{
+//			SetState(DOMES_STATE_LEFT_UP);
+//		}
+//		if (state == DOMES_STATE_LEFT_DOWN)
+//		{
+//			SetState(DOMES_STATE_RIGHT_DOWN);
+//		}
+//	}
+//	if (vx < 0)
+//	{
+//		if (state == DOMES_STATE_LEFT_UP)
+//		{
+//			SetState(DOMES_STATE_RIGHT_UP);
+//		}
+//		if (state == DOMES_STATE_RIGHT_DOWN)
+//		{
+//			SetState(DOMES_STATE_LEFT_DOWN);
+//		}
+//	}
+//}
 
 void CDomes::HandleWithoutObstruction()
 {

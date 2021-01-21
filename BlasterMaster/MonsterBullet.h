@@ -25,7 +25,7 @@ class CMonsterBullet : public CGameObject
 	int timeDestroy;
 	int animation;
 	int animation_bump;
-	DWORD timeBump = GetTickCount();
+	DWORD timeBump;
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();

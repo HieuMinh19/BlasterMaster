@@ -505,6 +505,7 @@ void CPlayScene::Update(DWORD dt)
 		{
 			vector<LPGAMEOBJECT> bulltetCoObjects;
 			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			bulltetCoObjects.insert(bulltetCoObjects.begin(), trapObjects.begin(), trapObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 
 			objects[i]->Update(dt, &bulltetCoObjects);
