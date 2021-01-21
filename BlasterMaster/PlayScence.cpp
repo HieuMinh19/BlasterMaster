@@ -555,7 +555,6 @@ void CPlayScene::Update(DWORD dt)
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
-	DebugOut(L"sssssssssssssssss %f %f", cx, cy);
 	// start handle limit max and min x_cam, y_cam
 	//CScene* scene = CGame::GetInstance()->GetCurrentScene();
 
@@ -648,14 +647,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
-<<<<<<< HEAD
 	if (player == NULL) return;
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
 	int sceneID = curentScene->getCurrentID();
 	if (sceneID == 99) return;
-=======
 	if (player->isDie) return;
->>>>>>> feb87fd54f8b38b82b7ee75f301943016d987841
 	switch (KeyCode)
 	{
 	case DIK_A:

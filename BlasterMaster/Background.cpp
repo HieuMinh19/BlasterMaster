@@ -7,7 +7,6 @@ CBackground::CBackground()
 
 void CBackground::Render()
 {
-	DebugOut(L"aaaaaaaaaaaaa%f %f \n", x, y);
 	animation_set->at(0)->Render(x, y);
 }
 
