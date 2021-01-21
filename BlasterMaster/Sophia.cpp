@@ -24,7 +24,7 @@ CSophia::CSophia(float x, float y) : CPlayer()
 	start_y = y;
 	this->x = x;
 	this->y = y;
-	isDie = 0;
+	isDie = FALSE;
 }
 
 void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -90,6 +90,12 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				ResetJump();
 			}
 		}
+	}
+	if (health <= 0 && !isDie) {
+		die_start = GetTickCount();
+		untouchable = TRUE;
+		health = 0;
+		isDie = TRUE;
 	}
 	if (isDie) {
 		vx = 0;
@@ -163,15 +169,10 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CTrap* trap = dynamic_cast<CTrap*>(e->obj);
 				if (!untouchable && health >0) {
 					health= health-2;
-					untouchable = 1;
+					untouchable = TRUE;
 					untouchable_start = GetTickCount();
 				}
-				if (health <= 0 && !isDie) {
-					die_start = GetTickCount();
-					untouchable = 1;
-					health = 0;
-					isDie = 1;
-				}
+				
 
 			}
 			else if (dynamic_cast<CItems*>(e->obj))
@@ -204,11 +205,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	//Stand up checking
 	if (isMoveUp && !isStandUp) {
-		/*if (!duc) {
-			DebugOut(L"1111111111 \n");
-			y = y - 16;
-			duc = true;
-		}*/
+		
 		if (nx > 0) {
 			state = SOPHIA_STATE_MOVE_UP_RIGHT;
 		}
@@ -263,7 +260,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CSophia::Render()
 {
-	int ani = -1;
+	int ani = 0;
 	if (state == SOPHIA_STATE_DIE) {
 		ani = SOPHIA_ANI_DIE;
 	}
@@ -436,7 +433,7 @@ void CSophia::SetState(int state)
 void CSophia::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	float new_y;
-	new_y = y + 15;
+	new_y = y + SOPHIA_BBOX_UP;
 	left = x;
 	top = y;
 
@@ -553,7 +550,6 @@ void CSophia::KeyUp()
 	if (!isMoveUp) {
 		moveup_start = GetTickCount();
 		isMoveUp = TRUE;
-		//duc = false;
 	}
 	/*else {
 		ResetStandUp();
