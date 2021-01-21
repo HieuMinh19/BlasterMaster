@@ -186,19 +186,19 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 				break;
 			}
-			else if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
-			{
-				 spawnItem(e->obj->x, e->obj->y);
-				e->obj->SetState(OBJECT_STATE_DELETE);			//dirty way.
+			//else if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
+			//{
+			//	 spawnItem(e->obj->x, e->obj->y);
+			//	e->obj->SetState(OBJECT_STATE_DELETE);			//dirty way.
 
-				if (untouchable == 0)
-				{
-					//health--;
-					if (health > 0)
-						StartUntouchable();
-					
-				}
-			}
+			//	if (untouchable == 0)
+			//	{
+			//		//health--;
+			//		if (health > 0)
+			//			StartUntouchable();
+			//		
+			//	}
+			//}
 		}
 	}
 	

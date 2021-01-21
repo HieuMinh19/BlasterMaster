@@ -149,6 +149,15 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->nx != 0) {
 					x -= nx * 0.4f;
 				}
+
+				//start handle substract health
+				CStaticHelpers* helpers = new CStaticHelpers();
+				CPlayer* player = helpers->GetPlayer();
+				player->StartUntouchable();
+				if (player->untouchable) {
+					player->setHealth(player->getHealth() - 1);
+				}
+				
 			}
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))

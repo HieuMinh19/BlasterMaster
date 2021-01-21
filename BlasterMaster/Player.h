@@ -20,7 +20,7 @@
 class CPlayer : public CGameObject
 {
 protected:
-	int untouchable;
+	
 	boolean isSpecialAni;
 
 	DWORD untouchable_start;
@@ -30,6 +30,7 @@ protected:
 	float start_y;
 
 public:
+	int untouchable;
 	int OBJECT_ID;
 	boolean isJump, isDie;
 	DWORD die_start;
