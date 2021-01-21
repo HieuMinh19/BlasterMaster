@@ -29,26 +29,23 @@ CSophia::CSophia(float x, float y) : CPlayer()
 
 void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	
+
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
-
 	// Simple fall down
 	if (!isJump) {
 		vy += 0.0005 * dt;
 	}
 	else {
-		if (!isJumpWhileWalk) {
-			vy += JUMP_GRAVITY * dt;
-		}
-		else {
-			vy += 0.00058 * dt;
-			vx += 0.02 * dt;
-		}
+		vy += 0.00058 * dt;
 	}
 	//Jump checking
-	//DebugOut(L"[INFO] y: %d\n", y);
-	//DebugOut(L"[INFO] jump: %d\n", isJump);
+
+	
 	if (isJump) {
+
+		DebugOut(L"[INFO] Sophia vx: %d\n", vx);
 		if (isJumpWhileWalk) {
 			if (GetTickCount() - jump_start < SOPHIA_JUMP_TIME) {
 				if (!jumpBack) {
@@ -64,7 +61,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						vx = SOPHIA_JUMP_BACK_SPEED_X;
 					}
 					if (state == SOPHIA_JUMP_BACK_LEFT) {
-						vx = -1* SOPHIA_JUMP_BACK_SPEED_X;
+						vx = - SOPHIA_JUMP_BACK_SPEED_X;
 					}
 				}
 			}
@@ -155,7 +152,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				// jump on top >> kill Goomba and deflect a bit 				
-				if (isJump) {
+				if (isJump && vx == 0) {
 					ResetJump();
 				}
 			} // if Player
@@ -481,8 +478,9 @@ void CSophia::ResetStandUp()
 void CSophia::ResetJump()
 {
 	isJump = FALSE;
-	isJumpWhileWalk = FALSE;
-	isWalkAfterJump = FALSE;
+	
+		isJumpWhileWalk = FALSE;
+		isWalkAfterJump = FALSE;
 	jumpBack = FALSE;
 	SetState(SOPHIA_STATE_IDLE);
 	//bug this -> can't add object
@@ -568,6 +566,7 @@ void CSophia::OnKeyUp() {
 	ResetStandUp();
 }
 void CSophia::KeyX() {
+
 	if (!isJump) {
 		isJump = true;
 		jump_start = GetTickCount();

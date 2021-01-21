@@ -153,9 +153,10 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				//start handle substract health
 				CStaticHelpers* helpers = new CStaticHelpers();
 				CPlayer* player = helpers->GetPlayer();
-				player->StartUntouchable();
-				if (player->untouchable) {
+				
+				if (!player->untouchable) {
 					player->setHealth(player->getHealth() - 1);
+					player->StartUntouchable();
 				}
 				
 			}
