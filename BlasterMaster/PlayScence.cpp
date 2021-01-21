@@ -508,6 +508,7 @@ void CPlayScene::Update(DWORD dt)
 		{
 			vector<LPGAMEOBJECT> bulltetCoObjects;
 			bulltetCoObjects.insert(bulltetCoObjects.begin(), brickObjects.begin(), brickObjects.end());
+			bulltetCoObjects.insert(bulltetCoObjects.begin(), trapObjects.begin(), trapObjects.end());
 			bulltetCoObjects.insert(bulltetCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 
 			objects[i]->Update(dt, &bulltetCoObjects);
@@ -647,10 +648,14 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
+<<<<<<< HEAD
 	if (player == NULL) return;
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
 	int sceneID = curentScene->getCurrentID();
 	if (sceneID == 99) return;
+=======
+	if (player->isDie) return;
+>>>>>>> feb87fd54f8b38b82b7ee75f301943016d987841
 	switch (KeyCode)
 	{
 	case DIK_A:
@@ -708,7 +713,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
 	int sceneID = curentScene->getCurrentID();
-	DebugOut(L"[INFO] sceneID: %d\n", sceneID);
 	if (sceneID == 99){
 		return;
 	}
@@ -716,6 +720,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		CGame* game = CGame::GetInstance();
 		CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
 		if (player == NULL) return;
+
+		if (player->isDie) return;
 		if (game->IsKeyDown(DIK_RIGHT))
 			player->KeyRight();
 		else if (game->IsKeyDown(DIK_LEFT))
@@ -725,7 +731,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		else if (game->IsKeyDown(DIK_DOWN))
 			player->KeyDown();
 		else {
-			if (!player->isJump) {
+			if (!player->isJump && !dynamic_cast<CJasonOW *>(player)) {
 				player->SetState(PLAYER_STATE_IDLE);
 			}
 		}

@@ -48,6 +48,11 @@ void CMonsterBullet::GetBoundingBox(float &left, float &top, float &right, float
 
 void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	if (state == BULLET_STATE_BUMP && GetTickCount() - timeBump >= 20)
+	{
+		SetState(OBJECT_STATE_DELETE);
+	}
+
 	if (timeDestroy < GetTickCount() && state != OBJECT_STATE_DELETE)
 	{
 		SetState(OBJECT_STATE_DELETE);
@@ -92,16 +97,18 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
+			if (dynamic_cast<CPlayer*>(e->obj))
+			{
+				x += min_tx * dx;
+				y += min_ty * dy;
+			}
+
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
 				if (nx != 0 || ny != 0)
 				{
 					SetState(BULLET_STATE_BUMP);
-					if (state == BULLET_STATE_BUMP || GetTickCount() - timeBump > 100)
-					{
-						timeBump = GetTickCount();
-						SetState(OBJECT_STATE_DELETE);
-					}
+
 				}
 			}
 		}
@@ -132,6 +139,7 @@ void CMonsterBullet::SetState(int state)
 	case BULLET_DOWN:
 		vy = BULLET_WALKING_SPEED break;
 	case BULLET_STATE_BUMP:
+		timeBump = GetTickCount();
 		animation = animation_bump;
 		break;
 	}

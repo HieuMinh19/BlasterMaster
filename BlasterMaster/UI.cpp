@@ -13,8 +13,8 @@ void CUI::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	game->GetCamY(y);
 	y += LOCATION_Y;
 	x += LOCATION_X;
-	DebugOut(L"[INFO] x cam: %f\n", x);
-	DebugOut(L"[INFO] y cam: %f\n", y);
+	/*DebugOut(L"[INFO] x cam: %f\n", x);
+	DebugOut(L"[INFO] y cam: %f\n", y);*/
 	CStaticHelpers* helpers = new CStaticHelpers();
 	CPlayer* player = helpers->GetPlayer();
 

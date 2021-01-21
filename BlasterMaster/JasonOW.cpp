@@ -24,18 +24,20 @@ CJasonOW::CJasonOW(float x, float y) : CPlayer()
 	start_y = y;
 	this->x = x;
 	this->y = y;
+	SetState(JASON_OW_STATE_DIE);
 }
 
 void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// Calculate dx, dy 
-	
+
 	CGameObject::Update(dt);
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
-
 	coEvents.clear();
-
+	if (health <= 0) {
+		SetState(JASON_OW_STATE_DIE);
+	}
 	// turn off collision when die 
 	if (state != JASON_OW_STATE_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
@@ -117,18 +119,22 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y += min_ty * dy + ny * 0.4f;
 		}
 	}
-	DebugOut(L"isTouchTrap: %f \n", isTouchTrap);
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+
+	if (die_start + 5000 < GetTickCount() && isDie) {
+		CGame::GetInstance()->SwitchScene(END_SCENE);
+	}
 }
 
 void CJasonOW::Render()
 {
-	if (vx == 0 && vy == 0)
+
+	if (vx == 0 && vy == 0 && ani != JASON_OW_ANI_DIE)
 	{
 		ani = direction;
 	}
-	
+
 	if (untouchable) {
 		if (alpha > UNTOUCHABLE_ALPHA)
 			alpha = UNTOUCHABLE_ALPHA;
@@ -143,7 +149,8 @@ void CJasonOW::Render()
 
 void CJasonOW::SetState(int state)
 {
-	CGameObject::SetState(state);
+	if (this->state != JASON_OW_STATE_DIE)
+		CGameObject::SetState(state);
 
 	switch (state)
 	{
@@ -171,6 +178,14 @@ void CJasonOW::SetState(int state)
 	case STATE_IDLE:
 		vx = 0;
 		vy = 0;
+		break;
+
+	case JASON_OW_STATE_DIE:
+		vx = 0;
+		vy = 0;
+		ani = JASON_OW_ANI_DIE;
+		die_start = GetTickCount();
+		isDie = true;
 		break;
 	}
 }

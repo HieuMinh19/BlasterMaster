@@ -55,8 +55,7 @@ class CDomes : public CEnemies
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
-	void HandleMaxMinJourneyXWithoutCollision();
-	void HandleMaxMinJourneyX(float vx);
+	//void HandleMaxMinJourneyX(float vx);
 	void HandleWithoutObstruction();
 	void HandleFlyToJason(float jason_x, float jason_y, float nx, float ny);
 	void SetStateAfterFirstCollision(float nx, float ny);

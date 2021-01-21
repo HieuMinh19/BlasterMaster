@@ -55,9 +55,9 @@ void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 	{
-		// block every object first!
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
+		//// block every object first!
+		//x += min_tx * dx + nx * 0.4f;
+		//y += min_ty * dy + ny * 0.4f;
 
 		//
 		// Collision logic with other objects
@@ -66,9 +66,30 @@ void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
+			if (dynamic_cast<CPlayer*>(e->obj))
+			{
+				x += min_tx * dx;
+				y += min_ty * dy;
+			}
+
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
-				CollisionHandleWithBrick(nx);
+				y += min_ty * dy + ny * 0.4f;
+
+				if (GetTickCount() - goAt > 900)
+				{
+					goAt = GetTickCount();
+					x += min_tx * dx + nx * 4.5f;
+				}
+				else
+				{
+					x += min_tx * dx + nx * 0.4f;
+				}
+
+				if (nx != 0)
+				{
+					vy = -0.03;
+				}
 			}
 		}
 	}
@@ -83,12 +104,4 @@ void CWorms::Render()
 	int ani = vx > 0 ? WORMS_ANI_WALKING_RIGHT : WORMS_ANI_WALKING_LEFT;
 	animation_set->at(ani)->Render(x, y);
 	RenderBoundingBox();
-}
-
-void CWorms::CollisionHandleWithBrick(float nx)
-{
-	if (nx != 0)
-	{
-		vy = -0.03;
-	}
 }
