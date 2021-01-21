@@ -418,7 +418,7 @@ void CPlayScene::Update(DWORD dt)
 		//start phan hoach khong gian
 		if (player != NULL) {
 			float pos = abs(player->x - objects[i]->x);
-			if (pos > SCREEN_WIDTH && dynamic_cast<CUI*>(objects[i])) continue;
+			if (pos > SCREEN_WIDTH && !dynamic_cast<CUI*>(objects[i])) continue;
 		}
 		// end phan hoach khong gian
 
@@ -596,7 +596,7 @@ void CPlayScene::Render()
 		float pos = abs(player->x - objects[i]->x);
 		if (!dynamic_cast<CBackground*>(objects[i]))
 		{
-			if (pos > SCREEN_WIDTH && dynamic_cast<CUI*>(objects[i])) continue;
+			if (pos > SCREEN_WIDTH && !dynamic_cast<CUI*>(objects[i])) continue;
 		}
 		// end phan hoach khong gian
 		objects[i]->Render();
