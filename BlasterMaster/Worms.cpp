@@ -55,9 +55,9 @@ void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 	{
-		//// block every object first!
-		//x += min_tx * dx + nx * 0.4f;
-		//y += min_ty * dy + ny * 0.4f;
+		// block every object first!
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
 
 		//
 		// Collision logic with other objects
@@ -68,22 +68,22 @@ void CWorms::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CPlayer*>(e->obj))
 			{
-				x += min_tx * dx;
-				y += min_ty * dy;
+				if (e->ny != 0) {
+					y -= ny * 0.4f;
+				}
+				if (e->nx != 0) {
+					x -= nx * 0.4f;
+				}
+
 			}
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
-				y += min_ty * dy + ny * 0.4f;
 
 				if (GetTickCount() - goAt > 900)
 				{
 					goAt = GetTickCount();
 					x += min_tx * dx + nx * 4.5f;
-				}
-				else
-				{
-					x += min_tx * dx + nx * 0.4f;
 				}
 
 				if (nx != 0)
