@@ -170,7 +170,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BRICK:
 	{
-		DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
 		int width = atof(tokens[4].c_str());
 		int height = atof(tokens[5].c_str());
 		obj = new CBrick(height, width);
@@ -574,7 +573,7 @@ void CPlayScene::Update(DWORD dt)
 
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
 	int sceneID = curentScene->getCurrentID();
-	DebugOut(L"[INFO] sceneID: %d\n", sceneID);
+	//DebugOut(L"[INFO] sceneID: %d\n", sceneID);
 	if (sceneID == 99) {
 	CGame::GetInstance()->SetCamPos(0, 0);
 	}

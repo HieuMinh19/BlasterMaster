@@ -15,6 +15,7 @@ CJasonOW::CJasonOW(float x, float y) : CPlayer()
 	untouchable = 0;
 	SetState(STATE_IDLE);
 	isSpecialAni = false;
+	isTouchTrap = 0;
 	alpha = 255;
 	health = JASON_MAX_HEALTH;
 	start_x = x;
@@ -27,7 +28,7 @@ CJasonOW::CJasonOW(float x, float y) : CPlayer()
 void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	// Calculate dx, dy 
-
+	
 	CGameObject::Update(dt);
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -58,17 +59,12 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-		DebugOut(L"x:::: %f \n", x);
-		DebugOut(L"y:::: %f \n", y);
+		//DebugOut(L"x:::: %f \n", x);
+		//DebugOut(L"y:::: %f \n", y);
 	}
 	else
 	{
-		// block every object first!
-		x += min_tx * dx + nx * 0.4f;
-		y += min_ty * dy + ny * 0.4f;
-
-		if (nx != 0) vx = 0;
-		if (ny != 0) vy = 0;
+		
 
 		//start collision with worm
 		for (UINT i = 0; i < coEventsResult.size(); i++)
@@ -95,10 +91,32 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
 				break;
 			}
+			else if (dynamic_cast<CTrap*>(e->obj))
+			{
+				if (isTouchTrap == 0) {
+					isTouchTrap = 1;
+				}
+				break;
+			}
+			
 			
 		}
+		// block every object first!
+		
+		
+		if (nx != 0) vx = 0;
+		if (ny != 0) vy = 0;
+		if (isTouchTrap == 1) {
+			isTouchTrap = 0;
+			x += min_tx * dx;
+			y += min_ty * dy;
+		}
+		else {
+			x += min_tx * dx + nx * 0.4f;
+			y += min_ty * dy + ny * 0.4f;
+		}
 	}
-
+	DebugOut(L"isTouchTrap: %f \n", isTouchTrap);
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }

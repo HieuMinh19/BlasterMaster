@@ -2,8 +2,9 @@
 
 CTrap::CTrap(int bboxHeight, int bboxWidth)
 {
-	this->btrapWidth = bboxHeight;
-	this->btrapWidth = bboxWidth;
+	
+		this->trapboxHeight = bboxHeight;
+		this->trapboxWidth = bboxWidth;
 }
 
 void CTrap::Render()
@@ -16,6 +17,6 @@ void CTrap::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
-	r = x + this->btrapWidth;
-	b = y + this->btrapHeight;
+	r = x + this->trapboxWidth;
+	b = y + this->trapboxHeight;
 }
