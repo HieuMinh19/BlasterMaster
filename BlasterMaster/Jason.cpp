@@ -396,3 +396,12 @@ void CJason::GetOut()
 	this->vy = -JUMP_CHANGE_PLAYER_SPEED;
 	isJump = true;
 }
+
+void CJason::OnKeyUpLeft()
+{
+
+}
+void CJason::OnKeyUpRight()
+{
+
+}

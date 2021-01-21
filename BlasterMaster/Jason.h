@@ -76,7 +76,8 @@ public:
 	void KeySHIFT();
 	void Reset();
 	void GetOut();
-
+	void OnKeyUpRight();
+	void OnKeyUpLeft();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void fire(vector<LPGAMEOBJECT> &objects);
 

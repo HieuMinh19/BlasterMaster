@@ -407,8 +407,11 @@ void CPlayScene::Update(DWORD dt)
 
 	CStaticHelpers *helpers = new CStaticHelpers();
 	CPlayer *player = helpers->GetPlayer();
-	float xPlayer, yPlayer;
-	player->GetPosition(xPlayer, yPlayer);
+	if(player != NULL){
+		float xPlayer, yPlayer;
+		player->GetPosition(xPlayer, yPlayer);
+	
+	}
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -551,7 +554,7 @@ void CPlayScene::Update(DWORD dt)
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
-
+	DebugOut(L"sssssssssssssssss %f %f", cx, cy);
 	// start handle limit max and min x_cam, y_cam
 	//CScene* scene = CGame::GetInstance()->GetCurrentScene();
 
@@ -575,7 +578,7 @@ void CPlayScene::Update(DWORD dt)
 	int sceneID = curentScene->getCurrentID();
 	//DebugOut(L"[INFO] sceneID: %d\n", sceneID);
 	if (sceneID == 99) {
-	CGame::GetInstance()->SetCamPos(0, 0);
+		CGame::GetInstance()->SetCamPos(0, 0);
 	}
 	else {
 		CGame::GetInstance()->SetCamPos(cx, cy);
@@ -587,12 +590,13 @@ void CPlayScene::Render()
 {
 	for (int i = 0; i < objects.size(); i++) {
 		// start phan hoach khong gian
-		if (player != NULL) {
-			float pos = abs(player->x - objects[i]->x);
-			if (!dynamic_cast<CBackground*>(objects[i]))
-			{
-				if (pos > SCREEN_WIDTH && dynamic_cast<CUI*>(objects[i])) continue;
-			}
+		if (player == NULL) {
+			return;
+		}
+		float pos = abs(player->x - objects[i]->x);
+		if (!dynamic_cast<CBackground*>(objects[i]))
+		{
+			if (pos > SCREEN_WIDTH && dynamic_cast<CUI*>(objects[i])) continue;
 		}
 		// end phan hoach khong gian
 		objects[i]->Render();
@@ -618,6 +622,12 @@ void CPlayScene::Unload()
 			json->~CJason();
 			continue;
 		}
+		if (dynamic_cast<CJasonOW*>(objects[i]))
+		{
+			CJasonOW* jsonOW = CJasonOW::GetInstance();
+			jsonOW->~CJasonOW();
+			continue;
+		}
 		//DebugOut(L"[INDEX] object index %d\n", i);
 		delete objects[i];
 	}
@@ -637,6 +647,10 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
+	if (player == NULL) return;
+	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
+	int sceneID = curentScene->getCurrentID();
+	if (sceneID == 99) return;
 	switch (KeyCode)
 	{
 	case DIK_A:
@@ -670,6 +684,10 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 {
 	vector<LPGAMEOBJECT> objects = ((CPlayScene *)scence)->GetObjects();
 	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
+	if (player == NULL) return;
+	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
+	int sceneID = curentScene->getCurrentID();
+	if (sceneID == 99) return;
 	if (dynamic_cast<CJasonOW *>(player))
 	{
 		player->SetState(PLAYER_STATE_IDLE);
@@ -678,6 +696,10 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	{
 	case DIK_UP:
 		player->OnKeyUp();
+	case DIK_LEFT:
+		player->OnKeyUpLeft();
+	case DIK_RIGHT:
+		player->OnKeyUpRight();
 		break;
 	}
 }
@@ -693,6 +715,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	else {
 		CGame* game = CGame::GetInstance();
 		CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
+		if (player == NULL) return;
 		if (game->IsKeyDown(DIK_RIGHT))
 			player->KeyRight();
 		else if (game->IsKeyDown(DIK_LEFT))

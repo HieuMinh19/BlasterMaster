@@ -5,7 +5,7 @@
 #include "Config.h"
 #define SOPHIA_WALKING_SPEED		0.15f 
 //0.1f
-#define SOPHIA_JUMP_SPEED_Y		0.25f
+#define SOPHIA_JUMP_SPEED_Y		0.2f
 #define SOPHIA_JUMP_DEFLECT_SPEED 0.2f
 #define SOPHIA_GRAVITY			0.002f
 #define SOPHIA_DIE_DEFLECT_SPEED	 0.5f
@@ -88,7 +88,7 @@ class CSophia : public CPlayer
 	float start_y;
 public:
 	int hover;
-	boolean isMoveUp, isStandUp, isJumpWhileWalk, isWalkAfterJump, jumpBack;
+	boolean isMoveUp, isStandUp, isJumpWhileWalk, isWalkAfterJump, jumpBack, isTouchBrick;
 	DWORD jump_start, moveup_start;
 	CSophia(float x = 0.0f, float y = 0.0f);
 	void spawnItem(float x, float y);
@@ -109,7 +109,8 @@ public:
 	void KeyX();
 	void KeyZ();
 	void KeySHIFT();
-
+	void OnKeyUpRight();
+	void OnKeyUpLeft();
 	
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	static CSophia* GetInstance(float x, float y);
