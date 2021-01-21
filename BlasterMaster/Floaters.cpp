@@ -78,7 +78,7 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		float distance_y = abs(player->y - y);
 		if (distance_x <= FLOATERS_MAX_DISTANCE)
 		{
-			if (GetTickCount() - fireAt > 1200) 
+			if (GetTickCount() - fireAt > 1500) 
 			{
 				fireAt = GetTickCount();
 				Fire(player->x, player->y, x, y);
@@ -143,12 +143,12 @@ void CFloaters::Fire(float Xp, float Yp, float Xe, float Ye)
 	if (Xp < Xe)
 	{
 		ani = FLOATERS_ANI_GUN_LEFT;
-		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_LEFT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
+		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_LEFT, FLOATERS_ANI_BUMP_LEFT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
 	}
 	else
 	{
 		ani = FLOATERS_ANI_GUN_RIGHT;
-		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_RIGHT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
+		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_RIGHT, FLOATERS_ANI_BUMP_RIGHT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
 	}
 	// General object setup
 	obj->SetPosition(x + FLOATERS_BBOX_WIDTH/2, y + FLOATERS_BBOX_HEIGHT + 1);
