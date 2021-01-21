@@ -140,11 +140,16 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			//if (dynamic_cast<CPlayer*>(e->obj))
-			//{
-			//	x += min_tx * dx;
-			//	y += min_ty * dy;
-			//}
+			if (dynamic_cast<CPlayer*>(e->obj))
+			{
+				if (e->ny != 0) {
+					y -= ny * 0.4f;
+				}
+				if (e->nx != 0) {
+					x -= nx * 0.4f;
+				}
+			
+			}
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{

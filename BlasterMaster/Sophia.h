@@ -87,6 +87,7 @@ class CSophia : public CPlayer
 	float start_x;			// initial position of SOPHIA at scene
 	float start_y;
 public:
+	boolean duc = false;
 	int hover;
 	boolean isMoveUp, isStandUp, isJumpWhileWalk, isWalkAfterJump, jumpBack;
 	DWORD jump_start, moveup_start;

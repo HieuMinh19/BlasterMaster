@@ -99,9 +99,9 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else
 	{
 		//DebugOut(L"AFTER FILLTER ny: %f \n", ny);
-		//// block every object first!
-		//x += min_tx * dx + nx * 0.4f;
-		//y += min_ty * dy + ny * 0.4f;
+		// block every object first!
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
 
 		//
 		// Collision logic with other objects
@@ -112,15 +112,16 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CPlayer*>(e->obj))
 			{
-				x += min_tx * dx;
-				y += min_ty * dy;
+				if (e->ny != 0) {
+					y -= ny * 0.4f;
+				}
+				if (e->nx != 0) {
+					x -= nx * 0.4f;
+				}
 			}
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
-
 				if (nx != 0)
 				{
 					SetState(FLOATERS_STATE_HORIZONTAL);
@@ -160,7 +161,7 @@ void CFloaters::Fire(float Xp, float Yp, float Xe, float Ye)
 		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_RIGHT, FLOATERS_ANI_BUMP_RIGHT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
 	}
 	// General object setup
-	obj->SetPosition(x + FLOATERS_BBOX_WIDTH/2, y + FLOATERS_BBOX_HEIGHT + 1);
+	obj->SetPosition(x + FLOATERS_BBOX_WIDTH / 2, y + FLOATERS_BBOX_HEIGHT / 2);
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_FLOATERS);
 
 	obj->SetAnimationSet(ani_set);

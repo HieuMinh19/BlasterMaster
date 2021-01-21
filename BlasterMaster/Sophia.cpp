@@ -199,6 +199,11 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	//Stand up checking
 	if (isMoveUp && !isStandUp) {
+		/*if (!duc) {
+			DebugOut(L"1111111111 \n");
+			y = y - 16;
+			duc = true;
+		}*/
 		if (nx > 0) {
 			state = SOPHIA_STATE_MOVE_UP_RIGHT;
 		}
@@ -274,6 +279,7 @@ void CSophia::Render()
 						ani = SOPHIA_ANI_IDLE_RIGHT;
 					}
 					else if (state == SOPHIA_STATE_MOVE_UP_RIGHT) {
+						// y = y - 16;
 						ani = SOPHIA_ANI_MOVE_UP_RIGHT;
 					}
 					else if (state == SOPHIA_STATE_STAND_UP_RIGHT) {
@@ -338,7 +344,8 @@ void CSophia::Render()
 	}
 	int alpha = 255;
 	if (untouchable) alpha = 128;
-	animation_set->at(ani)->Render(x, y, alpha);
+	
+	animation_set->at(ani)->Render(x, y -16, alpha);
 	RenderBoundingBox();
 }
 
@@ -427,12 +434,17 @@ void CSophia::GetBoundingBox(float& left, float& top, float& right, float& botto
 	float new_y;
 	new_y = y + 15;
 	left = x;
-	top = new_y;
+	top = y;
 
 	if (level == SOPHIA_LEVEL_NORMAL)
 	{
 		right = x + SOPHIA_BBOX_WIDTH;
-		bottom = new_y + SOPHIA_BBOX_HEIGHT;
+		bottom = y + SOPHIA_BBOX_HEIGHT;
+	/*	right = x + SOPHIA_BBOX_WIDTH;
+		bottom = y + SOPHIA_BBOX_HEIGHT;*/
+		/* if (state == SOPHIA_STATE_MOVE_UP_RIGHT || state == SOPHIA_STATE_MOVE_UP_LEFT) {
+			bottom = new_y + SOPHIA_BBOX_HEIGHT;
+		}*/
 	}
 	else {
 		right = x + SOPHIA_MOVE_UP_BBOX_WIDTH;
@@ -537,6 +549,7 @@ void CSophia::KeyUp()
 	if (!isMoveUp) {
 		moveup_start = GetTickCount();
 		isMoveUp = TRUE;
+		//duc = false;
 	}
 	/*else {
 		ResetStandUp();
@@ -590,7 +603,7 @@ void CSophia::KeyZ()
 		obj = new CBullet(nx, ANI_SOPHIA_LEFT);
 		// General object setup
 		if (nx > 0)
-			obj->SetPosition(x + SOPHIA_BBOX_WIDTH - 5, y + CANNON_Y);
+			obj->SetPosition(x + SOPHIA_BBOX_WIDTH -21, y + CANNON_Y);
 		else
 			obj->SetPosition(x, y + CANNON_Y);
 

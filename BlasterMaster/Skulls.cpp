@@ -23,6 +23,7 @@ void CSkulls::SetState(int state)
 		else
 		{
 			ani = SKULLS_ANI_RIGHT;
+			vx = -SKULLS_SPEED_HORIZONTAL;
 		}
 		break;
 	case SKULLS_STATE_VERTICAL:
@@ -34,6 +35,7 @@ void CSkulls::SetState(int state)
 		vx = 0;
 		vy = 0;
 		ani = SKULLS_ANI_GUN_RIGHT;
+
 		break;
 	}
 }
@@ -70,17 +72,18 @@ void CSkulls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 		float distance_x = abs(player->x - x);
-		if (distance_x < 1.0f)
+		/*if (distance_x < 16.0f)
 		{
 			if (state == SKULLS_STATE_HORIZONTAL)
 			{
+				DebugOut(L"Gujnnnnnnnnnnnnnnnnnn \n");
 				SetState(SKULLS_STATE_GUN);
 			}
 			else
 			{
 				SetState(SKULLS_STATE_VERTICAL);
 			}
-		}
+		}*/
 	}
 	else
 	{
@@ -96,8 +99,19 @@ void CSkulls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
+			if (dynamic_cast<CPlayer*>(e->obj))
+			{
+				if (e->ny != 0) {
+					y -= ny * 0.4f;
+				}
+				if (e->nx != 0) {
+					x -= nx * 0.4f;
+				}
+			}
+
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
+				x += dx;
 				if (nx != 0)
 				{
 				}
