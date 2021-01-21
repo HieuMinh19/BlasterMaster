@@ -27,6 +27,9 @@ void CUI::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		state = jason->getHealth();
 		//int a = CJason::GetInstance()->getHealth(state);
 	}
+	if (state < 0) {
+		state = 0;
+	}
 }
 void CUI::Render()
 {
