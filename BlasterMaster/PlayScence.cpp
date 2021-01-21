@@ -637,6 +637,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CPlayer *player = ((CPlayScene *)scence)->GetPlayer();
+	if (player->isDie) return;
 	switch (KeyCode)
 	{
 	case DIK_A:
@@ -686,13 +687,14 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
 	int sceneID = curentScene->getCurrentID();
-	DebugOut(L"[INFO] sceneID: %d\n", sceneID);
 	if (sceneID == 99){
 		return;
 	}
 	else {
 		CGame* game = CGame::GetInstance();
 		CPlayer* player = ((CPlayScene*)scence)->GetPlayer();
+
+		if (player->isDie) return;
 		if (game->IsKeyDown(DIK_RIGHT))
 			player->KeyRight();
 		else if (game->IsKeyDown(DIK_LEFT))
@@ -702,7 +704,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		else if (game->IsKeyDown(DIK_DOWN))
 			player->KeyDown();
 		else {
-			if (!player->isJump) {
+			if (!player->isJump && !dynamic_cast<CJasonOW *>(player)) {
 				player->SetState(PLAYER_STATE_IDLE);
 			}
 		}

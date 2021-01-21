@@ -21,6 +21,7 @@
 #define JASON_OW_ANI_WALKING_LEFT			5
 #define JASON_OW_ANI_WALKING_TOP			6
 #define JASON_OW_ANI_WALKING_DOWN			7
+#define JASON_OW_ANI_DIE					8
 
 
 class CJasonOW : public CPlayer
