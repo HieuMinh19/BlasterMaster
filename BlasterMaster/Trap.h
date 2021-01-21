@@ -6,11 +6,11 @@
 
 class CTrap : public CGameObject
 {
+
+	int trapboxWidth = TRAP_BBOX_WIDTH;
+	int trapboxHeight = TRAP_BBOX_HEIGHT;
 public:
-	int btrapWidth = TRAP_BBOX_WIDTH;
-	int btrapHeight = TRAP_BBOX_HEIGHT;
-public:
-	CTrap(int btrapHeight, int btrapWidth);
+	CTrap(int bboxHeight, int bboxWidth);
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 	void SetBBox(int width, int height);

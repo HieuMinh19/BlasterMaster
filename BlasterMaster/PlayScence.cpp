@@ -170,7 +170,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BRICK:
 	{
-		DebugOut(L"[BBOX] token size: %d\n", tokens[4]);
 		int width = atof(tokens[4].c_str());
 		int height = atof(tokens[5].c_str());
 		obj = new CBrick(height, width);
@@ -554,27 +553,27 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetScreenHeight() / 2;
 
 	// start handle limit max and min x_cam, y_cam
-	CScene* scene = CGame::GetInstance()->GetCurrentScene();
+	//CScene* scene = CGame::GetInstance()->GetCurrentScene();
 
-	int sceneHeight = scene->GetScreenHeight();
-	int sceneWidth = scene->GetScreenWidth();
+	//int sceneHeight = scene->GetScreenHeight();
+	//int sceneWidth = scene->GetScreenWidth();
 
-	if (cx < 0) cx = 0;
+	//if (cx < 0) cx = 0;
 
-	if ((cx + SCREEN_WIDTH) > sceneWidth) {
-		cx = sceneWidth - SCREEN_WIDTH;
-	}
+	//if ((cx + SCREEN_WIDTH) > sceneWidth) {
+	//	cx = sceneWidth - SCREEN_WIDTH;
+	//}
 
-	if ((cy + SCREEN_HEIGHT) > sceneHeight) {
-		cy = sceneHeight - SCREEN_HEIGHT;
-	}
+	//if ((cy + SCREEN_HEIGHT) > sceneHeight) {
+	//	cy = sceneHeight - SCREEN_HEIGHT;
+	//}
 
-	if (cy < 0) cy = 0;
+	//if (cy < 0) cy = 0;
 	// end handle limit camera
 
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
 	int sceneID = curentScene->getCurrentID();
-	DebugOut(L"[INFO] sceneID: %d\n", sceneID);
+	//DebugOut(L"[INFO] sceneID: %d\n", sceneID);
 	if (sceneID == 99) {
 	CGame::GetInstance()->SetCamPos(0, 0);
 	}

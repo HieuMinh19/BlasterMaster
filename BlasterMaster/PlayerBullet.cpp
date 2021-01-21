@@ -12,6 +12,15 @@ CBullet::CBullet(float playerNX, int ani) : CGameObject()
 	this->x = x;
 	this->y = y;
 }
+CBullet::CBullet(int state, int animation, bool brokenBrick = false)
+{
+	animation = animation;
+	brokenBrick = brokenBrick;
+	SetState(state);
+	timeDestroy = GetTickCount() + TIME_LIVE;
+	this->x = x;
+	this->y = y;
+}
 void CBullet::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
@@ -22,12 +31,13 @@ void CBullet::GetBoundingBox(float &left, float &top, float &right, float &botto
 
 void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	DebugOut(L"[RENDER INFO]this is render\n");
-	if (timeDestroy < GetTickCount() && state == BULLET_STATE_FLYING) {
+	
+	if (timeDestroy < GetTickCount() && state != BULLET_STATE_DESTROY && state != OBJECT_STATE_DELETE) {
+		timeDestroy = GetTickCount();
 		SetState(BULLET_STATE_DESTROY);
 	}
 	if (timeDestroy + TIME_ANI_DESTROY < GetTickCount() && state == BULLET_STATE_DESTROY) {
-		SetState(OBJECT_STATE_DELETE);
+		SetState(OBJECT_STATE_DELETE);	
 	}
 	CGameObject::Update(dt, coObjects);
 	//
@@ -50,6 +60,7 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	else
 	{
 		vx = 0;
+		vy = 0;
 
 		float min_tx, min_ty, nx = 0, ny;
 		float rdx = 0;
@@ -86,7 +97,7 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CBullet::Render()
 {
 	int ani = 0;
-	if (state == BULLET_STATE_FLYING)
+	if (state!= BULLET_STATE_DESTROY)
 		ani = animation;
 	else
 		ani = ANI_DESTROY;
@@ -110,9 +121,32 @@ void CBullet::SetState(int state)
 			vy = -BULLET_WALKING_SPEED;
 		}
 		break;
+
+	case BULLET_STATE_RIGHT:
+		vx = BULLET_WALKING_SPEED;
+		vy = 0;
+		break;
+
+	case BULLET_STATE_LEFT:
+		vx = -BULLET_WALKING_SPEED;
+		vy = 0;
+		break;
+
+	case BULLET_STATE_UP:
+		vy = -BULLET_WALKING_SPEED;
+		vx = 0;
+		break;
+
+	case BULLET_STATE_DOWN:
+		vy = BULLET_WALKING_SPEED;
+		vx = 0;
+		break;
+
 	case BULLET_STATE_DESTROY:
 		vx = 0;
+		vy = 0;
 		y -= BULLET_BBOX_HEIGHT;
+		x -= BULLET_BBOX_WIDTH;
 		break;
 	}
 }

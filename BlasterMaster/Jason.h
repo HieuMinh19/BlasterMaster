@@ -57,6 +57,7 @@ class CJason : public CPlayer
 	
 	float start_x;			// initial position of Mario at scene
 	float start_y;
+
 public:
 	boolean inTank, isCrawl;
 	CJason(float x = 0.0f, float y = 0.0f);
