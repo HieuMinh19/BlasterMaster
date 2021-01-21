@@ -14,12 +14,13 @@ CJasonOW::CJasonOW(float x, float y) : CPlayer()
 {
 	untouchable = 0;
 	SetState(STATE_IDLE);
+	direction = JASON_OW_ANI_IDLE_DOWN;
 	isSpecialAni = false;
 	alpha = 255;
 	health = JASON_MAX_HEALTH;
+	brokenBrick = true;
 	start_x = x;
 	start_y = y;
-	ny = -1;
 	this->x = x;
 	this->y = y;
 }
@@ -96,30 +97,10 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CJasonOW::Render()
 {
-	int ani = 0;
-
-	if (vx == 0)
+	if (vx == 0 && vy == 0)
 	{
-		if (ny == 0) {
-			if (nx > 0)
-				ani = JASON_OW_ANI_IDLE_RIGHT;
-			else
-				ani = JASON_OW_ANI_IDLE_LEFT;
-		}
-		else if (vy == 0) 
-		{
-			if(ny > 0) ani = JASON_OW_ANI_IDLE_DOWN;
-			else if (ny < 0) ani = JASON_OW_ANI_IDLE_TOP;
-		}
-		else if (ny > 0) 
-			ani = JASON_OW_ANI_WALKING_DOWN;
-		else 
-			ani = JASON_OW_ANI_WALKING_TOP;
+		ani = direction;
 	}
-	else if (vx > 0)
-		ani = JASON_OW_ANI_WALKING_RIGHT;
-	else
-		ani = JASON_OW_ANI_WALKING_LEFT;
 	
 	if (untouchable) {
 		if (alpha > UNTOUCHABLE_ALPHA)
@@ -140,29 +121,26 @@ void CJasonOW::SetState(int state)
 	switch (state)
 	{
 	case JASON_OW_STATE_WALKING_RIGHT:
-		vx = WALKING_SPEED;
-		vy = 0;
-		nx = 1;
-		ny = 0;
+		ani = JASON_OW_ANI_WALKING_RIGHT;
+		direction = JASON_OW_ANI_IDLE_RIGHT;
 		break;
+
 	case JASON_OW_STATE_WALKING_LEFT:
-		vx = -WALKING_SPEED;
-		vy = 0;
-		nx = -1;
-		ny = 0;
+		ani = JASON_OW_ANI_WALKING_LEFT;
+		direction = JASON_OW_ANI_IDLE_LEFT;
 		break;
+
 	case JASON_OW_STATE_WALKING_TOP:
-		vy = -WALKING_SPEED;
-		vx = 0;
-		ny = -1;
-		nx = 0;
+		ani = JASON_OW_ANI_WALKING_TOP;
+		direction = JASON_OW_ANI_IDLE_TOP;
+
 		break;
+
 	case JASON_OW_STATE_WALKING_DOWN:
-		vy = WALKING_SPEED;
-		vx = 0;
-		ny = 1;
-		nx = 0;
+		ani = JASON_OW_ANI_WALKING_DOWN;
+		direction = JASON_OW_ANI_IDLE_DOWN;
 		break;
+
 	case STATE_IDLE:
 		vx = 0;
 		vy = 0;
@@ -188,26 +166,34 @@ void CJasonOW::Reset()
 
 void CJasonOW::KeyRight()
 {
-	if (vy != 0) return;
-	SetState(JASON_OW_STATE_WALKING_RIGHT);
+	vx = WALKING_SPEED;
+	if (state == STATE_IDLE) {
+		SetState(JASON_OW_STATE_WALKING_RIGHT);
+	}
 }
 
 void CJasonOW::KeyLeft()
 {
-	if (vy != 0) return;
-	SetState(JASON_OW_STATE_WALKING_LEFT);
+	vx = -WALKING_SPEED;
+	if (state == STATE_IDLE) {
+		SetState(JASON_OW_STATE_WALKING_LEFT);
+	}
 }
 
 void CJasonOW::KeyDown()
 {
-	if (vx != 0) return;
-	SetState(JASON_OW_STATE_WALKING_DOWN);
+	vy = WALKING_SPEED;
+	if (state == STATE_IDLE) {
+		SetState(JASON_OW_STATE_WALKING_DOWN);
+	}
 }
 
 void CJasonOW::KeyUp()
 {
-	if (vx != 0) return;
-	SetState(JASON_OW_STATE_WALKING_TOP);
+	vy = -WALKING_SPEED;
+	if (state == STATE_IDLE) {
+		SetState(JASON_OW_STATE_WALKING_TOP);
+	}
 }
 
 void CJasonOW::KeyZ()
@@ -215,10 +201,38 @@ void CJasonOW::KeyZ()
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject *obj = NULL;
-	obj = new CBullet(nx, ANI_JASON);
+	int bState;
+	float bx = x;
+	float by = y;
+
+	switch (direction)
+	{
+	case JASON_OW_ANI_IDLE_RIGHT:
+		bState = BULLET_STATE_RIGHT;
+		bx += JASON_OW_BBOX_WIDTH;
+		by += JASON_OW_BBOX_HEIGHT/2 -JASON_OW_BBOX_WIDTH /12;
+		break;
+
+	case JASON_OW_ANI_IDLE_LEFT:
+		bState = BULLET_STATE_LEFT;
+		by += JASON_OW_BBOX_HEIGHT / 2 - JASON_OW_BBOX_WIDTH / 12;
+		break;
+
+	case JASON_OW_ANI_IDLE_TOP:
+		bState = BULLET_STATE_UP;
+		bx += (JASON_OW_BBOX_WIDTH - BULLET_BBOX_WIDTH)/2;
+		break;
+
+	case JASON_OW_ANI_IDLE_DOWN:
+		bState = BULLET_STATE_DOWN;
+		bx += (JASON_OW_BBOX_WIDTH - BULLET_BBOX_WIDTH) / 2;
+		by += JASON_OW_BBOX_HEIGHT;
+		break;
+	}
+	obj = new CBullet(bState, ANI_JASON, brokenBrick);
 
 	// General object setup
-	obj->SetPosition(x, y);
+	obj->SetPosition(bx, by);
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 
 	obj->SetAnimationSet(ani_set);
