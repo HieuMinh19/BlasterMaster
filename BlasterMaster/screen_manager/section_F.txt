@@ -455,7 +455,8 @@
 
 # ORBS // 0 -> normal // 1 -> fly to
 34	50	200	34	0.05	0
-
+# UI
+40	100	100	99
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 #section H
@@ -467,5 +468,3 @@
 #section L
 50	24	1224	0	48	1248	16
 
-# UI
-40	100	100	99

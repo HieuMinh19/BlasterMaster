@@ -68,7 +68,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 		else {
-			if (GetTickCount() - jump_start > 500)
+			if (GetTickCount() - jump_start > SOPHIA_WALK_JUMP_TIME)
 			{
 				if (jumpBack) {
 					if (state == SOPHIA_JUMP_BACK_RIGHT) {
@@ -169,12 +169,12 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 
 			}
-			//else if (dynamic_cast<CItems*>(e->obj))
-			//{
-			///*	CItems* items = dynamic_cast<CItems*>(e->obj);
-			//	items->hasTaken();
-			//	health++;*/
-			//}
+			else if (dynamic_cast<CItems*>(e->obj))
+			{
+				CItems* items = dynamic_cast<CItems*>(e->obj);
+				items->hasTaken();
+				//health++;
+			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
@@ -183,8 +183,8 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 			else if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
 			{
-				// spawnItem(e->obj->x, e->obj->y);
-				//e->obj->SetState(OBJECT_STATE_DELETE);			//dirty way.
+				 spawnItem(e->obj->x, e->obj->y);
+				e->obj->SetState(OBJECT_STATE_DELETE);			//dirty way.
 
 				if (untouchable == 0)
 				{
@@ -343,8 +343,7 @@ void CSophia::Render()
 		}
 	}
 	int alpha = 255;
-	if (untouchable) alpha = 128;
-	
+	if (untouchable) alpha = 128;	
 	animation_set->at(ani)->Render(x, y -16, alpha);
 	RenderBoundingBox();
 }
@@ -658,4 +657,12 @@ void CSophia::spawnItem(float x, float y)
 		->GetCurrentScene()
 		)
 		->AddObject(obj);
+}
+void CSophia::OnKeyUpLeft()
+{
+	vx = 0;
+}
+void CSophia::OnKeyUpRight()
+{
+	vx = 0;
 }

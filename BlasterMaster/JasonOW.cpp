@@ -334,3 +334,12 @@ void CJasonOW::OnKeyUp()
 {
 
 }
+
+void CJasonOW::OnKeyUpLeft()
+{
+
+}
+void CJasonOW::OnKeyUpRight()
+{
+
+}

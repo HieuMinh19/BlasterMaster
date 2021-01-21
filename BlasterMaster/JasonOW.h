@@ -52,10 +52,16 @@ public:
 	void Reset();
 	void GetOut();
 	void OnKeyUp();
+	void OnKeyUpRight();
+	void OnKeyUpLeft();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	//
 	void spawnItem(float x, float y);
 	static CJasonOW* GetInstance(float x, float y);
 	static CJasonOW* GetInstance();
+	~CJasonOW() {
+		__instance = NULL;
+	}
+
 };

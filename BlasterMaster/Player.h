@@ -49,6 +49,8 @@ public:
 	virtual void KeyX() = 0;
 	virtual void KeyZ() = 0;
 	virtual void KeySHIFT() = 0;
+	virtual void OnKeyUpRight() = 0;
+	virtual void OnKeyUpLeft() = 0;
 
 	void Reset();
 	int getHealth() { return this->health; }

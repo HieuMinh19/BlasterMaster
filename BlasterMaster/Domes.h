@@ -50,6 +50,7 @@ class CDomes : public CEnemies
 	int ani;
 	int max_coordinates_X;
 	int min_coordinates_X;
+	int touchPlayer;
 	DWORD fly_start_at;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
