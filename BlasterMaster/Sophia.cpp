@@ -42,6 +42,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else {
 			vy += 0.00058 * dt;
+			vx += 0.02 * dt;
 		}
 	}
 	//Jump checking
@@ -162,7 +163,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CTrap* trap = dynamic_cast<CTrap*>(e->obj);
 				if (!untouchable && health >0) {
-					health= health-2;
+					//health= health-2;
 					untouchable = 1;
 					untouchable_start = GetTickCount();
 				}
