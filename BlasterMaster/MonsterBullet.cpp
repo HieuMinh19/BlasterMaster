@@ -12,10 +12,11 @@ CMonsterBullet::CMonsterBullet(float state, int ani) : CGameObject()
 	SetState(state);
 }
 
-CMonsterBullet::CMonsterBullet(int ani, float Xp, float Yp, float Xe, float Ye, float Vb) : CGameObject()
+CMonsterBullet::CMonsterBullet(int ani_bullet, int ani_bump, float Xp, float Yp, float Xe, float Ye, float Vb) : CGameObject()
 {
-	animation = ani;
-	timeDestroy = GetTickCount() + 250000;
+	animation = ani_bullet;
+	animation_bump = ani_bump;
+	timeDestroy = GetTickCount() + 2500;
 	Xp += 10;
 	Yp += 18;
 	float T = (Yp - Ye) == 0 ? 0 : (Xp - Xe) / (Yp - Ye); // T = vx / vy
@@ -87,8 +88,23 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += min_tx * dx + nx * 0.4f;
 		y += min_ty * dy + ny * 0.4f;
 
-		if (nx != 0 || ny != 0)
-			SetState(OBJECT_STATE_DELETE);
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
+			{
+				if (nx != 0 || ny != 0)
+				{
+					SetState(BULLET_STATE_BUMP);
+					if (state == BULLET_STATE_BUMP || GetTickCount() - timeBump > 100)
+					{
+						timeBump = GetTickCount();
+						SetState(OBJECT_STATE_DELETE);
+					}
+				}
+			}
+		}
 	}
 
 	// clean up collision events
@@ -115,32 +131,8 @@ void CMonsterBullet::SetState(int state)
 		vy = -BULLET_WALKING_SPEED break;
 	case BULLET_DOWN:
 		vy = BULLET_WALKING_SPEED break;
-	//case BULLET_DIRECTION:
-	//	Setup();
-	//	break;
+	case BULLET_STATE_BUMP:
+		animation = animation_bump;
+		break;
 	}
 }
-
-//void CMonsterBullet::Setup()
-//{
-//	CStaticHelpers *helpers = new CStaticHelpers();
-//	CPlayer *player = helpers->GetPlayer();
-//	float sinn = player->x - this->x;
-//	float coss = player->y - this->y;
-//	int ox = 1;
-//	int oy = 1;  
-//	if (sinn < 0)
-//	{
-//		ox = -1;
-//		sinn = fabs(sinn);
-//	}
-//	if (coss < 0)
-//	{
-//		oy = -1;
-//		coss = fabs(coss);
-//	}
-//	float v = BULLET_WALKING_SPEED;
-//	double result = atan(sinn / coss);
-//	this->vx = v * ox * sin(result);
-//	this->vy = v * oy * cos(result);
-//}

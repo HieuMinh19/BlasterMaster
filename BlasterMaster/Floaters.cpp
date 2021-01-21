@@ -74,12 +74,17 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		x += dx;
 		y += dy;
 
-		if (GetTickCount() - fireAt > 400) {
-			fireAt = GetTickCount();
-			Fire(player->x, player->y, x, y);
+		float distance_x = abs(player->x - x);
+		float distance_y = abs(player->y - y);
+		if (distance_x <= FLOATERS_MAX_DISTANCE)
+		{
+			if (GetTickCount() - fireAt > 1500) 
+			{
+				fireAt = GetTickCount();
+				Fire(player->x, player->y, x, y);
+			}
 		}
-
-		if (GetTickCount() - fireAt > 300)
+		if (GetTickCount() - fireAt > 400)
 		{
 			if (ani == FLOATERS_ANI_GUN_LEFT)
 			{
@@ -90,7 +95,6 @@ void CFloaters::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				ani = FLOATERS_ANI_WALKING_RIGHT;
 			}
 		}
-
 	}
 	else
 	{
@@ -136,18 +140,18 @@ void CFloaters::Fire(float Xp, float Yp, float Xe, float Ye)
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
 	CGameObject* obj = NULL;
-	if (Xp > Xe)
+	if (Xp < Xe)
 	{
 		ani = FLOATERS_ANI_GUN_LEFT;
-		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_LEFT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
+		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_LEFT, FLOATERS_ANI_BUMP_LEFT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
 	}
 	else
 	{
 		ani = FLOATERS_ANI_GUN_RIGHT;
-		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_RIGHT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
+		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_RIGHT, FLOATERS_ANI_BUMP_RIGHT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
 	}
 	// General object setup
-	obj->SetPosition(x, y);
+	obj->SetPosition(x + FLOATERS_BBOX_WIDTH/2, y + FLOATERS_BBOX_HEIGHT + 1);
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_FLOATERS);
 
 	obj->SetAnimationSet(ani_set);
