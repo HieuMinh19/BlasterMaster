@@ -97,6 +97,12 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		health = 0;
 		isDie = TRUE;
 	}
+
+	// collision with portal and set new position
+	if (this->resetPosition) {
+		this->SetPosition(this->next_x, this->next_y);
+	}
+
 	if (isDie) {
 		vx = 0;
 		vy = 0;
@@ -172,8 +178,6 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					untouchable = TRUE;
 					untouchable_start = GetTickCount();
 				}
-				
-
 			}
 			else if (dynamic_cast<CItems*>(e->obj))
 			{
@@ -185,21 +189,13 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				
+				float new_x, new_y;
+				p->GetPositionPlayer(new_x, new_y);	//set init position player
+				this->SetNextPosition(new_x, new_y);
+				this->resetPosition = true;
 				break;
 			}
-			//else if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
-			//{
-			//	 spawnItem(e->obj->x, e->obj->y);
-			//	e->obj->SetState(OBJECT_STATE_DELETE);			//dirty way.
-
-			//	if (untouchable == 0)
-			//	{
-			//		//health--;
-			//		if (health > 0)
-			//			StartUntouchable();
-			//		
-			//	}
-			//}
 		}
 	}
 	
@@ -642,7 +638,6 @@ void CSophia::KeySHIFT()
 		CGame::GetInstance()
 		->GetCurrentScene()
 		)->SetPlayer(jason);
-
 }
 
 void CSophia::spawnItem(float x, float y)

@@ -205,7 +205,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float r = atof(tokens[4].c_str());
 		float b = atof(tokens[5].c_str());
 		int scene_id = atoi(tokens[6].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
+		float x_player = 0;
+		float y_player = 0;
+		if (tokens.size() >= 7) {
+			x_player = atoi(tokens[7].c_str());
+			y_player = atoi(tokens[8].c_str());
+		}
+		
+		obj = new CPortal(x, y, r, b, scene_id, x_player, y_player);
 	}
 	break;
 	//start merge enemies
@@ -255,6 +262,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	// General object setup
 
 	obj->SetPosition(x, y);
+	
+	if (dynamic_cast<CPlayer*>(obj)) {
+		float x, y;
+		obj->GetPosition(x, y);
+		DebugOut(L"Debug position X %f\n", x);
+		DebugOut(L"Debug position Y %f\n", y);
+
+	}
 
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 	obj->SetAnimationSet(ani_set);
@@ -456,8 +471,8 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &playerCoObjects);
+			objects[i]->Update(dt, &playerCoObjects);
+			
 			int afterUpdateScence = _cGame->GetCurrentSceneId();
 			if (beforeUpdateScence != afterUpdateScence) {
 				break;
@@ -523,8 +538,8 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &playerCoObjects);
+			objects[i]->Update(dt, &playerCoObjects);
+			
 			int afterUpdateScence = _cGame->GetCurrentSceneId();
 			if (beforeUpdateScence != afterUpdateScence) {
 				break;
@@ -534,7 +549,6 @@ void CPlayScene::Update(DWORD dt)
 		{
 			vector<LPGAMEOBJECT> playerCoObjects;
 			playerCoObjects.insert(playerCoObjects.begin(), brickObjects.begin(), brickObjects.end());
-			// playerCoObjects.insert(playerCoObjects.end(), enemyObjects.begin(), enemyObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), trapObjects.begin(), trapObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
@@ -593,10 +607,11 @@ void CPlayScene::Render()
 		if (player == NULL) {
 			return;
 		}
-		float pos = abs(player->x - objects[i]->x);
-		if (!dynamic_cast<CBackground*>(objects[i]))
+		float pos_x = abs(player->x - objects[i]->x);
+		float pos_y = abs(player->y - objects[i]->y);
+		if (!dynamic_cast<CBackground*>(objects[i]) && !dynamic_cast<CUI*>(objects[i]))
 		{
-			if (pos > SCREEN_WIDTH && !dynamic_cast<CUI*>(objects[i])) continue;
+			if (pos_x > SCREEN_WIDTH && pos_y > SCREEN_HEIGHT) continue;
 		}
 		// end phan hoach khong gian
 		objects[i]->Render();

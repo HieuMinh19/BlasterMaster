@@ -28,12 +28,15 @@ protected:
 
 	float start_x; // initial position of Mario at scene
 	float start_y;
+	float next_x;
+	float next_y;
 
 public:
 	int untouchable;
 	int OBJECT_ID;
 	boolean isJump, isDie;
 	DWORD die_start;
+	boolean resetPosition = false;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL) = 0;
 	virtual void Render() = 0;
 	virtual void SetState(int state) = 0;
@@ -54,6 +57,8 @@ public:
 	virtual void OnKeyUpLeft() = 0;
 
 	void Reset();
+	void SetNextPosition(float x, float y);
+	void GetNextPosition(float& x, float& y);
 	int getHealth() { return this->health; }
 	void setHealth(int health) { this->health = health; }
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom) = 0;

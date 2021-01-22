@@ -500,8 +500,8 @@
 # --- SCENE PORTAL ----
 # type	left	top	ani_set_id	right	bottom	scene_id
 #Section_C
-50	464	144	0	480	176	10
+50	464	144	0	480	176	10	100	100
 #Section_A
-50	32	1168	0	48	1200	7
+50	32	1168	0	48	1200	7	970	95
 #Section_E
-50	452	880	0	486	916	11
+50	452	880	0	486	916	11	100	100
