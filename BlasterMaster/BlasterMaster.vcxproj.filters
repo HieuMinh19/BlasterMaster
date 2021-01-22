@@ -37,6 +37,7 @@
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Worms.cpp" />
+    <ClCompile Include="HandBoss.cpp" />
     <ClCompile Include="Eyeball.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +79,7 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Worms.h" />
+    <ClInclude Include="HandBoss.h" />
     <ClInclude Include="Eyeball.h" />
   </ItemGroup>
 </Project>

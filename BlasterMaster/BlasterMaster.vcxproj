@@ -147,6 +147,7 @@
     <ClCompile Include="Floaters.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="HandBoss.cpp" />
     <ClCompile Include="Insect.cpp" />
     <ClCompile Include="Intro.cpp" />
     <ClCompile Include="Items.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="Floaters.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="HandBoss.h" />
     <ClInclude Include="Insect.h" />
     <ClInclude Include="Intro.h" />
     <ClInclude Include="Items.h" />

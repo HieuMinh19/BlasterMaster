@@ -45,6 +45,9 @@
 
 #define SECTION_OVER_WORD_MAX_WIDTH		1536
 #define SECTION_OVER_WORD_MAX_HEIGHT	2022
+
+#define SECTION_FINAL_MAX_WIDTH		250
+#define SECTION_FINAL_MAX_HEIGHT	232
 // end define width - height each section
 
 // define id screen (must be map with main.txt file)
@@ -63,7 +66,7 @@
 #define	SECTION_M_ID	17
 #define	SECTION_N_ID	9
 #define	SECTION_OVER_WORD_ID	20
-
+#define	SECTION_FINAL_ID	22
 
 class CScene
 {

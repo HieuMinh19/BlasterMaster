@@ -1,7 +1,7 @@
 
 #pragma once
 #include "GameObject.h"
-
+#include "Boss.h"
 #define BULLET_WALKING_SPEED 0.2f;
 
 #define BULLET_BBOX_WIDTH 5
@@ -32,7 +32,6 @@ class CBullet : public CGameObject
 	int timeDestroy;
 	int animation;
 	bool brokenBrick;
-
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
@@ -40,7 +39,6 @@ class CBullet : public CGameObject
 public:
 	CBullet(float nx, int animation);
 	CBullet(int state, int animation, bool brokenBrick);
-
 	virtual void SetState(int state);
 	void spawnItem(float x, float y);
 };
