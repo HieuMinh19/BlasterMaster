@@ -1,9 +1,5 @@
 [SETTINGS]
-<<<<<<< HEAD
-start	10
-=======
 start	18
->>>>>>> 1a18a4e5f17d037cc5a79b2e42ec50a76e1c8e89
 #scene list
 [SCENES]
 1	screen_manager\scene1.txt
