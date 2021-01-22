@@ -235,6 +235,12 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			state = SOPHIA_STATE_AFTER_JUMP_LEFT;
 		}
 	}
+<<<<<<< HEAD
+
+	DebugOut(L"XXXXXXXXX %f\n", x);
+	DebugOut(L"YYYYYYYY %f\n", y);
+=======
+>>>>>>> 85b74ab08b1518e8a30c69335121c08c332e1de3
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }

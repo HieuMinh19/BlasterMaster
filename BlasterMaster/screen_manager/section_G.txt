@@ -308,7 +308,10 @@
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
-50	32	142	0	64	176	12
+# SECTION F 
+50	32	142	0	64	176	12	312	461
+# OVER WORLD
+50	419	215	0	430	222	20	96	1865
 
 # UI
 40	100	100	99
