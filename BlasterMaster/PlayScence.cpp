@@ -241,6 +241,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BOSS:
 		obj = new CBoss();
+		break;
 	case OBJECT_TYPE_CANNON:
 		obj = new CCanon();
 		break;
