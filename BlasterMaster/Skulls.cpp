@@ -2,12 +2,8 @@
 
 CSkulls::CSkulls()
 {
-}
-
-CSkulls::CSkulls(float _vx)
-{
-	this->vx = _vx;
-	SetState(SKULLS_STATE_HORIZONTAL);
+	this->vx = -SKULLS_SPEED_HORIZONTAL;
+	this->state = SKULLS_STATE_WALKING_LEFT;
 }
 
 void CSkulls::SetState(int state)
@@ -15,27 +11,26 @@ void CSkulls::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case SKULLS_STATE_HORIZONTAL:
-		if (vx >= 0)
-		{
-			ani = SKULLS_ANI_LEFT;
-		}
-		else
-		{
-			ani = SKULLS_ANI_RIGHT;
-			vx = -SKULLS_SPEED_HORIZONTAL;
-		}
+	case SKULLS_STATE_WALKING_LEFT:
+		ani = SKULLS_ANI_LEFT;
+		vx = -SKULLS_SPEED_HORIZONTAL;
+		vy = 0;
 		break;
-	case SKULLS_STATE_VERTICAL:
+	case SKULLS_STATE_WALKING_RIGHT:
+		ani = SKULLS_ANI_RIGHT;
+		vx = SKULLS_SPEED_HORIZONTAL;
+		vy = 0;
+		break;
+	case SKULLS_STATE_WALKING_UP:
 		vy = -SKULLS_SPEED_VERTICAL;
 		vx = 0;
 		ani = SKULLS_ANI_RIGHT;
 		break;
 	case SKULLS_STATE_GUN:
+		gunAt = GetTickCount();
 		vx = 0;
 		vy = 0;
 		ani = SKULLS_ANI_GUN_RIGHT;
-
 		break;
 	}
 }
@@ -53,7 +48,8 @@ void CSkulls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CStaticHelpers* helpers = new CStaticHelpers();
 	CPlayer* player = helpers->GetPlayer();
 	CGameObject::Update(dt);
-	//vy += INSECT_GRAVITY * dt;
+
+	DebugOut(L"state:::::::: %d \n", state);
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -71,19 +67,18 @@ void CSkulls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
-		float distance_x = abs(player->x - x);
-		/*if (distance_x < 16.0f)
+
+		int distance_x = abs(player->x - x);
+		if (distance_x < 1 && (state == SKULLS_STATE_WALKING_LEFT || state == SKULLS_STATE_WALKING_RIGHT))
 		{
-			if (state == SKULLS_STATE_HORIZONTAL)
-			{
-				DebugOut(L"Gujnnnnnnnnnnnnnnnnnn \n");
-				SetState(SKULLS_STATE_GUN);
-			}
-			else
-			{
-				SetState(SKULLS_STATE_VERTICAL);
-			}
-		}*/
+			SetState(SKULLS_STATE_GUN);
+			Fire(player->x, player->y, x, y);
+		}
+		if (state == SKULLS_STATE_GUN && GetTickCount() - gunAt > 100)
+		{
+			gunAt = 0;
+			SetState(SKULLS_STATE_WALKING_UP);
+		}
 	}
 	else
 	{
@@ -111,30 +106,22 @@ void CSkulls::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
-				x += dx;
-				if (nx != 0)
+				int distance_x = abs(player->x - x);
+				if (ny > 0 && state == SKULLS_STATE_WALKING_UP)
 				{
-				}
-				if (ny != 0)
-				{
+					if (distance_x < 1)
+					{
+						if (GetTickCount() - gunTime > 2000)
+						{
+							gunTime = GetTickCount();
+							SetState(SKULLS_STATE_GUN);
+							Fire(player->x, player->y, x, y);
+						}
+					}
 				}
 			}
-			if (dynamic_cast<CPlayer*>(e->obj) || dynamic_cast<CPlayer*>(e->obj))
-			{
-				isTouchPlayer = 1;
-			}
-		}
-		if (isTouchPlayer) {
-			isTouchPlayer = 0;
-			x += min_tx * dx;
-			y += min_ty * dy;
-		}
-		if (!isTouchPlayer) {
-			x += min_tx * dx + nx * 0.4f;
-			y += min_ty * dy + ny * 0.4f;
 		}
 	}
-
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
@@ -144,3 +131,30 @@ void CSkulls::Render()
 	animation_set->at(ani)->Render(x, y);
 	RenderBoundingBox();
 }
+
+void CSkulls::Fire(float Xp, float Yp, float Xe, float Ye)
+{
+	//CMonsterBullet(int ani, float Xp, float Yp, float Xe, float Ye, float Vb)
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+
+	CGameObject* obj = NULL;
+	if (Xp < Xe)
+	{
+		obj = new CMonsterBullet(SKULLS_ANI_BULLET_LEFT, SKULLS_ANI_BUMP, Xp, Yp, Xe, Ye, -SKULLS_SPEED_BULLET_X, SKULLS_SPEED_BULLET_Y);
+	}
+	else
+	{
+		obj = new CMonsterBullet(SKULLS_ANI_BULLET_RIGHT, SKULLS_ANI_BUMP, Xp, Yp, Xe, Ye, SKULLS_SPEED_BULLET_X, SKULLS_SPEED_BULLET_Y);
+	}
+	// General object setup
+	obj->SetPosition(x + SKULLS_BBOX_WIDTH / 2, y + SKULLS_BBOX_HEIGHT + 1);
+	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_FLOATERS);
+
+	obj->SetAnimationSet(ani_set);
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
+}
+

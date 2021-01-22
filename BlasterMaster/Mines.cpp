@@ -100,7 +100,7 @@ void CMines::Explosive()
 {
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
 	float fastSpeed = BULLET_MINE_SPEED_FAST;
-	float slowSpeed = BULLET_MINE_SPEED_SLOW
+	float slowSpeed = BULLET_MINE_SPEED_SLOW;
 	AddBullet(fastSpeed, animation_sets);
 	AddBullet(-fastSpeed, animation_sets);
 	AddBullet(slowSpeed, animation_sets);

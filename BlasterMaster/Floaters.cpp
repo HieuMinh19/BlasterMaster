@@ -161,7 +161,7 @@ void CFloaters::Fire(float Xp, float Yp, float Xe, float Ye)
 		obj = new CMonsterBullet(FLOATERS_ANI_BULLET_RIGHT, FLOATERS_ANI_BUMP_RIGHT, Xp, Yp, Xe, Ye, FLOATERS_SPEED_BULLET);
 	}
 	// General object setup
-	obj->SetPosition(x + FLOATERS_BBOX_WIDTH / 2, y + FLOATERS_BBOX_HEIGHT / 2);
+	obj->SetPosition(x + FLOATERS_BBOX_WIDTH / 2, y + FLOATERS_BBOX_HEIGHT + 1);
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_FLOATERS);
 
 	obj->SetAnimationSet(ani_set);

@@ -233,8 +233,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CFloaters(_vx, _vy);
 		break;
 	case OBJECT_TYPE_SKULLS:
-		_vx = atof(tokens[4].c_str());
-		obj = new CSkulls(_vx);
+		obj = new CSkulls();
 		break;
 	case OBJECT_TYPE_MINES:
 		obj = new CMines();
