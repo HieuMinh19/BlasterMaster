@@ -85,7 +85,6 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				CBreakable* breakable = dynamic_cast<CBreakable*>(e->obj);
 				breakable->health--;
-
 			}
 		}
 	}

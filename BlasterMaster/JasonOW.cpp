@@ -100,8 +100,12 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				break;
 			}
-			
-			
+			else if (dynamic_cast<CItems*>(e->obj))
+			{
+				CItems* items = dynamic_cast<CItems*>(e->obj);
+				items->hasTaken();
+				//health++;
+			}
 		}
 		// block every object first!
 		

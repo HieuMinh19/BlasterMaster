@@ -1,6 +1,6 @@
 ﻿#include "Breakable.h"
-
-#include "Utils.h"
+#include <algorithm>
+#include <assert.h>
 
 CBreakable::CBreakable()
 {
@@ -26,5 +26,22 @@ void CBreakable::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (health == 0) {
 		state = OBJECT_STATE_DELETE;
+		spawnItem(x,y);
+				
 	}
+
+}
+
+void CBreakable::spawnItem(float x, float y)
+{
+	// General object setup
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	CGameObject* obj = new CItems(x, y);
+	LPANIMATION_SET ani_set = animation_sets->Get(3);
+	obj->SetAnimationSet(ani_set);
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
 }
