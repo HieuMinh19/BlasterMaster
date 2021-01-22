@@ -93,6 +93,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		health = 0;
 		isDie = TRUE;
 	}
+
 	if (isDie) {
 		vx = 0;
 		vy = 0;
@@ -179,21 +180,13 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
+				
+				//float new_x, new_y;
+				//p->GetPositionPlayer(new_x, new_y);	//set init position player
+				//this->SetNextPosition(new_x, new_y);
+				//this->resetPosition = true;
 				break;
 			}
-			//else if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
-			//{
-			//	 spawnItem(e->obj->x, e->obj->y);
-			//	e->obj->SetState(OBJECT_STATE_DELETE);			//dirty way.
-
-			//	if (untouchable == 0)
-			//	{
-			//		//health--;
-			//		if (health > 0)
-			//			StartUntouchable();
-			//		
-			//	}
-			//}
 		}
 	}
 	//Stand up checking

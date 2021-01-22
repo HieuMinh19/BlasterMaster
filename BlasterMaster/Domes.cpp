@@ -2,7 +2,6 @@
 
 CDomes::CDomes()
 {
-
 }
 
 CDomes::CDomes(float x, float y, float _vx, float _vy)
@@ -15,7 +14,7 @@ CDomes::CDomes(float x, float y, float _vx, float _vy)
 	isTouchPlayer = 0;
 }
 
-void CDomes::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void CDomes::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
 	left = x;
 	top = y;
@@ -100,7 +99,7 @@ void CDomes::SetState(int state)
 	}
 }
 
-void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	CStaticHelpers* helpers = new CStaticHelpers();
 	CPlayer* player = helpers->GetPlayer();
@@ -141,26 +140,12 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CPlayer*>(e->obj))
+			if (dynamic_cast<CPlayer *>(e->obj))
 			{
-				if (e->ny != 0) {
-					y -= ny * 0.4f;
-				}
-				if (e->nx != 0) {
-					x -= nx * 0.4f;
-				}
-
-				//start handle substract health
-				CStaticHelpers* helpers = new CStaticHelpers();
-				CPlayer* player = helpers->GetPlayer();
-				if (!player->untouchable) {
-					player->setHealth(player->getHealth() - 1);
-					player->StartUntouchable();
-				}
-				
+				HandleCollisionPlayer(e, nx, ny);
 			}
 
-			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
+			if (dynamic_cast<CBrick *>(e->obj) || dynamic_cast<CTrap *>(e->obj))
 			{
 				float distance_x = abs(player->x - x);
 				if (state == DOMES_STATE_INITIAL)
@@ -180,7 +165,8 @@ void CDomes::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	// clean up collision events
-	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
+	for (UINT i = 0; i < coEvents.size(); i++)
+		delete coEvents[i];
 }
 
 void CDomes::Render()
@@ -219,26 +205,36 @@ void CDomes::HandleWithoutObstruction()
 {
 	//DERECTION 1->UP // 2-> LEFT // 3->DOWN // 4->RIGHT
 	int newState = NULL;
-	switch (direction) {
+	switch (direction)
+	{
 	case 1:
-		if (state == DOMES_STATE_LEFT_UP) newState = DOMES_STATE_LEFT_LEFT;
-		if (state == DOMES_STATE_RIGHT_UP) newState = DOMES_STATE_RIGHT_RIGHT;
+		if (state == DOMES_STATE_LEFT_UP)
+			newState = DOMES_STATE_LEFT_LEFT;
+		if (state == DOMES_STATE_RIGHT_UP)
+			newState = DOMES_STATE_RIGHT_RIGHT;
 		break;
 	case 2:
-		if (state == DOMES_STATE_LEFT_LEFT) newState = DOMES_STATE_LEFT_DOWN;
-		if (state == DOMES_STATE_RIGHT_LEFT) newState = DOMES_STATE_RIGHT_UP;
+		if (state == DOMES_STATE_LEFT_LEFT)
+			newState = DOMES_STATE_LEFT_DOWN;
+		if (state == DOMES_STATE_RIGHT_LEFT)
+			newState = DOMES_STATE_RIGHT_UP;
 		break;
 	case 3:
-		if (state == DOMES_STATE_LEFT_DOWN) newState = DOMES_STATE_LEFT_RIGHT;
-		if (state == DOMES_STATE_RIGHT_DOWN) newState = DOMES_STATE_RIGHT_LEFT;
+		if (state == DOMES_STATE_LEFT_DOWN)
+			newState = DOMES_STATE_LEFT_RIGHT;
+		if (state == DOMES_STATE_RIGHT_DOWN)
+			newState = DOMES_STATE_RIGHT_LEFT;
 		break;
 	case 4:
-		if (state == DOMES_STATE_LEFT_RIGHT) newState = DOMES_STATE_LEFT_UP;
-		if (state == DOMES_STATE_RIGHT_RIGHT) newState = DOMES_STATE_RIGHT_DOWN;
+		if (state == DOMES_STATE_LEFT_RIGHT)
+			newState = DOMES_STATE_LEFT_UP;
+		if (state == DOMES_STATE_RIGHT_RIGHT)
+			newState = DOMES_STATE_RIGHT_DOWN;
 		break;
 	}
 
-	if (newState != NULL) {
+	if (newState != NULL)
+	{
 		SetState(newState);
 		SetState(DOMES_STATE_INITIAL);
 	}
@@ -335,7 +331,6 @@ void CDomes::SetStateAfterFirstCollision(float nx, float ny)
 		{
 			newState = DOMES_STATE_RIGHT_DOWN;
 		}
-
 	}
 	if (ny < 0.0f)
 	{
@@ -349,7 +344,8 @@ void CDomes::SetStateAfterFirstCollision(float nx, float ny)
 		}
 	}
 
-	if (newState != NULL) {
+	if (newState != NULL)
+	{
 		SetState(newState);
 	}
 }
@@ -358,7 +354,8 @@ void CDomes::CollisionHandleWithBrick(float nx, float ny)
 {
 	//DERECTION 1->UP // 2-> LEFT // 3->DOWN // 4->RIGHT
 	int newState = NULL;
-	switch (direction) {
+	switch (direction)
+	{
 	case 1:
 		if (state == DOMES_STATE_BEFORE_FLY_UP && ny > 0.0f)
 		{
@@ -417,7 +414,8 @@ void CDomes::CollisionHandleWithBrick(float nx, float ny)
 		break;
 	}
 
-	if (newState != NULL) {
+	if (newState != NULL)
+	{
 		SetState(newState);
 	}
 }
