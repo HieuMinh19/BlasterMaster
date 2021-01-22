@@ -93,12 +93,7 @@ void CJumpers::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CPlayer*>(e->obj))
 			{
-				if (e->ny != 0) {
-					y -= ny * 0.4f;
-				}
-				if (e->nx != 0) {
-					x -= nx * 0.4f;
-				}
+				HandleCollisionPlayer(e, nx, ny);
 			}
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))

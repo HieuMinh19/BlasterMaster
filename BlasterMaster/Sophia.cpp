@@ -29,8 +29,6 @@ CSophia::CSophia(float x, float y) : CPlayer()
 
 void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	
-
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 	// Simple fall down
@@ -606,7 +604,7 @@ void CSophia::KeySHIFT()
 	jason->nx = this->nx;
 	jason->y = this->y;
 	jason->inTank = false;
-	jason->setHealth(JASON_MAX_HEALTH - 3);
+	jason->setHealth(JASON_MAX_HEALTH);
 	jason->GetOut();
 	dynamic_cast<CPlayScene*> (
 		CGame::GetInstance()
@@ -616,16 +614,7 @@ void CSophia::KeySHIFT()
 
 void CSophia::spawnItem(float x, float y)
 {
-	// General object setup
-	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-	CGameObject* obj = new CItems(x, y);
-	LPANIMATION_SET ani_set = animation_sets->Get(3);
-	obj->SetAnimationSet(ani_set);
-	dynamic_cast<CPlayScene*> (
-		CGame::GetInstance()
-		->GetCurrentScene()
-		)
-		->AddObject(obj);
+	
 }
 void CSophia::OnKeyUpLeft()
 {
