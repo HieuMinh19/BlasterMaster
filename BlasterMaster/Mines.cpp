@@ -18,6 +18,10 @@ void CMines::SetState(int state)
 		vy = 0;
 		ani = MINES_ANI_NORMAL;
 		break;
+
+	case MINES_STATE_EXPLOSIVE:
+		Explosive();
+		break;
 	}
 }
 
@@ -31,6 +35,7 @@ void CMines::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void CMines::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
 	CJason* jason = CJason::GetInstance();
 	CGameObject::Update(dt);
 	//vy += INSECT_GRAVITY * dt;
@@ -53,6 +58,7 @@ void CMines::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else
 	{
+
 		//DebugOut(L"AFTER FILLTER ny: %f \n", ny);
 		// block every object first!
 		x += min_tx * dx + nx * 0.4f;
@@ -67,8 +73,8 @@ void CMines::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CPlayer*>(e->obj))
 			{
-				x += min_tx * dx;
-				y += min_ty * dy;
+				HandleCollisionPlayer(e, nx, ny);
+				SetState(MINES_STATE_EXPLOSIVE);
 			}
 
 			if (dynamic_cast<CBrick*>(e->obj))
@@ -105,12 +111,12 @@ void CMines::Explosive()
 	AddBullet(-fastSpeed, animation_sets);
 	AddBullet(slowSpeed, animation_sets);
 	AddBullet(-slowSpeed, animation_sets);
-	
+	SetState(OBJECT_STATE_DELETE);
 }
 
 void CMines::AddBullet(float fastSpeed, CAnimationSets * animation_sets) {
 	CGameObject *obj = NULL;
-	obj = new CMonsterBullet(BULLET_MINE, 0, fastSpeed, fastSpeed);
+	obj = new CMonsterBullet(BULLET_MINE, BULLET_MINE_ANI, fastSpeed, BULLET_MINE_UP);
 
 	// General object setup
 	obj->SetPosition(x, y);
