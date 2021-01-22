@@ -41,5 +41,6 @@ public:
 	CMonsterBullet(int ani_bullet,int ani_bump, float Xp, float Yp, float Xe, float Ye, float Vb);
 	CMonsterBullet(float state, int animation, float VX, float VY);
 	CMonsterBullet(int ani_bullet, int ani_bump, float Xp, float Yp, float Xe, float Ye, float Vx, float Vy);
+	void HandleCollisionPlayer(LPCOLLISIONEVENT& obj, float nx, float ny);
 	virtual void SetState(int state);
 };

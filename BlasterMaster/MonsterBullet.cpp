@@ -130,12 +130,8 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<CPlayer*>(e->obj))
 			{
-				if (e->ny != 0) {
-					y -= ny * 0.4f;
-				}
-				if (e->nx != 0) {
-					x -= nx * 0.4f;
-				}
+				DebugOut(L"ccccccccccccccc \n");
+				HandleCollisionPlayer(e, nx, ny);
 				SetState(BULLET_STATE_BUMP_AWAIT);
 			}
 
@@ -223,5 +219,25 @@ void CMonsterBullet::SetState(int state)
 		timeBump = GetTickCount();
 		animation = animation_bump;
 		break;
+	}
+}
+
+void CMonsterBullet::HandleCollisionPlayer(LPCOLLISIONEVENT& coEvent, float nx, float ny)
+{
+	if (coEvent->ny != 0)
+	{
+		y -= ny * 0.4f;
+	}
+	if (coEvent->nx != 0)
+	{
+		x -= nx * 0.4f;
+	}
+
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
+	if (!player->untouchable)
+	{
+		player->setHealth(player->getHealth() - 1);
+		player->StartUntouchable();
 	}
 }
