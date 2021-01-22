@@ -573,6 +573,13 @@ void CPlayScene::Update(DWORD dt)
 			
 			objects[i]->Update(dt, &playerCoObjects);
 		}
+
+		if (dynamic_cast<CItems*>(objects[i]))
+		{
+			vector<LPGAMEOBJECT> playerCoObjects;
+
+			objects[i]->Update(dt, &playerCoObjects);
+		}
 	}
 
 	// skip the rest if scene was already unloaded (sophia::Update might trigger PlayScene::Unload)

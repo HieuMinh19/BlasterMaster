@@ -12,6 +12,7 @@ CItems::CItems(float x, float y)
 	srand((unsigned)time(0));
 	//int randNum = rand()%(max-min + 1) + min; -> random between min -> max
 	this->type = rand() % (5) + 601;
+	timeLive = GetTickCount();
 }
 
 CItems::CItems(int itemType, float x, float y)
@@ -23,6 +24,11 @@ CItems::CItems(int itemType, float x, float y)
 
 void CItems::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (timeLive + ITEMS_TIME_LIVE < GetTickCount()) {
+		SetState(OBJECT_STATE_DELETE);
+	}
+	DebugOut(L"state: %d \n", state);
+
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
