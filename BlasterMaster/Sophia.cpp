@@ -134,9 +134,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 		// how to push back SOPHIA if collides with a moving objects, what if SOPHIA is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-
+		
 		// block every object first!
 		// Sửa lỗi lực đẩy mạnh khiến xe bị rung
 		x += min_tx * dx + nx * 0.1f;
@@ -172,17 +170,17 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CItems* items = dynamic_cast<CItems*>(e->obj);
 				items->hasTaken();
-				//health++;
 			}
 			else if (dynamic_cast<CPortal*>(e->obj))
 			{
+				CGame* cGame = CGame::GetInstance();
 				CPortal* p = dynamic_cast<CPortal*>(e->obj);
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
-				
-				//float new_x, new_y;
-				//p->GetPositionPlayer(new_x, new_y);	//set init position player
-				//this->SetNextPosition(new_x, new_y);
-				//this->resetPosition = true;
+				float new_x, new_y;
+				p->GetPositionPlayer(new_x, new_y);	//set init position player
+				cGame->SwitchScene(p->GetSceneId());
+				CStaticHelpers* helper = new CStaticHelpers();
+				CPlayer* player = helper->GetPlayer();
+				player->SetPosition(new_x, new_y);
 				break;
 			}
 		}

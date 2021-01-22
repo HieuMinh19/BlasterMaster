@@ -40,20 +40,12 @@ CMonsterBullet::CMonsterBullet(int ani_bullet, int ani_bump, float Xp, float Yp,
 
 CMonsterBullet::CMonsterBullet(int ani_bullet, int ani_bump, float Xp, float Yp, float Xe, float Ye, float Vx, float Vy) : CGameObject()
 {
-<<<<<<< HEAD
-	animation = ani;
-	timeDestroy = GetTickCount() + 2500;
-	this->vx = VX;
-	this->vy = VY;
-	SetState(state);
-=======
 	animation = ani_bullet;
 	animation_bump = ani_bump;
 	typeBullet = 2;
 	timeDestroy = GetTickCount() + 5000;
 	this->vx = Vx;
 	this->vy = -Vy;
->>>>>>> origin/skullssssss
 }
 
 void CMonsterBullet::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -119,12 +111,8 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else
 	{
-<<<<<<< HEAD
 		if (state != BULLET_MINE)
 			vx = 0;
-=======
-		//vx = 0;
->>>>>>> origin/skullssssss
 
 		float min_tx, min_ty, nx = 0, ny;
 		float rdx = 0;
@@ -153,20 +141,10 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
-<<<<<<< HEAD
 				if (state != BULLET_MINE) {
 					if (nx != 0 || ny != 0)
 					{
-						SetState(BULLET_STATE_BUMP);
-					}
-				}
-				else {
-					x += dx;
-					y += dy;
-=======
-				if (nx != 0 || ny != 0)
-				{
-					countCollision++;
+						countCollision++;
 					switch (typeBullet)
 					{
 					case 1:
@@ -194,7 +172,12 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					default:
 						break;
 					}
->>>>>>> origin/skullssssss
+						SetState(BULLET_STATE_BUMP);
+					}
+				}
+				else {
+					x += dx;
+					y += dy;
 				}
 				
 			}
