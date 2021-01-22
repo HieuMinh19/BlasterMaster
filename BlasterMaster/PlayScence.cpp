@@ -27,6 +27,7 @@
 #include "Cannon.h"
 #include "Teleporter.h"
 #include "Boss.h"
+#include "Eyeball.h"
 
 using namespace std;
 
@@ -241,11 +242,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_TYPE_BOSS:
 		obj = new CBoss();
+		break;
 	case OBJECT_TYPE_CANNON:
 		obj = new CCanon();
 		break;
 	case OBJECT_TYPE_TELEPORT:
 		obj = new CTeleporter(0, 1000);
+		break;
+	case OBJECT_TYPE_EYEBAll:
+		obj = new CEyeball();
+		DebugOut(L"create eyeball: %i\n", OBJECT_TYPE_EYEBAll);
 		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);

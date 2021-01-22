@@ -38,15 +38,48 @@ void CEyeball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+
+	coEvents.clear();
+	CalcPotentialCollisions(coObjects, coEvents);
+	float min_tx, min_ty, nx = 1, ny;
+	float rdx = 0;
+	float rdy = 0;
+
+	float res;
+
+	// TODO: This is a very ugly designed function!!!!
+	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+	// No collision occured, proceed normally
+	if (coEventsResult.size() == 0)
+	{
+		x += dx;
+		y += dy;
+	}
+
+	res = rand() % (15 - 1 + 1);
+	res -= 15;
+	vy = res / 300 * 0.5f;
+	res = rand() % (15 - 1 + 1);
+	res -= 15;
+	vx = res / 100 * 0.5f;
+
+
 	if (lastFire + TIME_RELOAD < GetTickCount()) {
 		Fire(player->x, player->y, x, y);
 		lastFire = GetTickCount();
 	}
+
+
+	
+	//DebugOut(L"teltelteltletl ltetleltletle : %i \n", res);
+
 }
 
 void CEyeball::Render()
 {
-	animation_set->at(EYEBALL_ANI_NORMAL)->Render(x, y);
+	animation_set->at(0)->Render(x, y);
 	RenderBoundingBox();
 }
 
@@ -59,7 +92,7 @@ void CEyeball::Fire(float Xp, float Yp, float Xe, float Ye)
 	obj = new CMonsterBullet(EYEBALL_ANI_BULLET, EYEBALL_ANI_BUMP, Xp, Yp, Xe, Ye, EYEBALL_BULLET_SPEED);
 	// General object setup
 	obj->SetPosition(x + EYEBALL_BBOX_WIDTH / 2, y + EYEBALL_BBOX_HEIGHT / 2);
-	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_EYEBAll);
+	LPANIMATION_SET ani_set = animation_sets->Get(6);
 
 	obj->SetAnimationSet(ani_set);
 	dynamic_cast<CPlayScene*> (
