@@ -27,12 +27,13 @@ CJason::CJason(float x, float y) : CPlayer()
 
 void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	DebugOut(L"[DEBUG] Jason health: %d\n", health);
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
 	// Simple fall down
 	if (!inTank) {
-		vy += 0.0002 * dt;
+		vy += JASON_GET_OUT_TANK_SPEED * dt;
 	}
 	else {
 		SetState(JASON_STATE_CRAWL_IN_TANK);
@@ -106,8 +107,8 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (untouchable == 0)
 				{
 					health--;
-					DebugOut(L"[DEBUG] health: %d\n", health);
-					DebugOut(L"[DEBUG] getHealth: %d\n", getHealth());
+					
+					//DebugOut(L"[DEBUG] getHealth: %d\n", getHealth());
 					if (health > 0)
 						StartUntouchable();
 					else
@@ -299,7 +300,7 @@ void CJason::KeyZ()
 	obj = new CBullet(nx, ANI_JASON);
 
 	// General object setup
-	obj->SetPosition(x, y);
+	obj->SetPosition(x, y + JASON_BULLET_BBOX);
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 
 	obj->SetAnimationSet(ani_set);

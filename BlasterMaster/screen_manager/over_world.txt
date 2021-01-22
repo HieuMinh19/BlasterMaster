@@ -3,10 +3,11 @@
 0	textures\SpritesTank.png	255	255	255
 10	textures\tankAndMain.png	0	136	255
 20	textures\bbox.png	237	38	26
-90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
 70	textures\area2.png	255	255	255
 80	textures\over_word.png	255	255	255
+90	textures\enemies-1.png	255	0	255
+100	textures\Ground.png	255	0	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #===============BACKGROUND-AREA2==============
@@ -117,6 +118,8 @@
 
 #BRICK
 20001	408	225	424	241	20
+#Breakable
+20002	170	102	186	118	100
 #GOOMBA
 30001	5	14	21	29	10
 30002	25	14	41	29	10
@@ -257,8 +260,13 @@
 1107	12001	100	12002	100	12003	100
 #Die
 1108	12013	150	12014	150	12015	150	12016	150	12017	400
+
+
 # ==== BRICK =========
 601	20001	100
+
+# ==== Breakable =========
+1200	20002	100
 
 # === ITEMS =========
 603	60001	100
@@ -282,6 +290,7 @@
 70000	2048	1024	2560	2032	71
 # BRICK 
 2	601
+
 # ITEMS
 3	603
 #SOPHIA
@@ -290,6 +299,8 @@
 1	500	501	502	506	504	505	503	507	508	509	599
 # WORMS
 9	900	901
+# Breakable 
+10	1200
 # Bullet
 6	800	801	802	803	804	805	806	807
 #TRAP
@@ -374,6 +385,8 @@
 1	400	1718	2	224	96
 1	656	1718	2	224	96
 1	910	1718	2	625	96
+#--- Breakable ---
+10	0	0	10
 #--- trap ---
 8	30	790	2	200	35
 8	30	915	2	80	35
