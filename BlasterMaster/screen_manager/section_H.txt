@@ -291,9 +291,7 @@
 # type: 0 = Mario , 1 = Brick, 19 = BACKGROUND, 9 = WORMS
 #====== BACKGROUND =======
 19	0	0	19
-# MARIO
-0	50.0	0	1
-# MARIO
+# PLAYER
 7	30	0	7
 0	50.0	0	1
 # BULLET
@@ -313,10 +311,10 @@
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 #Section_F
-50	32	112	0	64	144	12
+50	32	112	0	64	144	12	304	77
 
 #Section_I
-50	448	112	0	480	144	8
+50	448	112	0	480	144	8	144	8
 
 # WORMS
 9	110.0	0	6

@@ -25,7 +25,7 @@ void CEnemies::HandleCollisionPlayer(LPCOLLISIONEVENT &coEvent, float nx, float 
 	CPlayer* player = helpers->GetPlayer();
 	if (!player->untouchable)
 	{
-		player->setHealth(player->getHealth() - 1);
-		player->StartUntouchable();
+		// player->setHealth(player->getHealth() - 1);
+		// player->StartUntouchable();
 	}
 }

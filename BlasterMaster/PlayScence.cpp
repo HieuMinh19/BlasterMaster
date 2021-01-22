@@ -208,7 +208,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int scene_id = atoi(tokens[6].c_str());
 		float x_player = 0;
 		float y_player = 0;
-		if (tokens.size() >= 7) {
+		if (tokens.size() >= 8) {
 			x_player = atoi(tokens[7].c_str());
 			y_player = atoi(tokens[8].c_str());
 		}

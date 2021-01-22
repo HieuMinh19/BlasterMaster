@@ -280,7 +280,7 @@
 # MARIO
 0	50.0	0	1
 # MARIO
-7	30	80	7
+7	80	80	7a
 0	50.0	80	1
 # BULLET
 #6	30	124	8
@@ -296,7 +296,7 @@
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 #section D
-50	38	111	0	70	142	19
+50	38	111	0	70	142	19	420	890
 
 # WORMS
 9	110.0	0	6
