@@ -27,6 +27,7 @@
 #include "Cannon.h"
 #include "Teleporter.h"
 #include "Boss.h"
+#include "Eyeball.h"
 
 using namespace std;
 
@@ -248,6 +249,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_TELEPORT:
 		obj = new CTeleporter(0, 1000);
 		break;
+	case OBJECT_TYPE_EYEBAll:
+		obj = new CEyeball();
+		DebugOut(L"create eyeball: %i\n", OBJECT_TYPE_EYEBAll);
+		break;
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -418,8 +423,17 @@ void CPlayScene::Update(DWORD dt)
 	{
 		//start phan hoach khong gian
 		if (player != NULL) {
-			float pos = abs(player->x - objects[i]->x);
-			if (pos > SCREEN_WIDTH && !dynamic_cast<CUI*>(objects[i])) continue;
+			float pos_x = abs(player->x - objects[i]->x);
+			float pos_y = abs(player->y - objects[i]->y);
+			if (
+				!dynamic_cast<CBackground*>(objects[i]) &&
+				!dynamic_cast<CUI*>(objects[i]) &&
+				pos_x > SCREEN_WIDTH&&
+				pos_y > SCREEN_HEIGHT
+				)
+			{
+				continue;
+			}
 		}
 		// end phan hoach khong gian
 
@@ -438,8 +452,9 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &playerCoObjects);
+			
+			objects[i]->Update(dt, &playerCoObjects);
+			
 			int afterUpdateScence = _cGame->GetCurrentSceneId();
 			if (beforeUpdateScence != afterUpdateScence) {
 				break;
@@ -457,8 +472,9 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &playerCoObjects);
+			
+			objects[i]->Update(dt, &playerCoObjects);
+			
 			int afterUpdateScence = _cGame->GetCurrentSceneId();
 			if (beforeUpdateScence != afterUpdateScence) {
 				break;
@@ -524,8 +540,9 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), breakableObjects.begin(), breakableObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
-			if (objects[i]->readyUpdate)
-				objects[i]->Update(dt, &playerCoObjects);
+			
+			objects[i]->Update(dt, &playerCoObjects);
+			
 			int afterUpdateScence = _cGame->GetCurrentSceneId();
 			if (beforeUpdateScence != afterUpdateScence) {
 				break;
@@ -594,11 +611,18 @@ void CPlayScene::Render()
 		if (player == NULL) {
 			return;
 		}
-		float pos = abs(player->x - objects[i]->x);
-		if (!dynamic_cast<CBackground*>(objects[i]))
+		float pos_x = abs(player->x - objects[i]->x);
+		float pos_y = abs(player->y - objects[i]->y);
+		if (
+			!dynamic_cast<CBackground*>(objects[i]) && 
+			!dynamic_cast<CUI*>(objects[i]) &&
+			pos_x > SCREEN_WIDTH &&
+			pos_y > SCREEN_HEIGHT
+		) 
 		{
-			if (pos > SCREEN_WIDTH && !dynamic_cast<CUI*>(objects[i])) continue;
+			continue;
 		}
+	
 		// end phan hoach khong gian
 		objects[i]->Render();
 	}
