@@ -27,7 +27,6 @@ CJason::CJason(float x, float y) : CPlayer()
 
 void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"[DEBUG] Jason health: %d\n", health);
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
