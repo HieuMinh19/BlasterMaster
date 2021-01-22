@@ -72,7 +72,7 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if ((state == BULLET_STATE_BUMP_NOW || state == BULLET_STATE_BUMP_AWAIT) && GetTickCount() - timeBump >= TIME_BUMP)
 	{
 		SetState(OBJECT_STATE_DELETE);
-	}
+	} 
 
 	if (timeDestroy < GetTickCount() && state != OBJECT_STATE_DELETE)
 	{
@@ -105,11 +105,18 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += dx;
 		y += dy;
 
-		if (GetTickCount() - timeLife > 2000 && countCollision == 2)
-		{
-			countCollision = 0;
-			SetState(BULLET_STATE_BUMP_AWAIT);
+		if (state != BULLET_MINE &&
+			state != BULLET_RIGHT &&
+			state != BULLET_LEFT &&
+			state != BULLET_UP &&
+			state != BULLET_DOWN) {
+			if (GetTickCount() - timeLife > 2000 && countCollision == 2)
+			{
+				countCollision = 0;
+				SetState(BULLET_STATE_BUMP_AWAIT);
+			}
 		}
+		
 	}
 	else
 	{

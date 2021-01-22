@@ -1,6 +1,6 @@
 # id	file_path	transparent_color_r	g	b
 [TEXTURES]
-0	textures\SpritesTank.png	255	255	255
+0	textures\SpritesTank.png	0	136	255
 10	textures\tankAndMain.png	0	136	255
 20	textures\bbox.png	237	38	26
 30	textures\itemsandobjects.png	176	224	248 
@@ -8,8 +8,19 @@
 80	textures\over_word.png	255	255	255
 90	textures\enemies-1.png	255	0	255
 100	textures\Ground.png	255	0	255
+110	textures\UI.png	255	255	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+#UI
+10200	359	6	369	56	110
+10201	347	6	357	56	110
+10202	335	6	345	56	110
+10203	323	6	333	56	110
+10204	311	6	321	56	110
+10205	298	6	308	56	110
+10206	286	6	296	56	110
+10207	275	6	285	56	110
+10208	263	6	273	56	110
 #===============BACKGROUND-AREA2==============
 70000	0	0	1536	2022	80
 # JASON
@@ -289,6 +300,16 @@
 901	90003	100	90004	100
 # ==== TRAP =========
 701	30001	100
+# ==== UI =========
+1000	10200	100
+1001	10201	100
+1002	10202	100
+1003	10203	100
+1004	10204	100
+1005	10205	100
+1006	10206	100
+1007	10207	100
+1008	10208	100
 #
 # id	ani1	ani2	ani3
 #
@@ -320,8 +341,11 @@
 41	4100	4101	4102
 #Teleport
 42	4200	4201
-
 43 	4300	
+
+
+#UI
+99	1000	1001	1002	1003	1004	1005	1006	1007	1008
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 19 = BACKGROUND, 9 = WORMS
@@ -525,3 +549,7 @@
 # type	l	t	ani_set_id	r	b	scene_id
 # SECTION G
 50	94	1878	0	145	1925	13	90	164
+# SECTION Final
+50	1213	1883	0	1245	1925	22	150	200
+# UI
+40	96	1865	99

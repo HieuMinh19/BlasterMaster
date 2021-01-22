@@ -22,6 +22,10 @@ void CUI::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		CSophia* sophia = CSophia::GetInstance();
 		state = sophia->getHealth();
 	}
+	else if (dynamic_cast<CJasonOW*>(player)) {
+		CJasonOW* jasonOW = CJasonOW::GetInstance();
+		state = jasonOW->getHealth();
+	}
 	else {
 		CJason* jason = CJason::GetInstance();
 		state = jason->getHealth();
