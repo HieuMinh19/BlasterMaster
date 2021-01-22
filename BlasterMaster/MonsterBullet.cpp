@@ -32,8 +32,6 @@ CMonsterBullet::CMonsterBullet(float state, int ani, float VX, float VY) : CGame
 {
 	animation = ani;
 	timeDestroy = GetTickCount() + 2500;
-	this->x = x;
-	this->y = y;
 	this->vx = VX;
 	this->vy = VY;
 	SetState(state);
@@ -81,7 +79,8 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	else
 	{
-		vx = 0;
+		if (state != BULLET_MINE)
+			vx = 0;
 
 		float min_tx, min_ty, nx = 0, ny;
 		float rdx = 0;
@@ -105,11 +104,17 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
-				if (nx != 0 || ny != 0)
-				{
-					SetState(BULLET_STATE_BUMP);
-
+				if (state != BULLET_MINE) {
+					if (nx != 0 || ny != 0)
+					{
+						SetState(BULLET_STATE_BUMP);
+					}
 				}
+				else {
+					x += dx;
+					y += dy;
+				}
+				
 			}
 		}
 	}

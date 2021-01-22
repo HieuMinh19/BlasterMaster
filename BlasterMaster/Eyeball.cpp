@@ -7,6 +7,7 @@ CEyeball::CEyeball()
 {
 	SetState(EYEBALL_STATE_MOVE);
 	lastFire = GetTickCount();
+	lastMove = GetTickCount() - 500;
 }
 
 void CEyeball::SetState(int state)
@@ -35,8 +36,17 @@ void CEyeball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CStaticHelpers* helpers = new CStaticHelpers();
 	CPlayer* player = helpers->GetPlayer();
 	CGameObject::Update(dt);
-
-
+	float res;
+	float timerand = rand() % (2000 - 1000 + 1);
+	if (lastMove < GetTickCount()) {
+		res = rand() % (15 - 1 + 1);
+		res -= 15;
+		vx = res / 100 *0.4f;
+		res = rand() % (15 - 1 + 1);
+		res -= 15;
+		vy = res / 100 * 0.4f;
+	lastMove = GetTickCount() + timerand;
+	}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -47,7 +57,6 @@ void CEyeball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float rdx = 0;
 	float rdy = 0;
 
-	float res;
 
 	// TODO: This is a very ugly designed function!!!!
 	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
@@ -56,14 +65,28 @@ void CEyeball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		x += dx;
 		y += dy;
+	} else {
+		//DebugOut(L"AFTER FILLTER ny: %f \n", ny);
+		// block every object first!
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
+
+		//
+		// Collision logic with other objects
+		//
+		for (UINT i = 0; i < coEventsResult.size(); i++)
+		{
+			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
+			{
+				vx *= -1;
+				vy *= -1;
+			}
+		}
 	}
 
-	res = rand() % (15 - 1 + 1);
-	res -= 15;
-	vy = res / 300 * 0.5f;
-	res = rand() % (15 - 1 + 1);
-	res -= 15;
-	vx = res / 100 * 0.5f;
+	
 
 
 	if (lastFire + TIME_RELOAD < GetTickCount()) {
