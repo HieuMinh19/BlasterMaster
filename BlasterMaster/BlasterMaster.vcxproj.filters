@@ -78,6 +78,5 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Worms.h" />
-    <ClInclude Include="Eyeball.h" />
   </ItemGroup>
 </Project>
