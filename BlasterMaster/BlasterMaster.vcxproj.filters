@@ -37,6 +37,7 @@
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Worms.cpp" />
+    <ClCompile Include="Eyeball.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -66,7 +67,6 @@
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scence.h" />
-    <ClInclude Include="ScreenConstant.h" />
     <ClInclude Include="Skulls.h" />
     <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />
@@ -77,5 +77,6 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Worms.h" />
+    <ClInclude Include="Eyeball.h" />
   </ItemGroup>
 </Project>

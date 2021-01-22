@@ -24,6 +24,7 @@
 #define JASON_STATE_CRAWL_WALKING_RIGHT	600
 #define JASON_STATE_CRAWL_WALKING_LEFT	700
 #define JASON_STATE_CRAWL_IN_TANK	800
+#define JASON_STATE_CRAWL_STAND_UP	900
 
 
 #define JASON_ANI_IDLE_RIGHT				0
@@ -66,8 +67,6 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);
 	virtual void Render();
 	void SetState(int state);
-	void MoveRight();
-	void MoveLeft();
 	void KeyDown();
 	void OnKeyUp();
 	void KeyUp();
@@ -81,7 +80,6 @@ public:
 	void OnKeyUpRight();
 	void OnKeyUpLeft();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void fire(vector<LPGAMEOBJECT> &objects);
 
 	//
 	void spawnItem(float x, float y);
