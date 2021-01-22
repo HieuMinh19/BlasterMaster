@@ -7,15 +7,16 @@
 //0.1f
 #define SOPHIA_JUMP_SPEED_Y		0.2f
 #define SOPHIA_JUMP_DEFLECT_SPEED 0.2f
-#define SOPHIA_GRAVITY			0.002f
+#define SOPHIA_GRAVITY			0.0005f
 #define SOPHIA_DIE_DEFLECT_SPEED	 0.5f
 #define SOPHIA_JUMP_WHILE_WALK_SPEED_Y		0.27f
 #define SOPHIA_JUMP_WHILE_WALK_SPEED_X		0.08f
 #define CANNON_X 10
 #define CANNON_Y 18
-#define JUMP_GRAVITY			0.0005f
+#define JUMP_GRAVITY			0.00058f
 #define GRAVITY_SPEED_MAX			0.5f
 #define SOPHIA_JUMP_BACK_SPEED_X		0.05f
+
 
 #define SOPHIA_STATE_IDLE			0
 #define SOPHIA_STATE_WALKING_RIGHT	100
@@ -66,6 +67,7 @@
 #define SOPHIA_BBOX_WIDTH  26
 #define SOPHIA_BBOX_HEIGHT 18
 
+#define SOPHIA_BBOX_UP  15
 // #define SOPHIA_SMALL_BBOX_WIDTH  13
 // #define SOPHIA_SMALL_BBOX_HEIGHT 15
 
@@ -87,7 +89,6 @@ class CSophia : public CPlayer
 	float start_x;			// initial position of SOPHIA at scene
 	float start_y;
 public:
-	boolean duc = false;
 	int hover;
 	boolean isMoveUp, isStandUp, isJumpWhileWalk, isWalkAfterJump, jumpBack, isTouchBrick;
 	DWORD jump_start, moveup_start;

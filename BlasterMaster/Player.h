@@ -20,7 +20,7 @@
 class CPlayer : public CGameObject
 {
 protected:
-	int untouchable;
+	
 	boolean isSpecialAni;
 
 	DWORD untouchable_start;
@@ -30,9 +30,11 @@ protected:
 	float start_y;
 
 public:
+	int untouchable;
 	int OBJECT_ID;
 	boolean isJump, isDie;
 	DWORD die_start;
+	boolean resetPosition = false;
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL) = 0;
 	virtual void Render() = 0;
 	virtual void SetState(int state) = 0;

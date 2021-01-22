@@ -69,11 +69,12 @@ void CInsect::SetState(int state)
 
 void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CStaticHelpers* helpers = new CStaticHelpers();
-	CPlayer* player = helpers->GetPlayer();
+	
 	CGameObject::Update(dt);
 	//vy += INSECT_GRAVITY * dt;
 
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -108,12 +109,7 @@ void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CPlayer*>(e->obj))
 			{
-				if (e->ny != 0) {
-					y -= ny * 0.4f;
-				}
-				if (e->nx != 0) {
-					x -= nx * 0.4f;
-				}
+				HandleCollisionPlayer(e, nx, ny);
 			}
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))

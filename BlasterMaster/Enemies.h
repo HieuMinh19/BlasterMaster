@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "StaticHelpers.h"
 
 class CEnemies : public CGameObject
 {
@@ -10,6 +11,7 @@ public:
 	int GetHealth() { return this->health; }
 
 	virtual void RemoveHealth();
+	void HandleCollisionPlayer(LPCOLLISIONEVENT &obj, float nx, float ny);
 	virtual void SetHealth(int health) { this->health = health; }
 };
 

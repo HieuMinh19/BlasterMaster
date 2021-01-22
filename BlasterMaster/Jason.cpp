@@ -32,7 +32,7 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	// Simple fall down
 	if (!inTank) {
-		vy += 0.0002 * dt;
+		vy += JASON_GET_OUT_TANK_SPEED * dt;
 	}
 	else {
 		SetState(JASON_STATE_CRAWL_IN_TANK);
@@ -106,8 +106,8 @@ void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (untouchable == 0)
 				{
 					health--;
-					DebugOut(L"[DEBUG] health: %d\n", health);
-					DebugOut(L"[DEBUG] getHealth: %d\n", getHealth());
+					
+					//DebugOut(L"[DEBUG] getHealth: %d\n", getHealth());
 					if (health > 0)
 						StartUntouchable();
 					else
@@ -229,15 +229,18 @@ void CJason::SetState(int state)
 		nx = -1;
 		break;
 	case JASON_STATE_CRAWL_IDLE:
+		if (!isSpecialAni) {
+			y += JASON_CRAWL_BBOX_HEIGHT;
+			RenderBoundingBox();
+			isSpecialAni = true;
+		}
+		vx = 0;
+		break;
+	case JASON_STATE_CRAWL_STAND_UP:
 		if (isSpecialAni) {
 			y -= JASON_CRAWL_BBOX_HEIGHT;
 			RenderBoundingBox();
 			isSpecialAni = false;
-		}
-		else {
-			y += JASON_CRAWL_BBOX_HEIGHT;
-			RenderBoundingBox();
-			isSpecialAni = true;
 		}
 		vx = 0;
 		break;
@@ -299,7 +302,7 @@ void CJason::KeyZ()
 	obj = new CBullet(nx, ANI_JASON);
 
 	// General object setup
-	obj->SetPosition(x, y);
+	obj->SetPosition(x, y + JASON_BULLET_BBOX);
 	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_BULLET);
 
 	obj->SetAnimationSet(ani_set);
@@ -356,7 +359,7 @@ void CJason::KeyDown()
 
 void CJason::KeyUp()
 {
-
+	SetState(JASON_STATE_CRAWL_STAND_UP);
 }
 void CJason::OnKeyUp()
 {

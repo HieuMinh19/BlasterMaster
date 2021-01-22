@@ -1,4 +1,5 @@
 #include "PlayerBullet.h"
+#include "Mines.h"
 #include "Utils.h"
 #include "PlayScence.h"
 
@@ -79,13 +80,13 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
 			{
 				spawnItem(e->obj->x, e->obj->y);
+				e->obj->SetState(MINES_STATE_EXPLOSIVE);
 				e->obj->SetPosition(-1000, 0);			//dirty way.
 			}
 			else if (dynamic_cast<CBreakable*>(e->obj)) // if e->obj is enemies
 			{
 				CBreakable* breakable = dynamic_cast<CBreakable*>(e->obj);
 				breakable->health--;
-
 			}
 		}
 	}

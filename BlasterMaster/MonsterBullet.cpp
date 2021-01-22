@@ -52,6 +52,8 @@ void CMonsterBullet::GetBoundingBox(float &left, float &top, float &right, float
 {
 	left = x;
 	top = y;
+	right = x + BULLET_BBOX_WIDTH;
+	bottom = y + BULLET_BBOX_HEIGHT;
 	switch (typeBullet)
 	{
 	case 1:
@@ -112,7 +114,6 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	else
 	{
 		//vx = 0;
-
 		float min_tx, min_ty, nx = 0, ny;
 		float rdx = 0;
 		float rdy = 0;
@@ -140,37 +141,48 @@ void CMonsterBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CTrap*>(e->obj))
 			{
-				if (nx != 0 || ny != 0)
-				{
-					countCollision++;
-					switch (typeBullet)
+				if (state == BULLET_MINE ||
+					state == BULLET_RIGHT ||
+					state == BULLET_LEFT ||
+					state == BULLET_UP ||
+					state == BULLET_DOWN) {
+					x += dx;
+					y += dy;
+				}
+				else {
+					if (nx != 0 || ny != 0)
 					{
-					case 1:
-						SetState(BULLET_STATE_BUMP_NOW);
-						break;
-					case 2:
-						if (countCollision == 1)
+						countCollision++;
+						switch (typeBullet)
 						{
-							vy = -0.08f;
-							if (nx != 0)
+						case 1:
+							SetState(BULLET_STATE_BUMP_NOW);
+							break;
+						case 2:
+							if (countCollision == 1)
 							{
-								vy = 0.08f;
+								vy = -0.08f;
+								if (nx != 0)
+								{
+									vy = 0.08f;
+								}
 							}
-						}
-						if (countCollision == 2)
-						{
-							timeLife = GetTickCount();
-							vy = 0;
-							if (nx != 0)
+							if (countCollision == 2)
 							{
-								vy = 0.08f;
+								timeLife = GetTickCount();
+								vy = 0;
+								if (nx != 0)
+								{
+									vy = 0.08f;
+								}
 							}
+							break;
+						default:
+							break;
 						}
-						break;
-					default:
-						break;
 					}
 				}
+				
 			}
 		}
 	}
