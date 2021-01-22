@@ -313,7 +313,7 @@
 50	32	112	0	64	144	12	304	77
 
 #Section_I
-50	448	112	0	480	144	8	144	8
+50	448	112	0	480	144	8	71	126
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
