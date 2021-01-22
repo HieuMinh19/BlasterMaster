@@ -4,32 +4,31 @@
 #include "Brick.h"
 #include "Utils.h"
 
-#define EYEBALL_STATE_NORMAL	0
-#define EYEBALL_STATE_OX	100
-#define EYEBALL_STATE_OY	200
-
+#define EYEBALL_STATE_MOVE	0
+#define EYEBALL_STATE_STAND	100
 
 #define EYEBALL_ANI_NORMAL		0
-#define EYEBALL_ANI_OX			1
-#define EYEBALL_ANI_OY		2
+#define EYEBALL_ANI_BULLET	1
+#define EYEBALL_ANI_BUMP	2
 
-#define EYEBALL_BBOX_WIDTH			26
-#define EYEBALL_BBOX_HEIGHT			26
-#define TIME_RELOAD				500
+#define EYEBALL_BULLET_SPEED	0.1f
 
-class CCanon : public CEnemies
+
+#define EYEBALL_BBOX_WIDTH			16
+#define EYEBALL_BBOX_HEIGHT			16
+#define TIME_RELOAD				2500
+#define TIME_STAND_TO_FIRE				500
+
+class CEyeball : public CEnemies
 {
-	int ani;
 	DWORD lastFire;
-
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
 public:
-	CCanon();
+	CEyeball();
 	virtual void SetState(int state);
-	void Fire();
-	void AddBullet(int state, CAnimationSets * animation_sets, float x, float y);
+	void Fire(float Xp, float Yp, float Xe, float Ye);
 };
