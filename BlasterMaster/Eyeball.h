@@ -8,7 +8,7 @@
 #define EYEBALL_STATE_STAND	100
 
 #define EYEBALL_ANI_NORMAL		0
-#define EYEBALL_ANI_BULLET	1
+#define EYEBALL_ANI_BULLET	0
 #define EYEBALL_ANI_BUMP	2
 
 #define EYEBALL_BULLET_SPEED	0.1f
@@ -19,10 +19,12 @@
 #define TIME_RELOAD				2500
 #define TIME_STAND_TO_FIRE				500
 
+
 class CEyeball : public CEnemies
 {
 	DWORD lastFire;
-
+	DWORD lastMove;
+	
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();

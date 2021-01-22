@@ -27,7 +27,6 @@ CJason::CJason(float x, float y) : CPlayer()
 
 void CJason::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"[DEBUG] Jason health: %d\n", health);
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
@@ -230,15 +229,18 @@ void CJason::SetState(int state)
 		nx = -1;
 		break;
 	case JASON_STATE_CRAWL_IDLE:
+		if (!isSpecialAni) {
+			y += JASON_CRAWL_BBOX_HEIGHT;
+			RenderBoundingBox();
+			isSpecialAni = true;
+		}
+		vx = 0;
+		break;
+	case JASON_STATE_CRAWL_STAND_UP:
 		if (isSpecialAni) {
 			y -= JASON_CRAWL_BBOX_HEIGHT;
 			RenderBoundingBox();
 			isSpecialAni = false;
-		}
-		else {
-			y += JASON_CRAWL_BBOX_HEIGHT;
-			RenderBoundingBox();
-			isSpecialAni = true;
 		}
 		vx = 0;
 		break;
@@ -357,7 +359,7 @@ void CJason::KeyDown()
 
 void CJason::KeyUp()
 {
-
+	SetState(JASON_STATE_CRAWL_STAND_UP);
 }
 void CJason::OnKeyUp()
 {

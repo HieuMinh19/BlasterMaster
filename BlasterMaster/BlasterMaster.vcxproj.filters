@@ -37,7 +37,11 @@
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Worms.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="HandBoss.cpp" />
+=======
+    <ClCompile Include="Eyeball.cpp" />
+>>>>>>> 4e88fd2debf2a0085b0c4e765a058330d2104ba1
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
@@ -67,6 +71,7 @@
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scence.h" />
+    <ClInclude Include="ScreenConstant.h" />
     <ClInclude Include="Skulls.h" />
     <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />
@@ -77,6 +82,10 @@
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Worms.h" />
+<<<<<<< HEAD
     <ClInclude Include="HandBoss.h" />
+=======
+    <ClInclude Include="Eyeball.h" />
+>>>>>>> 4e88fd2debf2a0085b0c4e765a058330d2104ba1
   </ItemGroup>
 </Project>

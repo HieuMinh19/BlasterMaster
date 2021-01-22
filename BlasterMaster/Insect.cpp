@@ -69,11 +69,12 @@ void CInsect::SetState(int state)
 
 void CInsect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	CStaticHelpers* helpers = new CStaticHelpers();
-	CPlayer* player = helpers->GetPlayer();
+	
 	CGameObject::Update(dt);
 	//vy += INSECT_GRAVITY * dt;
 
+	CStaticHelpers* helpers = new CStaticHelpers();
+	CPlayer* player = helpers->GetPlayer();
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -177,7 +178,6 @@ void CInsect::HandleWithoutCollision()
 
 void CInsect::CollisionVertical(float ny)
 {
-	DebugOut(L"state: %d \n", state);
 	if (ny > 0.0f)
 	{
 		SetState(INSECT_STATE_JUMP_COLLISION_UP);
