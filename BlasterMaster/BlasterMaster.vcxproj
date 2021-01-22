@@ -143,7 +143,6 @@
     <ClCompile Include="Canon.cpp" />
     <ClCompile Include="Domes.cpp" />
     <ClCompile Include="Enemies.cpp" />
-    <ClCompile Include="Eyeball.cpp" />
     <ClCompile Include="Floaters.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -183,7 +182,6 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Domes.h" />
     <ClInclude Include="Enemies.h" />
-    <ClInclude Include="Eyeball.h" />
     <ClInclude Include="Floaters.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -202,6 +200,7 @@
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scence.h" />
+    <ClInclude Include="ScreenConstant.h" />
     <ClInclude Include="Skulls.h" />
     <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />

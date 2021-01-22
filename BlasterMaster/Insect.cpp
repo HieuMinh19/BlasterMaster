@@ -178,7 +178,6 @@ void CInsect::HandleWithoutCollision()
 
 void CInsect::CollisionVertical(float ny)
 {
-	DebugOut(L"state: %d \n", state);
 	if (ny > 0.0f)
 	{
 		SetState(INSECT_STATE_JUMP_COLLISION_UP);

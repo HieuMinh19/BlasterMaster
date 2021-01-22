@@ -13,6 +13,8 @@
 #define ITEMS_TYPE_CRUSHER_BEAM		605
 #define ITEMS_HAS_TAKEN_X			1000
 
+#define ITEMS_TIME_LIVE			5000
+
 class CItems : public CGameObject
 {
 	protected:
@@ -26,8 +28,6 @@ class CItems : public CGameObject
 		virtual void Render();
 		virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 		void setItemType(int type);
-		void countDownTime(int time);
 		void hasTaken();
 		int getItemType();
-		~CItems();
 };

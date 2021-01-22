@@ -241,8 +241,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CFloaters(_vx, _vy);
 		break;
 	case OBJECT_TYPE_SKULLS:
-		_vx = atof(tokens[4].c_str());
-		obj = new CSkulls(_vx);
+		obj = new CSkulls();
 		break;
 	case OBJECT_TYPE_MINES:
 		obj = new CMines();
@@ -572,6 +571,13 @@ void CPlayScene::Update(DWORD dt)
 			playerCoObjects.insert(playerCoObjects.end(), portalObjects.begin(), portalObjects.end());
 			playerCoObjects.insert(playerCoObjects.end(), itemObjects.begin(), itemObjects.end());
 			
+			objects[i]->Update(dt, &playerCoObjects);
+		}
+
+		if (dynamic_cast<CItems*>(objects[i]))
+		{
+			vector<LPGAMEOBJECT> playerCoObjects;
+
 			objects[i]->Update(dt, &playerCoObjects);
 		}
 	}
