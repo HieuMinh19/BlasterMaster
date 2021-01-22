@@ -5,7 +5,7 @@
 20	textures\bbox.png	237	38	26
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
-70	textures\Section_H.png	255	255	255
+70	textures\area2.png	255	255	255
 80	textures\UI.png	255	255	255
 # id	left	top	right	bottom	texture_id
 [SPRITES]
@@ -20,7 +20,7 @@
 10207	275	6	285	56	80
 10208	263	6	273	56	80
 #===============BACKGROUND-AREA2==============
-70000	0	0	512	220	70
+70000	2048	0	2559	300	70
 # JASON
 # idle right
 11001	3	98	11	114	0
@@ -116,6 +116,14 @@
 #die
 30003	45	21	61	29	10
 
+#=============== WORMS =========
+# walk right
+90001	191	412	207	421	90
+90002	172	412	189	421	90
+# walk left
+90003	46	412	62	421	90
+90004	64	412	81	421	90
+
 #brick with question mark animation
 40001	300	117	316	133	20
 40002	318	117	334	133	20
@@ -144,12 +152,6 @@
 # walk left
 90003	46	412	62	421	90
 90004	64	412	81	421	90
-# ORBS
-90031	77	386	96	405	90
-90032	97	386	116	405	90
-90033	117	386	136	405	90
-90034	137	386	156	405	90
-90035	157	386	176	405	90
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
@@ -229,6 +231,12 @@
 806	80008	100
 807	80009	100
 
+# ==== WORMS =========
+#walk right
+900	90001	100	90002	100
+#walk left
+901	90003	100	90004	100
+
 # ==== BRICK =========
 601	20001	100
 
@@ -243,11 +251,6 @@
 900	90001	100	90002	100
 #walk left
 901	90003	100	90004	100
-# ==== ORBS =========
-# walking left
-916	90031	100
-# walking right
-917	90035	100
 # ==== TRAP =========
 701	30001	100
 #
@@ -267,7 +270,7 @@
 #===== BACKGROUND ==========
 19	700
 
-# BRICK 
+# BRICK
 2	601
 # ITEMS
 3	603
@@ -279,8 +282,6 @@
 9	900	901
 # Bullet
 6	800	801	802	803	804	805	806	807
-# ORBS
-34	916	917	918	919	920	921
 #TRAP
 8	701
 
@@ -288,25 +289,23 @@
 99	1000	1001	1002	1003	1004	1005	1006	1007	1008
 [OBJECTS]
 # type	x	y	ani_set_id	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 19 = BACKGROUND, 9 = WORMS
+# type: 0 = Mario , 1 = Brick, 19 = BACKGROUND
 #====== BACKGROUND =======
 19	0	0	19
-# PLAYER
-7	30	0	7
+# MARIO
 0	50.0	0	1
-# BULLET
-#6	30	124	8
+7	300	50	7
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
-1	0	178	2	500	20
-1	0	0	2	33	200
-1	0	0	2	500	20
-1	0	145	2	95	50
-1	160	145	2	63	50
-1	290	145	2	63	50
-1	418	145	2	85	50
-1	478	0	2	33	200
+1	0	0	2	32	256
+1	0	0	2	512	80
+1	0	144	2	96	96
+1	160	144	2	64	32
+1	288	144	2	64	32
+1	416	144	2	64	32
+1	0	176	2	480	32
+1	480	0	2	32	256
 
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
@@ -316,12 +315,9 @@
 #Section_I
 50	448	112	0	480	144	8	144	8
 
-# WORMS
-9	110.0	0	6
-# ORBS // 0 -> normal // 1 -> fly to
-34	250	20	34	0.05	0
-34	260	20	34	0.05	0
-34	270	20	34	0.05	0
+# --- SCENE PORTAL ----
+# type	l	t	ani_set_id	r	b	scene_id
+50	32	142	0	64	176	12
 
 # UI
 40	100	100	99

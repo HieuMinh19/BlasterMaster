@@ -67,6 +67,7 @@
     <ClInclude Include="PlayScence.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Scence.h" />
+    <ClInclude Include="ScreenConstant.h" />
     <ClInclude Include="Skulls.h" />
     <ClInclude Include="Sophia.h" />
     <ClInclude Include="Sprites.h" />
