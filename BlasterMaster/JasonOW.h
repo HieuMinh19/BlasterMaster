@@ -3,6 +3,8 @@
 #include "Player.h"
 
 #define WALKING_SPEED		0.15f
+#define JASON_OW_HEALTH 8
+#define JASON_OW_DIE_TIME 500
 #define JASON_OW_BBOX_WIDTH  25
 #define JASON_OW_BBOX_HEIGHT 32
 
@@ -30,9 +32,7 @@ class CJasonOW : public CPlayer
 	int alpha;
 	float start_x;
 	float start_y;
-
 	int isTouchTrap;
-
 	int direction;
 	int ani;
 	bool brokenBrick;

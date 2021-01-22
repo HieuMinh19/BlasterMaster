@@ -74,7 +74,7 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				
 				if (nx < 0) {
-					Fire();
+					Fire(player->x, player->y, x, y);
 					vx = -BOSS_WALKING_SPEED;
 				}
 				else {
@@ -86,7 +86,7 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	
 	if (lastFire + TIME_RELOAD < GetTickCount()) {
-		Fire();
+		Fire(player->x, player->y, x, y);
 		lastFire = GetTickCount();
 	}
 	if (state == BOSS_STATE_UNTOUCHABLE) {
@@ -105,8 +105,10 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	if (health <= 0) {
+		health = 0;
 		x = 1000;
 	}
+	
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	DebugOut(L"[DEBUG] boss health: %d\n", health);
@@ -123,16 +125,24 @@ void CBoss::Render()
 	animation_set->at(ani)->Render(x, y, alpha);
 	RenderBoundingBox();
 }
-void CBoss::Fire()
-{
-	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
-	float yy = this->y + (BOSS_BBOX_HEIGHT - BULLET_BBOX_WIDTH) / 2;
-	float xx = this->x + (BOSS_BBOX_HEIGHT - BULLET_BBOX_WIDTH) / 2;
-	
-		AddBullet(BULLET_UP, animation_sets);
-		AddBullet(BULLET_DOWN, animation_sets);
-		dx = 1;
 
+void CBoss::Fire(float Xp, float Yp, float Xe, float Ye)
+{
+	//CMonsterBullet(int ani, float Xp, float Yp, float Xe, float Ye, float Vb)
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+
+	CGameObject* obj = NULL;
+	obj = new CMonsterBullet(BOSS_ANI_FIRE, BOSS_ANI_FIRE, Xp, Yp, Xe, Ye, BOSS_SPEED_BULLET);
+	// General object setup
+	obj->SetPosition(x + BOSS_BBOX_WIDTH / 2, y + BOSS_BBOX_HEIGHT + 1);
+	LPANIMATION_SET ani_set = animation_sets->Get(OBJECT_TYPE_FLOATERS);
+
+	obj->SetAnimationSet(ani_set);
+	dynamic_cast<CPlayScene*> (
+		CGame::GetInstance()
+		->GetCurrentScene()
+		)
+		->AddObject(obj);
 }
 
 void CBoss::AddBullet(float fastSpeed, CAnimationSets* animation_sets) {
