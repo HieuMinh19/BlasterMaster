@@ -1,8 +1,13 @@
 #include "Boss.h"
 
+CBoss* CBoss::__instance = NULL;
+
 CBoss::CBoss()
 {
 	SetState(BOSS_STATE_WALKING_LEFT);
+	health = 2;
+	lastFire = GetTickCount();
+	untouchable = FALSE;
 }
 
 void CBoss::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -11,7 +16,8 @@ void CBoss::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 	top = y;
 	right = x + BOSS_BBOX_WIDTH;
 	bottom = y + BOSS_BBOX_HEIGHT;
-	lastFire = GetTickCount();
+	
+
 }
 
 void CBoss::SetState(int state)
@@ -80,13 +86,30 @@ void CBoss::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	
 	if (lastFire + TIME_RELOAD < GetTickCount()) {
-		x = 1000;
 		Fire();
 		lastFire = GetTickCount();
 	}
+	if (state == BOSS_STATE_UNTOUCHABLE) {
+		if (!untouchable) {
+			untouchable_start = GetTickCount();
+			untouchable = 1;
+			health--;
+		}
+	}
+	if (untouchable) {
+		if (GetTickCount() - untouchable_start > 1500)
+		{
+			untouchable_start = 0;
+			untouchable = 0;
+		}
+	}
+
+	if (health <= 0) {
+		x = 1000;
+	}
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
+	DebugOut(L"[DEBUG] boss health: %d\n", health);
 }
 
 void CBoss::Render()
@@ -95,7 +118,9 @@ void CBoss::Render()
 	if (state = BOSS_STATE_WALKING_RIGHT)
 		ani = 0;
 	else ani = 1;
-	animation_set->at(ani)->Render(x, y);
+	int alpha = 255;
+	if (untouchable) alpha = 128;
+	animation_set->at(ani)->Render(x, y, alpha);
 	RenderBoundingBox();
 }
 void CBoss::Fire()
@@ -125,3 +150,10 @@ void CBoss::AddBullet(float fastSpeed, CAnimationSets* animation_sets) {
 		)
 		->AddObject(obj);
 }
+
+CBoss* CBoss::GetInstance()
+{
+	if (__instance == NULL) __instance = new CBoss();
+	return __instance;
+}
+

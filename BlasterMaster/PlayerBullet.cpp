@@ -78,8 +78,14 @@ void CBullet::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			if (dynamic_cast<CEnemies*>(e->obj)) // if e->obj is enemies
 			{
-				spawnItem(e->obj->x, e->obj->y);
-				e->obj->SetPosition(-1000, 0);			//dirty way.
+				
+				if (dynamic_cast<CBoss*>(e->obj)) {
+					e->obj->SetState(BOSS_STATE_UNTOUCHABLE);
+				}
+				else {
+					spawnItem(e->obj->x, e->obj->y);
+					e->obj->SetPosition(-1000, 0);			//dirty way.
+				}
 			}
 			else if (dynamic_cast<CBreakable*>(e->obj)) // if e->obj is enemies
 			{
