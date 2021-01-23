@@ -5,7 +5,7 @@
 #include "Config.h"
 #define SOPHIA_WALKING_SPEED		0.15f 
 //0.1f
-#define SOPHIA_JUMP_SPEED_Y		0.2f
+#define SOPHIA_JUMP_SPEED_Y		0.3f
 #define SOPHIA_JUMP_DEFLECT_SPEED 0.2f
 #define SOPHIA_GRAVITY			0.0005f
 #define SOPHIA_DIE_DEFLECT_SPEED	 0.5f
