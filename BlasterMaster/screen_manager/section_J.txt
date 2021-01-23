@@ -307,7 +307,12 @@
 1	416	152	2	64	32
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
+# OVER WORLD
 50	50	150	0	78	180	20	96	1865
+
+# SECTION I
+50	453	125	0	458	133	8	79	380
+
 # WORMS
 9	110.0	0	6
 # UI
