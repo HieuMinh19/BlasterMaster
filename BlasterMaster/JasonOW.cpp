@@ -17,7 +17,7 @@ CJasonOW::CJasonOW(float x, float y) : CPlayer()
 	isSpecialAni = false;
 	isTouchTrap = 0;
 	alpha = 255;
-	health = JASON_MAX_HEALTH;
+	health = JASON_OW_HEALTH;
 	brokenBrick = true;
 	start_x = x;
 	start_y = y;
@@ -125,8 +125,15 @@ void CJasonOW::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-	if (die_start + 5000 < GetTickCount() && isDie) {
-		CGame::GetInstance()->SwitchScene(END_SCENE);
+	if (state == JASON_OW_STATE_DIE && isDie ==FALSE) {
+		die_start = GetTickCount();
+		isDie = TRUE;
+	}
+	if (isDie) {
+		if (GetTickCount() - die_start > JASON_OW_DIE_TIME)
+		{
+			CGame::GetInstance()->SwitchScene(END_SCENE);
+		}
 	}
 }
 
@@ -187,8 +194,7 @@ void CJasonOW::SetState(int state)
 		vx = 0;
 		vy = 0;
 		ani = JASON_OW_ANI_DIE;
-		die_start = GetTickCount();
-		isDie = true;
+		
 		break;
 	}
 }

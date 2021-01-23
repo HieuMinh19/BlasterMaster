@@ -6,6 +6,7 @@ CBreakable::CBreakable()
 {
 	this->bboxHeight = BREAKABLE_BBOX_HEIGHT;
 	this->bboxWidth = BREAKABLE_BBOX_WIDTH;
+	health = BREAKABLE_HEALTH;
 }
 
 void CBreakable::Render()

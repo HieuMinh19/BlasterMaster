@@ -6,7 +6,7 @@
 
 #define BREAKABLE_BBOX_WIDTH  16
 #define BREAKABLE_BBOX_HEIGHT 16
-
+#define BREAKABLE_HEALTH 1
 
 class CBreakable : public CGameObject
 {
@@ -14,7 +14,7 @@ class CBreakable : public CGameObject
 	int bboxHeight = BREAKABLE_BBOX_HEIGHT;
 	
 public:
-	int health = 2;
+	int health;
 	CBreakable();
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
