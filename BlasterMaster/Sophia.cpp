@@ -44,25 +44,31 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}*/
 	//Jump checking
 	vy += JUMP_GRAVITY * dt;
-	if (state == SOPHIA_STATE_JUMP_SIN) {	
+	if (state == SOPHIA_STATE_JUMP_SIN && abc== FALSE) {	
 		if (!getO) {
-			oY = y-76;
+			oY = y - 50;
 			oX = x;
 			getO = true;
 		}
 		else {
-			//if (x >= 300-26 && bc== true) {
-			//	x = 300 - 26;
-			//	y = y - 2 * (y - oY);
-			//	flying_coordinate = flying_coordinate  - 2 * (270 + flying_coordinate);
-			//	bc = false;
+			if (x >= 300-26 && bc== true) {
+				x = 300 - 27;
+				y = y - 2 * (y - oY);
 
-			//	//y = oY + 50;
-			//	//state = 0;
- 		//	}
+				DebugOut(L"[INFO] Texture loaded Ok: id=%d\n", flying_coordinate);
+
+				flying_coordinate = flying_coordinate  - 2 * (270 + flying_coordinate);
+				
+				DebugOut(L"[INFO] Texture loaded Ok: id=%d\n", flying_coordinate);
+				bc = false;
+
+				//y = oY + 50;
+				//state = 0;
+ 			}
 			
 				if (flying_coordinate <= -400) {
 					flying_coordinate = 0;
+					DebugOut(L"[INFO] Texture loaded Ok: id=%dxxxxxxxxxxx");
 					ResetJump();
 					abc = true;
 					
@@ -189,30 +195,23 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				// jump on top >> kill Goomba and deflect a bit 				
-				if (flying_coordinate != 0 && state != SOPHIA_STATE_IDLE) {
-					
-					
-					flying_coordinate = 0;
-					state = SOPHIA_STATE_IDLE;
-					//ResetCircle();
-				}
+
+					ResetJump();
 
 			} // if Player
 			else if (dynamic_cast<CTrap*>(e->obj))
 			{
 				CTrap* trap = dynamic_cast<CTrap*>(e->obj);
-				x = 1000;
-				//if (state == SOPHIA_STATE_JUMP_SIN) {
-
-				//	y = oY + 76;
-				//	ResetJump();
-				//}
-				//else {
-				//	//x = 1000;
-				//	if (dx != 0) {
-				//		x -= 50;
-				//	}
-				//}
+				if (state == SOPHIA_STATE_JUMP_SIN) {
+					//x = 1000;
+					y = oY + 50;
+					ResetJump();
+				}
+				else {
+					if (dx != 0) {
+						x -= 50;
+					}
+				}
 
 				
 			}
@@ -513,31 +512,10 @@ void CSophia::ResetJump()
 	//SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
 	//reset sate jump
-	//animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
-	//animation_set->at(SOPHIA_ANI_JUMP_LEFT)->Reset();
-	//animation_set->at(SOPHIA_ANI_JUMP_UP_RIGHT)->Reset();
-	//animation_set->at(SOPHIA_ANI_JUMP_UP_LEFT)->Reset();
-
-}
-void CSophia::ResetCircle()
-{
-
-	flying_coordinate = 0;
-	isJump = FALSE;
-
-	//isJumpWhileWalk = FALSE;
-	//isWalkAfterJump = FALSE;
-	//jumpBack = FALSE;
-	SetState(SOPHIA_STATE_IDLE);
-	//bug this -> can't add object
-	//SetLevel(SOPHIA_LEVEL_NORMAL);
-	//SetPosition(start_x, start_y);
-	//SetSpeed(0, 0);
-	//reset sate jump
-	//animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
-	//animation_set->at(SOPHIA_ANI_JUMP_LEFT)->Reset();
-	//animation_set->at(SOPHIA_ANI_JUMP_UP_RIGHT)->Reset();
-	//animation_set->at(SOPHIA_ANI_JUMP_UP_LEFT)->Reset();
+	animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
+	animation_set->at(SOPHIA_ANI_JUMP_LEFT)->Reset();
+	animation_set->at(SOPHIA_ANI_JUMP_UP_RIGHT)->Reset();
+	animation_set->at(SOPHIA_ANI_JUMP_UP_LEFT)->Reset();
 
 }
 void CSophia::fire(vector<LPGAMEOBJECT>& objects)
@@ -606,7 +584,7 @@ void CSophia::OnKeyUp() {
 	ResetStandUp();
 }
 void CSophia::KeyX() {
-		getO = false;
+	getO = false;
 		state = SOPHIA_STATE_JUMP_SIN;
 		abc = false;
 		bc = true;

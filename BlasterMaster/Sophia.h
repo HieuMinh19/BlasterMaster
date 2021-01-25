@@ -111,8 +111,7 @@ public:
 	void fire(vector<LPGAMEOBJECT>& objects);
 	void Reset();
 	void ResetStandUp();
-	void ResetJump(); 
-	void ResetCircle();
+	void ResetJump();
 	void KeyDown();
 	void KeyUp();
 	void OnKeyUp();
