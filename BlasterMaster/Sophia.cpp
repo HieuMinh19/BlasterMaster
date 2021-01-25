@@ -43,45 +43,35 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vy += JUMP_GRAVITY * dt;
 	}*/
 	//Jump checking
-	vy += JUMP_GRAVITY * dt;
-	if (state == SOPHIA_STATE_JUMP_SIN && abc== FALSE) {	
+	if (state == SOPHIA_STATE_JUMP_SIN) {	
 		if (!getO) {
 			oY = y - 50;
 			oX = x;
 			getO = true;
 		}
 		else {
-			if (x >= 300-26 && bc== true) {
-				x = 300 - 27;
-				y = y - 2 * (y - oY);
-
-				DebugOut(L"[INFO] Texture loaded Ok: id=%d\n", flying_coordinate);
-
-				flying_coordinate = flying_coordinate  - 2 * (270 + flying_coordinate);
-				
-				DebugOut(L"[INFO] Texture loaded Ok: id=%d\n", flying_coordinate);
-				bc = false;
-
-				//y = oY + 50;
-				//state = 0;
- 			}
-			
-				if (flying_coordinate <= -400) {
-					flying_coordinate = 0;
-					DebugOut(L"[INFO] Texture loaded Ok: id=%dxxxxxxxxxxx");
-					ResetJump();
-					abc = true;
-					
-				}
-				y = 50 * cos(flying_coordinate * 3.14 / 180) + oY;
-				x = 50 * sin(flying_coordinate * 3.14 / 180) + oX;
-				flying_coordinate -= 2;
+			if (flying_coordinate < -360) {
+				getO = false;
+				state = 0;
 			}
+			if (x > 300 - SOPHIA_BBOX_WIDTH) {
+				flying_coordinate = -540 - flying_coordinate;
+			}
+
+
+			flying_coordinate -= 2;
+			y = 50 * cos(flying_coordinate * 3.14 / 180) + oY;
+			x = 50 * sin(flying_coordinate * 3.14 / 180) + oX;
+
+		}
 			
 
 		
 		//vx = SOPHIA_JUMP_SPEED_Y;
 		//vy = -SOPHIA_JUMP_SPEED_Y;
+	}
+	else {
+		vy += JUMP_GRAVITY * dt;
 	}
 	/*if (isJump) {
 		if (isJumpWhileWalk) {
