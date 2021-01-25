@@ -594,23 +594,23 @@ void CPlayScene::Update(DWORD dt)
 	CGame *game = CGame::GetInstance();
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
-	// start handle limit max and min x_cam, y_cam
-	CScene* scene = CGame::GetInstance()->GetCurrentScene();
+	//// start handle limit max and min x_cam, y_cam
+	//CScene* scene = CGame::GetInstance()->GetCurrentScene();
 
-	int sceneHeight = scene->GetScreenHeight();
-	int sceneWidth = scene->GetScreenWidth();
+	//int sceneHeight = scene->GetScreenHeight();
+	//int sceneWidth = scene->GetScreenWidth();
 
-	if (cx < 0) cx = 0;
+	//if (cx < 0) cx = 0;
 
-	if ((cx + SCREEN_WIDTH) > sceneWidth) {
-		cx = sceneWidth - SCREEN_WIDTH;
-	}
+	//if ((cx + SCREEN_WIDTH) > sceneWidth) {
+	//	cx = sceneWidth - SCREEN_WIDTH;
+	//}
 
-	if ((cy + SCREEN_HEIGHT) > sceneHeight) {
-		cy = sceneHeight - SCREEN_HEIGHT;
-	}
+	//if ((cy + SCREEN_HEIGHT) > sceneHeight) {
+	//	cy = sceneHeight - SCREEN_HEIGHT;
+	//}
 
-	if (cy < 0) cy = 0;
+	//if (cy < 0) cy = 0;
 	// end handle limit camera
 
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
@@ -738,10 +738,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	LPSCENE curentScene = CGame::GetInstance()->GetCurrentScene();
 	int sceneID = curentScene->getCurrentID();
 	if (sceneID == 99) return;
-	if (dynamic_cast<CJasonOW *>(player))
-	{
-		player->SetState(PLAYER_STATE_IDLE);
-	}
+	
 	switch (KeyCode)
 	{
 	case DIK_UP:
@@ -751,7 +748,9 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_RIGHT:
 		player->OnKeyUpRight();
 		break;
+
 	}
+	
 }
 
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
@@ -775,10 +774,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			player->KeyUp();
 		else if (game->IsKeyDown(DIK_DOWN))
 			player->KeyDown();
-		else {
-			if (!player->isJump && !dynamic_cast<CJasonOW *>(player)) {
-				player->SetState(PLAYER_STATE_IDLE);
-			}
-		}
+		
 	}
 }

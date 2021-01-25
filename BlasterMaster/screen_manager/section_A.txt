@@ -475,9 +475,6 @@
 #--- trap ---
 8	0	224	2	1008	16
 
-# --- SCENE PORTAL ----
-# type	left	top	ani_set_id	right	bottom	scene_id	start_x	start_y
-50	944	98	0	984	150	18	35	1160
 
 # UI
 40	0	100	99

@@ -2,7 +2,7 @@
 [TEXTURES]
 0	textures\SpritesTank.png	0	136	255
 10	textures\tankAndMain.png	0	136	255
-20	textures\bbox.png	237	38	26
+20	textures\Final_section.png	0	136	255
 90	textures\enemies-1.png	255	0	255
 30	textures\itemsandobjects.png	176	224	248 
 72	textures\Section_J.png	255	255	255
@@ -109,10 +109,10 @@
 10099	45	21	61	29	10
 
 #BRICK
-20001	408	225	424	241	20
+20001	0	0	100	100	20
 #GOOMBA
-30001	5	14	21	29	10
-30002	25	14	41	29	10
+30001	0	0	1000	1000	20
+30002	25	14	41	29	20
 #die
 30003	45	21	61	29	10
 
@@ -300,11 +300,8 @@
 # BRICK 
 # --- platform (hint: I created the list using Excel!) ----
 # type	x	y	ani_set_id	BBOX_WITH   BB_HEIGHT  
-1	0	0	2	494	40
 1	0	184	2	494	40
-1	0	0	2	30	223
-1	480	40	2	16	230
-1	416	152	2	64	32
+8	300	0	2	1008	1000
 # --- SCENE PORTAL ----
 # type	l	t	ani_set_id	r	b	scene_id
 # OVER WORLD

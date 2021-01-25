@@ -1,4 +1,5 @@
 ﻿#include <algorithm>
+#include <math.h>
 #include <assert.h>
 #include "Utils.h"
 
@@ -25,6 +26,9 @@ CSophia::CSophia(float x, float y) : CPlayer()
 	this->x = x;
 	this->y = y;
 	isDie = FALSE;
+	getO = FALSE;
+	abc = FALSE;
+	flying_coordinate = 0;
 }
 
 void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -32,16 +36,48 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 	// Simple fall down
-	if (!isJump) {
+	/*if (!isJump) {
 		vy += SOPHIA_GRAVITY * dt;
-	}
-	else {
+	}*/
+	/*else {
 		vy += JUMP_GRAVITY * dt;
-	}
+	}*/
 	//Jump checking
+	vy += JUMP_GRAVITY * dt;
+	if (state == SOPHIA_STATE_JUMP_SIN) {	
+		if (!getO) {
+			oY = y-76;
+			oX = x;
+			getO = true;
+		}
+		else {
+			//if (x >= 300-26 && bc== true) {
+			//	x = 300 - 26;
+			//	y = y - 2 * (y - oY);
+			//	flying_coordinate = flying_coordinate  - 2 * (270 + flying_coordinate);
+			//	bc = false;
 
-	
-	if (isJump) {
+			//	//y = oY + 50;
+			//	//state = 0;
+ 		//	}
+			
+				if (flying_coordinate <= -400) {
+					flying_coordinate = 0;
+					ResetJump();
+					abc = true;
+					
+				}
+				y = 50 * cos(flying_coordinate * 3.14 / 180) + oY;
+				x = 50 * sin(flying_coordinate * 3.14 / 180) + oX;
+				flying_coordinate -= 2;
+			}
+			
+
+		
+		//vx = SOPHIA_JUMP_SPEED_Y;
+		//vy = -SOPHIA_JUMP_SPEED_Y;
+	}
+	/*if (isJump) {
 		if (isJumpWhileWalk) {
 			if (GetTickCount() - jump_start < SOPHIA_JUMP_TIME) {
 				if (!jumpBack) {
@@ -100,7 +136,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			CGame::GetInstance()->SwitchScene(END_SCENE);
 		}
-	}
+	}*/
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -137,10 +173,10 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		
 		// block every object first!
 		// Sửa lỗi lực đẩy mạnh khiến xe bị rung
-		x += min_tx * dx + nx * 0.1f;
-		y += min_ty * dy + ny * 0.1f;
+		x += min_tx * dx + nx * 0.4f;
+		y += min_ty * dy + ny * 0.4f;
 
-		//if (nx!=0) vx = 0;
+		if (nx != 0) vx = 0;
 		if (ny != 0) vy = 0;
 
 		//
@@ -153,40 +189,54 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				// jump on top >> kill Goomba and deflect a bit 				
-				if (isJump && vx == 0) {
-					ResetJump();
+				if (flying_coordinate != 0 && state != SOPHIA_STATE_IDLE) {
+					
+					
+					flying_coordinate = 0;
+					state = SOPHIA_STATE_IDLE;
+					//ResetCircle();
 				}
+
 			} // if Player
 			else if (dynamic_cast<CTrap*>(e->obj))
 			{
 				CTrap* trap = dynamic_cast<CTrap*>(e->obj);
-				if (!untouchable && health >0) {
-					health= health-2;
-					untouchable = TRUE;
-					untouchable_start = GetTickCount();
-				}
+				x = 1000;
+				//if (state == SOPHIA_STATE_JUMP_SIN) {
+
+				//	y = oY + 76;
+				//	ResetJump();
+				//}
+				//else {
+				//	//x = 1000;
+				//	if (dx != 0) {
+				//		x -= 50;
+				//	}
+				//}
+
+				
 			}
 			else if (dynamic_cast<CItems*>(e->obj))
 			{
 				CItems* items = dynamic_cast<CItems*>(e->obj);
 				items->hasTaken();
 			}
-			else if (dynamic_cast<CPortal*>(e->obj))
-			{
-				CGame* cGame = CGame::GetInstance();
-				CPortal* p = dynamic_cast<CPortal*>(e->obj);
-				float new_x, new_y;
-				p->GetPositionPlayer(new_x, new_y);	//set init position player
-				cGame->SwitchScene(p->GetSceneId());
-				CStaticHelpers* helper = new CStaticHelpers();
-				CPlayer* player = helper->GetPlayer();
-				player->SetPosition(new_x, new_y);
-				break;
-			}
+			//else if (dynamic_cast<CPortal*>(e->obj))
+			//{
+			//	CGame* cGame = CGame::GetInstance();
+			//	CPortal* p = dynamic_cast<CPortal*>(e->obj);
+			//	float new_x, new_y;
+			//	p->GetPositionPlayer(new_x, new_y);	//set init position player
+			//	cGame->SwitchScene(p->GetSceneId());
+			//	CStaticHelpers* helper = new CStaticHelpers();
+			//	CPlayer* player = helper->GetPlayer();
+			//	player->SetPosition(new_x, new_y);
+			//	break;
+			//}
 		}
 	}
 	//Stand up checking
-	if (isMoveUp && !isStandUp) {
+	/*if (isMoveUp && !isStandUp) {
 		
 		if (nx > 0) {
 			state = SOPHIA_STATE_MOVE_UP_RIGHT;
@@ -234,7 +284,7 @@ void CSophia::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (nx < 0) {
 			state = SOPHIA_STATE_AFTER_JUMP_LEFT;
 		}
-	}
+	}*/
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
@@ -389,7 +439,7 @@ void CSophia::SetState(int state)
 		}
 		break;
 	case SOPHIA_STATE_IDLE:
-		vx = 0;
+		//vx = 0;
 		break;
 	case SOPHIA_STATE_DIE:
 		vy = -SOPHIA_DIE_DEFLECT_SPEED;
@@ -450,20 +500,44 @@ void CSophia::ResetStandUp()
 }
 void CSophia::ResetJump()
 {
+
+	flying_coordinate = 0;
 	isJump = FALSE;
-	isJumpWhileWalk = FALSE;
-	isWalkAfterJump = FALSE;
-	jumpBack = FALSE;
-	SetState(SOPHIA_STATE_IDLE);
+	
+	//isJumpWhileWalk = FALSE;
+	//isWalkAfterJump = FALSE;
+	//jumpBack = FALSE;
+	//SetState(SOPHIA_STATE_IDLE);
 	//bug this -> can't add object
 	SetLevel(SOPHIA_LEVEL_NORMAL);
 	//SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
 	//reset sate jump
-	animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
-	animation_set->at(SOPHIA_ANI_JUMP_LEFT)->Reset();
-	animation_set->at(SOPHIA_ANI_JUMP_UP_RIGHT)->Reset();
-	animation_set->at(SOPHIA_ANI_JUMP_UP_LEFT)->Reset();
+	//animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
+	//animation_set->at(SOPHIA_ANI_JUMP_LEFT)->Reset();
+	//animation_set->at(SOPHIA_ANI_JUMP_UP_RIGHT)->Reset();
+	//animation_set->at(SOPHIA_ANI_JUMP_UP_LEFT)->Reset();
+
+}
+void CSophia::ResetCircle()
+{
+
+	flying_coordinate = 0;
+	isJump = FALSE;
+
+	//isJumpWhileWalk = FALSE;
+	//isWalkAfterJump = FALSE;
+	//jumpBack = FALSE;
+	SetState(SOPHIA_STATE_IDLE);
+	//bug this -> can't add object
+	//SetLevel(SOPHIA_LEVEL_NORMAL);
+	//SetPosition(start_x, start_y);
+	//SetSpeed(0, 0);
+	//reset sate jump
+	//animation_set->at(SOPHIA_ANI_JUMP_RIGHT)->Reset();
+	//animation_set->at(SOPHIA_ANI_JUMP_LEFT)->Reset();
+	//animation_set->at(SOPHIA_ANI_JUMP_UP_RIGHT)->Reset();
+	//animation_set->at(SOPHIA_ANI_JUMP_UP_LEFT)->Reset();
 
 }
 void CSophia::fire(vector<LPGAMEOBJECT>& objects)
@@ -532,8 +606,11 @@ void CSophia::OnKeyUp() {
 	ResetStandUp();
 }
 void CSophia::KeyX() {
-	if (!isJump) {
-		isJump = true;
+		getO = false;
+		state = SOPHIA_STATE_JUMP_SIN;
+		abc = false;
+		bc = true;
+		/*isJump = true;
 		jump_start = GetTickCount();
 		if (vx != 0) {
 			isJumpWhileWalk = TRUE;
@@ -551,8 +628,7 @@ void CSophia::KeyX() {
 			}
 			else
 				SetState(SOPHIA_STATE_JUMP);
-		}
-	}
+		}*/
 }
 void CSophia::KeyZ()
 {

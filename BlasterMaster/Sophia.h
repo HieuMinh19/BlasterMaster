@@ -37,7 +37,9 @@
 #define SOPHIA_STATE_UNTOUCHABLE	1400
 #define SOPHIA_JUMP_BACK_LEFT	1500
 #define SOPHIA_JUMP_BACK_RIGHT	1600
+#define SOPHIA_STATE_JUMP_SIN 1700
 #define SOPHIA_STATE_DIE				9900
+
 
 #define SOPHIA_ANI_IDLE_RIGHT			0
 #define SOPHIA_ANI_IDLE_LEFT			1
@@ -88,6 +90,13 @@ class CSophia : public CPlayer
 
 	float start_x;			// initial position of SOPHIA at scene
 	float start_y;
+	int flying_coordinate;
+	float oX;
+	float oY;
+	float lui;
+	boolean getO;
+	boolean abc;
+	bool bc;
 public:
 	int hover;
 	boolean isMoveUp, isStandUp, isJumpWhileWalk, isWalkAfterJump, jumpBack, isTouchBrick;
@@ -102,7 +111,8 @@ public:
 	void fire(vector<LPGAMEOBJECT>& objects);
 	void Reset();
 	void ResetStandUp();
-	void ResetJump();
+	void ResetJump(); 
+	void ResetCircle();
 	void KeyDown();
 	void KeyUp();
 	void OnKeyUp();
